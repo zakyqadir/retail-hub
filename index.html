@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retail Ops Command Center | Unified Operations Portal</title>
+  <!-- Tailwind CSS & Lucide Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fff1f2',
+              500: '#e11d48',
+              600: '#be123c',
+              700: '#9f1239',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card:hover {
+      border-color: rgba(225, 29, 72, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -10px rgba(225, 29, 72, 0.15);
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col selection:bg-rose-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-500 flex items-center justify-center shadow-lg shadow-rose-950">
+          <i data-lucide="layout-grid" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg leading-tight tracking-tight text-white flex items-center gap-2">
+            Retail Operations Portal
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 font-semibold border border-rose-500/20">Unified Hub</span>
+          </h1>
+          <p class="text-xs text-slate-400">All your operational modules in one central launchpad</p>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="flex items-center space-x-3">
+        <button onclick="openSettingsModal()" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg border border-slate-700 transition">
+          <i data-lucide="settings" class="w-4 h-4"></i>
+          <span>Configure URLs</span>
+        </button>
+        <div class="h-4 w-px bg-slate-800"></div>
+        <div class="flex items-center space-x-2 text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 px-2.5 py-1 rounded-full">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Hub Online</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Hero / Welcome Banner -->
+    <div class="mb-8 p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-850 to-slate-900 border border-slate-800 relative overflow-hidden">
+      <div class="relative z-10 max-w-2xl">
+        <h2 class="text-2xl font-bold text-white mb-2">Welcome to Retail Operations Command</h2>
+        <p class="text-sm text-slate-400 mb-4">
+          Access your daily field checklists, follow up on corrective action tickets, track store locations, and view performance reports. Select any module below to launch.
+        </p>
+        <div class="flex flex-wrap items-center gap-4 text-xs text-slate-400">
+          <div class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-rose-400"></i> 4 Core Modules</div>
+          <div class="flex items-center gap-1.5"><i data-lucide="git-branch" class="w-4 h-4 text-sky-400"></i> GitHub Synced</div>
+          <div class="flex items-center gap-1.5"><i data-lucide="smartphone" class="w-4 h-4 text-emerald-400"></i> Mobile & Tablet Ready</div>
+        </div>
+      </div>
+      <!-- Decorative background icon -->
+      <i data-lucide="store" class="w-56 h-56 text-slate-800/30 absolute -right-6 -bottom-10 pointer-events-none"></i>
+    </div>
+
+    <!-- Search / Filter Bar -->
+    <div class="mb-6 flex flex-col sm:flex-row gap-3 items-center justify-between">
+      <div class="relative w-full sm:w-80">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Filter apps or tags..." 
+          oninput="filterCards()" 
+          class="w-full pl-9 pr-4 py-2 bg-slate-800/80 border border-slate-700 rounded-xl text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-rose-500"
+        />
+      </div>
+      <div class="flex items-center space-x-2 text-xs text-slate-400">
+        <span>Launch mode:</span>
+        <button id="modeNewTab" onclick="setLaunchMode('tab')" class="px-2.5 py-1 rounded-md bg-rose-600 text-white font-medium transition">New Tab</button>
+        <button id="modePreview" onclick="setLaunchMode('modal')" class="px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition">Split Preview</button>
+      </div>
+    </div>
+
+    <!-- App Grid -->
+    <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+
+      <!-- 1. Action Tracker -->
+      <div class="app-card glass-card rounded-2xl p-6 transition duration-200 flex flex-col justify-between" data-title="action tracker corrective tasks issues tickets zakyqadir">
+        <div>
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center">
+              <i data-lucide="check-square" class="w-6 h-6"></i>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20">Tasks & SLA</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-1">Action Tracker</h3>
+          <p class="text-sm text-slate-400 mb-4">
+            Manage corrective action plans, assign store audit non-compliances, track deadlines, and monitor completion status.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Issue Log</span>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Assignee</span>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Priority</span>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
+          <a id="btn-github-actiontracker" href="https://github.com/zakyqadir/actiontracker" target="_blank" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition">
+            <i data-lucide="github" class="w-4 h-4"></i>
+            <span>Repo</span>
+          </a>
+          <button onclick="launchApp('actiontracker')" class="flex-1 py-2 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-medium text-sm flex items-center justify-center gap-2 transition shadow-md shadow-rose-950">
+            <span>Launch Action Tracker</span>
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Store Checklist -->
+      <div class="app-card glass-card rounded-2xl p-6 transition duration-200 flex flex-col justify-between" data-title="store checklist audit inspection compliance floor opening closing zakyqadir">
+        <div>
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center">
+              <i data-lucide="clipboard-check" class="w-6 h-6"></i>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">Store Audits</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-1">Store Checklist</h3>
+          <p class="text-sm text-slate-400 mb-4">
+            Digital audit forms for store opening/closing routines, hygiene, visual merchandising, and inventory floor standards.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Audits</span>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Scoring</span>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Photo Evidence</span>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
+          <a id="btn-github-checklist" href="https://github.com/zakyqadir/store_checklist" target="_blank" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition">
+            <i data-lucide="github" class="w-4 h-4"></i>
+            <span>Repo</span>
+          </a>
+          <button onclick="launchApp('checklist')" class="flex-1 py-2 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-medium text-sm flex items-center justify-center gap-2 transition shadow-md shadow-amber-950">
+            <span>Launch Store Checklist</span>
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Location Tracker -->
+      <div class="app-card glass-card rounded-2xl p-6 transition duration-200 flex flex-col justify-between" data-title="location tracker map gps check-in store geofence branch coordinates">
+        <div>
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+              <i data-lucide="map-pin" class="w-6 h-6"></i>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Field & GPS</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-1">Location Tracker</h3>
+          <p class="text-sm text-slate-400 mb-4">
+            Verify staff on-site check-ins, record GPS coordinates for field inspections, and browse store branch locations on interactive map.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">GPS Check-in</span>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Branch Map</span>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Geofencing</span>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
+          <a id="btn-github-location" href="https://github.com/zakyqadir" target="_blank" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition">
+            <i data-lucide="github" class="w-4 h-4"></i>
+            <span>Repo</span>
+          </a>
+          <button onclick="launchApp('location')" class="flex-1 py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm flex items-center justify-center gap-2 transition shadow-md shadow-emerald-950">
+            <span>Launch Location Tracker</span>
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4. Report Dashboard -->
+      <div class="app-card glass-card rounded-2xl p-6 transition duration-200 flex flex-col justify-between" data-title="report dashboard analytics retail retaildashboard kpi trends charts zakyqadir">
+        <div>
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
+              <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Executive BI</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-1">Report Dashboard</h3>
+          <p class="text-sm text-slate-400 mb-4">
+            Executive performance analytics, store compliance heatmaps, corrective action SLA turnaround times, and audit trends.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">KPIs</span>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Compliance %</span>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">Export PDF/CSV</span>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
+          <a id="btn-github-dashboard" href="https://github.com/zakyqadir/retaildashboard" target="_blank" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition">
+            <i data-lucide="github" class="w-4 h-4"></i>
+            <span>Repo</span>
+          </a>
+          <button onclick="launchApp('dashboard')" class="flex-1 py-2 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm flex items-center justify-center gap-2 transition shadow-md shadow-indigo-950">
+            <span>Launch Dashboard</span>
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Live GPS Quick Tool (Bonus helper for location check-in right from the portal) -->
+    <div class="mt-8 p-5 rounded-2xl bg-slate-950/60 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+          <i data-lucide="crosshair" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold text-white">Instant GPS Check-In</h4>
+          <p id="gps-status" class="text-xs text-slate-400">Verify your current location coordinates directly from this device</p>
+        </div>
+      </div>
+      <button onclick="captureCurrentLocation()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-xl border border-slate-700 flex items-center gap-2 transition">
+        <i data-lucide="navigation" class="w-3.5 h-3.5"></i>
+        <span>Capture Coordinates</span>
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Settings Modal (Customize URLs) -->
+  <div id="settingsModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="sliders" class="w-5 h-5 text-rose-400"></i>
+          <h3 class="text-base font-bold text-white">Configure Target URLs</h3>
+        </div>
+        <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <p class="text-xs text-slate-400 mb-4">
+        You can point these buttons to either your GitHub repositories, or to your deployed live URLs (e.g. Vercel, Netlify, Streamlit, or local ports).
+      </p>
+
+      <form id="urlForm" onsubmit="saveUrls(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="block font-medium text-slate-300 mb-1">Action Tracker URL</label>
+          <input type="text" id="url-actiontracker" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" />
+        </div>
+        <div>
+          <label class="block font-medium text-slate-300 mb-1">Store Checklist URL</label>
+          <input type="text" id="url-checklist" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" />
+        </div>
+        <div>
+          <label class="block font-medium text-slate-300 mb-1">Location Tracker URL</label>
+          <input type="text" id="url-location" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" />
+        </div>
+        <div>
+          <label class="block font-medium text-slate-300 mb-1">Report Dashboard URL</label>
+          <input type="text" id="url-dashboard" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" />
+        </div>
+
+        <div class="pt-4 flex items-center justify-end space-x-2">
+          <button type="button" onclick="resetDefaultUrls()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium">Reset Defaults</button>
+          <button type="submit" class="px-4 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-medium">Save Settings</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Preview Modal / Split Screen -->
+  <div id="previewModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex flex-col">
+    <div class="h-14 border-b border-slate-800 bg-slate-950 px-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <span id="previewTitle" class="text-sm font-semibold text-white">Module Preview</span>
+        <a id="previewExternalLink" href="#" target="_blank" class="text-xs text-rose-400 hover:underline flex items-center gap-1">
+          Open in full window <i data-lucide="external-link" class="w-3 h-3"></i>
+        </a>
+      </div>
+      <button onclick="closePreviewModal()" class="p-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+    <div class="flex-1 w-full bg-slate-900 relative">
+      <iframe id="previewIframe" src="" class="w-full h-full border-none" title="Module Preview"></iframe>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 py-6 text-center text-xs text-slate-500">
+    <p>Retail Operations Command Center &copy; zakyqadir. All connected repositories unified.</p>
+  </footer>
+
+  <script>
+    // Initialize icons
+    lucide.createIcons();
+
+    // Default Links
+    const defaultUrls = {
+      actiontracker: 'https://github.com/zakyqadir/actiontracker',
+      checklist: 'https://github.com/zakyqadir/store_checklist',
+      location: 'https://github.com/zakyqadir/locationtracker',
+      dashboard: 'https://github.com/zakyqadir/retaildashboard'
+    };
+
+    let appUrls = { ...defaultUrls };
+    let launchMode = 'tab'; // 'tab' or 'modal'
+
+    function loadSavedUrls() {
+      const saved = localStorage.getItem('retailOpsUrls');
+      if (saved) {
+        try {
+          appUrls = { ...defaultUrls, ...JSON.parse(saved) };
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      // Populate form inputs
+      document.getElementById('url-actiontracker').value = appUrls.actiontracker;
+      document.getElementById('url-checklist').value = appUrls.checklist;
+      document.getElementById('url-location').value = appUrls.location;
+      document.getElementById('url-dashboard').value = appUrls.dashboard;
+    }
+
+    function saveUrls(e) {
+      e.preventDefault();
+      appUrls.actiontracker = document.getElementById('url-actiontracker').value.trim() || defaultUrls.actiontracker;
+      appUrls.checklist = document.getElementById('url-checklist').value.trim() || defaultUrls.checklist;
+      appUrls.location = document.getElementById('url-location').value.trim() || defaultUrls.location;
+      appUrls.dashboard = document.getElementById('url-dashboard').value.trim() || defaultUrls.dashboard;
+
+      localStorage.setItem('retailOpsUrls', JSON.stringify(appUrls));
+      closeSettingsModal();
+      alert('URLs successfully updated!');
+    }
+
+    function resetDefaultUrls() {
+      appUrls = { ...defaultUrls };
+      document.getElementById('url-actiontracker').value = defaultUrls.actiontracker;
+      document.getElementById('url-checklist').value = defaultUrls.checklist;
+      document.getElementById('url-location').value = defaultUrls.location;
+      document.getElementById('url-dashboard').value = defaultUrls.dashboard;
+      localStorage.removeItem('retailOpsUrls');
+      alert('Reset to default repository links');
+    }
+
+    function launchApp(appKey) {
+      const targetUrl = appUrls[appKey] || defaultUrls[appKey];
+      if (launchMode === 'modal') {
+        const titles = {
+          actiontracker: 'Action Tracker',
+          checklist: 'Store Checklist',
+          location: 'Location Tracker',
+          dashboard: 'Report Dashboard'
+        };
+        document.getElementById('previewTitle').innerText = titles[appKey] || 'Module Preview';
+        document.getElementById('previewExternalLink').href = targetUrl;
+        document.getElementById('previewIframe').src = targetUrl;
+        document.getElementById('previewModal').classList.remove('hidden');
+      } else {
+        window.open(targetUrl, '_blank', 'noopener,noreferrer');
+      }
+    }
+
+    function setLaunchMode(mode) {
+      launchMode = mode;
+      const tabBtn = document.getElementById('modeNewTab');
+      const previewBtn = document.getElementById('modePreview');
+      if (mode === 'tab') {
+        tabBtn.className = 'px-2.5 py-1 rounded-md bg-rose-600 text-white font-medium transition';
+        previewBtn.className = 'px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition';
+      } else {
+        previewBtn.className = 'px-2.5 py-1 rounded-md bg-rose-600 text-white font-medium transition';
+        tabBtn.className = 'px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition';
+      }
+    }
+
+    function openSettingsModal() {
+      document.getElementById('settingsModal').classList.remove('hidden');
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').classList.add('hidden');
+    }
+
+    function closePreviewModal() {
+      document.getElementById('previewModal').classList.add('hidden');
+      document.getElementById('previewIframe').src = '';
+    }
+
+    // Filter cards
+    function filterCards() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.app-card');
+      cards.forEach(card => {
+        const text = card.getAttribute('data-title').toLowerCase();
+        if (text.includes(q)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // GPS Helper
+    function captureCurrentLocation() {
+      const statusEl = document.getElementById('gps-status');
+      if (!navigator.geolocation) {
+        statusEl.innerText = 'Geolocation is not supported by your browser';
+        return;
+      }
+      statusEl.innerText = 'Detecting current coordinates...';
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude.toFixed(5);
+          const lng = position.coords.longitude.toFixed(5);
+          const accuracy = Math.round(position.coords.accuracy);
+          statusEl.innerHTML = `<span class="text-emerald-400 font-semibold">📍 Lat: ${lat}, Lng: ${lng}</span> (±${accuracy}m accuracy) — Recorded at ${new Date().toLocaleTimeString()}`;
+        },
+        (error) => {
+          statusEl.innerText = `GPS Error: ${error.message}`;
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    }
+
+    // On page load
+    loadSavedUrls();
+  </script>
+</body>
+</html>
