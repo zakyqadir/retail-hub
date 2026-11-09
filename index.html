@@ -27,8 +27,8 @@
               DEFAULT: '#EE1D23', // Matahari Red official brand token
               dark: '#C7141A',
               light: '#FFF1F1',
-              surface: '#121826',
-              border: '#1E293B',
+              surface: '#111827',
+              border: '#1F2937',
             }
           }
         }
@@ -37,7 +37,6 @@
   </script>
 
   <style>
-    /* Strict Anti-AI Professional Design: Solid surfaces, sharp tokenized borders, no glowing blobs */
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -55,6 +54,29 @@
     .admin-card-outline {
       border-color: #EE1D23 !important;
     }
+    /* Tab Styling */
+    .tab-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+      color: #9CA3AF;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .tab-item:hover {
+      color: #F3F4F6;
+      border-color: #374151;
+    }
+    .tab-item.active {
+      color: #FFFFFF;
+      border-color: #EE1D23;
+      font-weight: 600;
+      background-color: rgba(238, 29, 35, 0.05);
+    }
   </style>
 </head>
 <body class="min-h-full flex flex-col bg-[#0B0F19] text-slate-200">
@@ -71,7 +93,7 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="font-bold text-base tracking-tight text-white">Matahari Retail Operations</h1>
-            <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-gray-800 text-gray-300 border border-gray-700">Hub v2.0</span>
+            <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-gray-800 text-gray-300 border border-gray-700">Hub v2.1</span>
           </div>
           <p class="text-[12px] text-gray-400">Pusat Kendali Aplikasi & Operasional Toko</p>
         </div>
@@ -87,12 +109,30 @@
 
         <div class="h-4 w-px bg-gray-800 hidden sm:block"></div>
 
-        <!-- Admin Control Button (Toggles between Login and Admin Active) -->
+        <!-- Admin Control Button (Login / Logout) -->
         <div id="admin-actions-container">
           <!-- Rendered via JS -->
         </div>
       </div>
 
+    </div>
+
+    <!-- Multi-Page Tabs Navigation Bar -->
+    <div class="bg-[#0D121F] border-t border-gray-800/60 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto flex items-center justify-between overflow-x-auto no-scrollbar">
+        <!-- Dynamic Page Tabs -->
+        <div id="pageTabsContainer" class="flex items-center space-x-1">
+          <!-- Rendered via JS -->
+        </div>
+
+        <!-- Add Page Button (Visible in Admin Mode) -->
+        <div id="addPageBtnContainer" class="hidden py-1.5 pl-3 border-l border-gray-800 flex-shrink-0">
+          <button onclick="openPageModal()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white text-xs font-medium rounded-md border border-gray-700 flex items-center gap-1.5 transition">
+            <i data-lucide="plus" class="w-3.5 h-3.5 text-[#EE1D23]"></i>
+            <span>Tambah Halaman</span>
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -102,14 +142,18 @@
       <div class="flex items-center gap-2 text-amber-300">
         <i data-lucide="shield-alert" class="w-4 h-4 text-amber-400"></i>
         <span class="font-semibold">Mode Administrator Aktif:</span>
-        <span class="text-amber-200">Anda dapat menambah, mengubah, mengurutkan, atau menghapus setiap item modul di halaman ini.</span>
+        <span class="text-amber-200">Anda dapat menambah halaman baru, mengedit item modul, atau menyesuaikan dokumen panduan.</span>
       </div>
       <div class="flex items-center gap-2">
-        <button onclick="openAddModal()" class="px-3 py-1 bg-[#EE1D23] hover:bg-[#C7141A] text-white font-medium rounded-md flex items-center gap-1.5 transition">
-          <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-          <span>Tambah Modul Baru</span>
+        <button onclick="openPageModal()" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-gray-200 font-medium rounded-md border border-gray-700 flex items-center gap-1.5 transition">
+          <i data-lucide="file-plus" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>+ Halaman Baru</span>
         </button>
-        <button onclick="resetToMatahariDefaults()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium rounded-md border border-gray-700 transition" title="Kembalikan ke tautan default">
+        <button onclick="openAddModuleModal()" class="px-3 py-1 bg-[#EE1D23] hover:bg-[#C7141A] text-white font-medium rounded-md flex items-center gap-1.5 transition">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+          <span>+ Tambah Modul</span>
+        </button>
+        <button onclick="resetToMatahariDefaults()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium rounded-md border border-gray-700 transition" title="Kembalikan ke susunan awal">
           Reset Default
         </button>
         <button onclick="logoutAdmin()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-200 font-medium rounded-md border border-gray-700 transition flex items-center gap-1">
@@ -123,83 +167,130 @@
   <!-- Main Content Layout -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    <!-- Operational KPI & Status Strip -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 text-xs">
-      <div class="bg-[#111827] border border-gray-800 rounded-lg p-3">
-        <div class="text-gray-400 font-medium mb-1">Total Modul Terintegrasi</div>
-        <div id="stat-total-modules" class="text-lg font-bold text-white font-mono">4</div>
-      </div>
-      <div class="bg-[#111827] border border-gray-800 rounded-lg p-3">
-        <div class="text-gray-400 font-medium mb-1">Host Checklist</div>
-        <div class="text-xs font-semibold text-white font-mono truncate">mataharicloud.id</div>
-      </div>
-      <div class="bg-[#111827] border border-gray-800 rounded-lg p-3">
-        <div class="text-gray-400 font-medium mb-1">Action Tracker Engine</div>
-        <div class="text-xs font-semibold text-white font-mono truncate">Google Apps Script</div>
-      </div>
-      <div class="bg-[#111827] border border-gray-800 rounded-lg p-3">
-        <div class="text-gray-400 font-medium mb-1">Status Keamanan</div>
-        <div class="text-xs font-semibold text-emerald-400 flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-          HTTPS Enforced
+    <!-- Active Page Header & Context -->
+    <div class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-gray-800">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <h2 id="activePageTitle" class="text-xl font-bold text-white tracking-tight">Operasional Utama</h2>
+          <span id="activePageTypeBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded bg-gray-800 text-gray-300 border border-gray-700">Grid Aplikasi</span>
+          <!-- Edit Page button for admin -->
+          <button id="btnEditCurrentPage" onclick="openEditCurrentPageModal()" class="hidden text-xs text-amber-400 hover:text-amber-300 p-1 rounded bg-gray-800/80 border border-gray-700" title="Ubah Nama/Pengaturan Halaman">
+            <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+          </button>
         </div>
+        <p id="activePageDesc" class="text-xs text-gray-400 mt-1 leading-relaxed">
+          Aplikasi inti operasional harian gerai, checklist pembukaan toko, dan tracking audit.
+        </p>
+      </div>
+
+      <!-- Action in Active Page: Add module if grid, or edit content if doc -->
+      <div id="activePageActionBtn">
+        <!-- Populated via JS -->
       </div>
     </div>
 
-    <!-- Search & Filter Controls -->
-    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-6">
-      <div class="relative flex-1 max-w-md">
-        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-        <input 
-          type="text" 
-          id="searchInput" 
-          placeholder="Cari modul, SLA, audit, atau kata kunci..." 
-          oninput="filterModules()" 
-          class="w-full pl-9 pr-4 py-2 bg-[#111827] border border-gray-800 rounded-lg text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-[#EE1D23] transition"
-        />
-      </div>
-
-      <div class="flex items-center gap-2 text-xs">
-        <span class="text-gray-400">Kategori:</span>
-        <button onclick="setCategoryFilter('ALL')" id="filter-all" class="px-2.5 py-1 rounded bg-gray-800 text-white font-medium border border-gray-700">Semua</button>
-        <button onclick="setCategoryFilter('AUDIT')" id="filter-audit" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Audit & Form</button>
-        <button onclick="setCategoryFilter('OPS')" id="filter-ops" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Operasional</button>
-        <button onclick="setCategoryFilter('BI')" id="filter-bi" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Laporan & BI</button>
-      </div>
-    </div>
-
-    <!-- Module Grid Container -->
-    <div id="modulesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Dynamic Module Cards Rendered via JS -->
-    </div>
-
-    <!-- GPS Quick Tool Utility -->
-    <div class="mt-8 bg-[#111827] border border-gray-800 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-300">
-          <i data-lucide="map-pin" class="w-4 h-4 text-emerald-400"></i>
+    <!-- VIEW 1: GRID VIEW (For application launcher pages) -->
+    <div id="gridPageView">
+      
+      <!-- Operational KPI & Status Strip -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 text-xs">
+        <div class="bg-[#111827] border border-gray-800 rounded-lg p-3">
+          <div class="text-gray-400 font-medium mb-1">Modul di Halaman Ini</div>
+          <div id="stat-page-modules" class="text-lg font-bold text-white font-mono">4</div>
         </div>
-        <div>
-          <h4 class="text-xs font-semibold text-white">Validasi GPS Toko (On-Site Audit)</h4>
-          <p id="gps-status-text" class="text-[11px] text-gray-400 font-mono">Klik tombol untuk mencatat koordinat perangkat lapangan secara presisi.</p>
+        <div class="bg-[#111827] border border-gray-800 rounded-lg p-3">
+          <div class="text-gray-400 font-medium mb-1">Host Utama</div>
+          <div class="text-xs font-semibold text-white font-mono truncate">mataharicloud.id</div>
+        </div>
+        <div class="bg-[#111827] border border-gray-800 rounded-lg p-3">
+          <div class="text-gray-400 font-medium mb-1">Engine Action Tracker</div>
+          <div class="text-xs font-semibold text-white font-mono truncate">Google Apps Script</div>
+        </div>
+        <div class="bg-[#111827] border border-gray-800 rounded-lg p-3">
+          <div class="text-gray-400 font-medium mb-1">Status Keamanan</div>
+          <div class="text-xs font-semibold text-emerald-400 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            HTTPS Enforced
+          </div>
         </div>
       </div>
-      <div class="flex items-center gap-2">
-        <a id="gps-maps-btn" href="#" target="_blank" class="hidden px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs font-medium text-gray-200 rounded-md border border-gray-700 flex items-center gap-1.5 transition">
-          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-          <span>Lihat di Maps</span>
-        </a>
-        <button onclick="triggerGPSCapture()" class="px-3.5 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs font-medium text-white rounded-md border border-gray-700 flex items-center gap-1.5 transition">
-          <i data-lucide="navigation" class="w-3.5 h-3.5 text-emerald-400"></i>
-          <span>Ambil Koordinat</span>
-        </button>
+
+      <!-- Search & Filter Controls -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-6">
+        <div class="relative flex-1 max-w-md">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Cari modul di halaman ini..." 
+            oninput="filterModules()" 
+            class="w-full pl-9 pr-4 py-2 bg-[#111827] border border-gray-800 rounded-lg text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-[#EE1D23] transition"
+          />
+        </div>
+
+        <div class="flex items-center gap-2 text-xs">
+          <span class="text-gray-400">Kategori:</span>
+          <button onclick="setCategoryFilter('ALL')" id="filter-all" class="px-2.5 py-1 rounded bg-gray-800 text-white font-medium border border-gray-700">Semua</button>
+          <button onclick="setCategoryFilter('AUDIT')" id="filter-audit" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Audit & Form</button>
+          <button onclick="setCategoryFilter('OPS')" id="filter-ops" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Operasional</button>
+          <button onclick="setCategoryFilter('BI')" id="filter-bi" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Laporan & BI</button>
+        </div>
+      </div>
+
+      <!-- Module Grid Container -->
+      <div id="modulesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- GPS Quick Tool Utility -->
+      <div class="mt-8 bg-[#111827] border border-gray-800 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-300">
+            <i data-lucide="map-pin" class="w-4 h-4 text-emerald-400"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-semibold text-white">Validasi GPS Toko (On-Site Audit)</h4>
+            <p id="gps-status-text" class="text-[11px] text-gray-400 font-mono">Klik tombol untuk mencatat koordinat perangkat lapangan secara presisi.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a id="gps-maps-btn" href="#" target="_blank" class="hidden px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs font-medium text-gray-200 rounded-md border border-gray-700 flex items-center gap-1.5 transition">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            <span>Lihat di Maps</span>
+          </a>
+          <button onclick="triggerGPSCapture()" class="px-3.5 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs font-medium text-white rounded-md border border-gray-700 flex items-center gap-1.5 transition">
+            <i data-lucide="navigation" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>Ambil Koordinat</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VIEW 2: DOCUMENT / SOP / NOTES VIEW (For guideline pages) -->
+    <div id="docPageView" class="hidden">
+      <div class="bg-[#111827] border border-gray-800 rounded-xl p-6 relative">
+        <div class="flex items-center justify-between pb-4 mb-4 border-b border-gray-800">
+          <div class="flex items-center gap-2 text-xs text-gray-400">
+            <i data-lucide="file-text" class="w-4 h-4 text-[#EE1D23]"></i>
+            <span>Dokumen Informasi & Petunjuk Teknis Operasional</span>
+          </div>
+          <button id="btnEditDocContent" onclick="openEditDocModal()" class="hidden px-3 py-1 bg-gray-800 hover:bg-gray-700 text-xs text-amber-400 font-medium rounded-md border border-gray-700 flex items-center gap-1.5 transition">
+            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+            <span>Edit Konten Halaman</span>
+          </button>
+        </div>
+
+        <div id="docContentContainer" class="prose prose-invert max-w-none text-sm text-gray-300 leading-relaxed space-y-4">
+          <!-- Rendered via JS -->
+        </div>
       </div>
     </div>
 
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-gray-800/80 bg-[#111827] py-6 text-center text-xs text-gray-400">
+  <footer class="border-t border-gray-800/80 bg-[#111827] py-6 text-center text-xs text-gray-400 mt-auto">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
       <p>PT Matahari Department Store Tbk &bull; Retail Operations Division</p>
       <div class="flex items-center gap-3 font-mono text-[11px] text-gray-400">
@@ -227,7 +318,7 @@
         </button>
       </div>
       <p class="text-xs text-gray-400 mb-4">
-        Masukkan PIN atau Kata Sandi Administrator untuk mengaktifkan mode pengeditan modul.
+        Masukkan PIN atau Kata Sandi Administrator untuk mengaktifkan mode pengeditan halaman dan modul.
       </p>
       <form onsubmit="handleLoginSubmit(event)" class="space-y-3">
         <div>
@@ -240,7 +331,7 @@
             required 
             autofocus
           />
-          <p class="text-[10px] text-gray-400 mt-1">Sandi bawaan: <code class="text-gray-300 font-mono">admin123</code> (dapat diubah nanti)</p>
+          <p class="text-[10px] text-gray-400 mt-1">Sandi bawaan: <code class="text-gray-300 font-mono">admin123</code></p>
         </div>
         <div id="loginError" class="text-xs text-red-400 font-medium hidden">
           Kata sandi salah. Silakan coba lagi.
@@ -255,7 +346,70 @@
     </div>
   </div>
 
-  <!-- 2. Edit / Add Module Modal -->
+  <!-- 2. Page Modal (Add / Edit Page) -->
+  <div id="pageModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#111827] border border-gray-700 rounded-xl max-w-md w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-800">
+        <h3 id="pageModalTitle" class="text-sm font-bold text-white flex items-center gap-2">
+          <i data-lucide="file-plus" class="w-4 h-4 text-[#EE1D23]"></i>
+          <span>Tambah Halaman Baru</span>
+        </h3>
+        <button onclick="closePageModal()" class="text-gray-400 hover:text-white">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handlePageSave(event)" class="space-y-3.5 text-xs">
+        <input type="hidden" id="form-page-id" />
+
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">Nama Halaman</label>
+          <input type="text" id="form-page-title" placeholder="Contoh: SOP & Dokumen, Kontak Toko, POS & Kasir" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]" required />
+        </div>
+
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">Tipe Tampilan Halaman</label>
+          <select id="form-page-type" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]">
+            <option value="grid">Grid Modul Aplikasi (Koleksi Kartu Tautan)</option>
+            <option value="document">Dokumen / SOP / Catatan Kontak</option>
+          </select>
+          <p class="text-[10px] text-gray-400 mt-1">Pilih "Grid" untuk menampung link aplikasi, atau "Dokumen" untuk panduan teks/kontak.</p>
+        </div>
+
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">Ikon Tab</label>
+          <select id="form-page-icon" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]">
+            <option value="layers">Layers (Umum/Grid)</option>
+            <option value="file-text">FileText (SOP/Dokumen)</option>
+            <option value="phone">Phone (Kontak/Direktori)</option>
+            <option value="help-circle">HelpCircle (Bantuan/Helpdesk)</option>
+            <option value="shopping-cart">ShoppingCart (Kasir/POS)</option>
+            <option value="truck">Truck (Logistik/Gudang)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">Deskripsi Halaman</label>
+          <textarea id="form-page-desc" rows="2" placeholder="Jelaskan tujuan atau fungsi halaman ini..." class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]"></textarea>
+        </div>
+
+        <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+          <button type="button" id="btnDeletePage" onclick="handleDeleteCurrentPage()" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <span>Hapus Halaman</span>
+          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="closePageModal()" class="px-3 py-1.5 text-xs text-gray-400 hover:text-white">Batal</button>
+            <button type="submit" class="px-4 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md transition">
+              Simpan Halaman
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Edit / Add Module Modal -->
   <div id="moduleModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-[#111827] border border-gray-700 rounded-xl max-w-lg w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
       <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-800">
@@ -342,59 +496,139 @@
     </div>
   </div>
 
-  <!-- Application Logic -->
+  <!-- 4. Edit Document Content Modal -->
+  <div id="docEditModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#111827] border border-gray-700 rounded-xl max-w-2xl w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-800">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <i data-lucide="file-edit" class="w-4 h-4 text-[#EE1D23]"></i>
+          <span>Edit Konten Halaman Dokumen / Panduan</span>
+        </h3>
+        <button onclick="closeDocEditModal()" class="text-gray-400 hover:text-white">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleDocSave(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">Konten Halaman (Mendukung HTML & Teks Rinci)</label>
+          <textarea id="form-doc-html" rows="12" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg p-3 text-white font-mono text-xs focus:outline-none focus:border-[#EE1D23] leading-relaxed"></textarea>
+          <p class="text-[11px] text-gray-400 mt-1">Anda dapat menyalin teks SOP, daftar nomor kontak, atau menyematkan tautan dokumen Google Drive.</p>
+        </div>
+
+        <div class="pt-3 border-t border-gray-800 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeDocEditModal()" class="px-3 py-1.5 text-xs text-gray-400 hover:text-white">Batal</button>
+          <button type="submit" class="px-4 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md transition">
+            Simpan Konten Dokumen
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Application Multi-Page Engine -->
   <script>
-    // Default Retail Modules with Matahari Official Data
-    const INITIAL_MODULES = [
+    // Initial Architecture: Multi-Page Structure
+    const INITIAL_PAGES = [
       {
-        id: 'action-tracker',
-        title: 'Action Tracker',
-        category: 'OPS',
-        badge: 'Google Apps Script',
-        url: 'https://script.google.com/macros/s/AKfycbxmCaTLKz0ampzM0uoBTe1EKUFL8FGOnsIwRvFtdegjNOLV24fgPfj7fVqxZlkqsZSp/exec',
-        desc: 'Pemantauan tindakan korektif audit toko, penugasan perbaikan PIC, eskalasi temuan, dan tracking SLA penutupan issue.',
-        icon: 'check-square',
-        status: 'Aktif'
+        id: 'main-ops',
+        title: 'Operasional Utama',
+        type: 'grid',
+        icon: 'layers',
+        desc: 'Aplikasi inti operasional harian gerai, checklist pembukaan toko, dan tracking audit.',
+        modules: [
+          {
+            id: 'action-tracker',
+            title: 'Action Tracker',
+            category: 'OPS',
+            badge: 'Google Apps Script',
+            url: 'https://script.google.com/macros/s/AKfycbxmCaTLKz0ampzM0uoBTe1EKUFL8FGOnsIwRvFtdegjNOLV24fgPfj7fVqxZlkqsZSp/exec',
+            desc: 'Pemantauan tindakan korektif audit toko, penugasan perbaikan PIC, eskalasi temuan, dan tracking SLA penutupan issue.',
+            icon: 'check-square',
+            status: 'Aktif'
+          },
+          {
+            id: 'store-checklist',
+            title: 'Store Checklist',
+            category: 'AUDIT',
+            badge: 'Matahari Cloud',
+            url: 'https://checklist.mataharicloud.id',
+            desc: 'Formulir inspeksi harian opening/closing, kesiapan lantai toko, standar visual merchandising, dan bukti foto audit.',
+            icon: 'clipboard-check',
+            status: 'Aktif'
+          },
+          {
+            id: 'location-tracker',
+            title: 'Location Tracker',
+            category: 'OPS',
+            badge: 'GPS & Geofencing',
+            url: 'https://maps.google.com',
+            desc: 'Verifikasi kehadiran auditor dan staf di lokasi cabang toko secara real-time melalui koordinat GPS satelit.',
+            icon: 'map-pin',
+            status: 'Aktif'
+          },
+          {
+            id: 'report-dashboard',
+            title: 'Report Dashboard',
+            category: 'BI',
+            badge: 'Executive BI',
+            url: 'https://github.com/zakyqadir/retaildashboard',
+            desc: 'Analitik eksekutif kepatuhan toko, tren penyelesaian audit, evaluasi performa per regional, dan rekapitulasi data.',
+            icon: 'bar-chart-3',
+            status: 'Aktif'
+          }
+        ]
       },
       {
-        id: 'store-checklist',
-        title: 'Store Checklist',
-        category: 'AUDIT',
-        badge: 'Matahari Cloud',
-        url: 'https://checklist.mataharicloud.id',
-        desc: 'Formulir inspeksi harian opening/closing, kesiapan lantai toko, standar visual merchandising, dan bukti foto audit.',
-        icon: 'clipboard-check',
-        status: 'Aktif'
-      },
-      {
-        id: 'location-tracker',
-        title: 'Location Tracker',
-        category: 'OPS',
-        badge: 'GPS & Geofencing',
-        url: 'https://maps.google.com',
-        desc: 'Verifikasi kehadiran auditor dan staf di lokasi cabang toko secara real-time melalui koordinat GPS satelit.',
-        icon: 'map-pin',
-        status: 'Aktif'
-      },
-      {
-        id: 'report-dashboard',
-        title: 'Report Dashboard',
-        category: 'BI',
-        badge: 'Executive BI',
-        url: 'https://github.com/zakyqadir/retaildashboard',
-        desc: 'Analitik eksekutif kepatuhan toko, tren penyelesaian audit, evaluasi performa per regional, dan rekapitulasi data.',
-        icon: 'bar-chart-3',
-        status: 'Aktif'
+        id: 'sop-panduan',
+        title: 'SOP & Panduan Gerai',
+        type: 'document',
+        icon: 'file-text',
+        desc: 'Standar Operasional Prosedur (SOP), nomor kontak darurat operasional gerai, dan petunjuk eskalasi.',
+        content: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800">
+              <h4 class="font-bold text-white text-sm mb-2 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-[#EE1D23]"></span>
+                Alur Rutin Pembukaan Toko (Opening Shift)
+              </h4>
+              <ul class="text-xs text-gray-300 space-y-1.5 list-disc list-inside">
+                <li>08:30 - Briefing shift pagi & verifikasi kehadiran kasir/floor.</li>
+                <li>08:45 - Pengisian Store Checklist melalui <a href="https://checklist.mataharicloud.id" target="_blank" class="text-red-400 underline">checklist.mataharicloud.id</a>.</li>
+                <li>09:00 - Uji fungsi mesin kasir (POS) dan verifikasi modal awal kasir.</li>
+                <li>09:30 - Pintu utama dibuka serentak sesuai standar Matahari.</li>
+              </ul>
+            </div>
+            <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800">
+              <h4 class="font-bold text-white text-sm mb-2 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                Kontak Dukungan Operasional & IT
+              </h4>
+              <div class="text-xs text-gray-300 space-y-2">
+                <p><strong>IT Service Desk:</strong> ext. 1042 / WhatsApp: +62 811-0000-xxxx</p>
+                <p><strong>Regional Loss Prevention (LP):</strong> ext. 2011</p>
+                <p><strong>Operation Support Head Office:</strong> ops-support@matahari.com</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800">
+            <h4 class="font-bold text-white text-sm mb-2">Penanganan Temuan Audit Lapangan (Action Tracker)</h4>
+            <p class="text-xs text-gray-400 leading-relaxed mb-2">
+              Setiap ketidaksesuaian (*Non-Compliance*) yang terdeteksi saat inspeksi toko wajib dimasukkan ke dalam Action Tracker dalam waktu maksimal 24 jam dengan melampirkan foto bukti fisik dan batas waktu perbaikan (SLA).
+            </p>
+          </div>
+        `
       }
     ];
 
-    // State Variables
-    let modules = [];
+    // State
+    let pages = [];
+    let activePageId = 'main-ops';
     let isAdmin = false;
     let activeCategory = 'ALL';
-    let currentEditId = null;
+    let currentEditModuleId = null;
 
-    // Helper: Normalize URL to guarantee https://
+    // Helper: Normalize URL
     function normalizeUrl(url) {
       if (!url) return '';
       let clean = url.trim();
@@ -404,39 +638,261 @@
       return clean;
     }
 
-    // Storage Management
+    // Load Data
     function loadData() {
-      const savedModules = localStorage.getItem('matahari_modules_v3');
-      if (savedModules) {
+      const savedPages = localStorage.getItem('matahari_pages_v4');
+      if (savedPages) {
         try {
-          modules = JSON.parse(savedModules);
+          pages = JSON.parse(savedPages);
         } catch (e) {
-          modules = [...INITIAL_MODULES];
+          pages = [...INITIAL_PAGES];
         }
       } else {
-        modules = [...INITIAL_MODULES];
+        pages = [...INITIAL_PAGES];
+      }
+
+      // Check URL hash for direct page navigation
+      const hash = window.location.hash.replace('#page=', '');
+      if (hash && pages.some(p => p.id === hash)) {
+        activePageId = hash;
+      } else if (pages.length > 0) {
+        activePageId = pages[0].id;
       }
 
       const adminSession = sessionStorage.getItem('matahari_admin_active');
       isAdmin = (adminSession === 'true');
 
       renderAdminControls();
-      renderModules();
+      renderTabs();
+      renderActivePage();
     }
 
     function saveData() {
-      localStorage.setItem('matahari_modules_v3', JSON.stringify(modules));
-      renderModules();
+      localStorage.setItem('matahari_pages_v4', JSON.stringify(pages));
+      renderTabs();
+      renderActivePage();
     }
 
     function resetToMatahariDefaults() {
-      if (confirm('Kembalikan semua modul ke konfigurasi default resmi Matahari?')) {
-        modules = [...INITIAL_MODULES];
+      if (confirm('Kembalikan semua halaman dan modul ke konfigurasi default resmi Matahari?')) {
+        pages = [...INITIAL_PAGES];
+        activePageId = 'main-ops';
         saveData();
       }
     }
 
-    // Render Admin Controls in Header and Banner
+    // Switch Page
+    function switchPage(pageId) {
+      activePageId = pageId;
+      window.location.hash = `#page=${pageId}`;
+      renderTabs();
+      renderActivePage();
+    }
+
+    // Render Tabs
+    function renderTabs() {
+      const container = document.getElementById('pageTabsContainer');
+      const addPageContainer = document.getElementById('addPageBtnContainer');
+
+      if (isAdmin) {
+        addPageContainer.classList.remove('hidden');
+      } else {
+        addPageContainer.classList.add('hidden');
+      }
+
+      container.innerHTML = pages.map(p => {
+        const isActive = (p.id === activePageId);
+        return `
+          <button 
+            onclick="switchPage('${p.id}')" 
+            class="tab-item ${isActive ? 'active' : ''}"
+          >
+            <i data-lucide="${p.icon || 'layers'}" class="w-4 h-4 ${isActive ? 'text-[#EE1D23]' : 'text-gray-400'}"></i>
+            <span>${p.title}</span>
+            ${isActive && isAdmin ? `
+              <span onclick="event.stopPropagation(); openEditCurrentPageModal()" class="ml-1 text-amber-400 hover:text-amber-300" title="Edit Halaman">
+                <i data-lucide="settings" class="w-3 h-3"></i>
+              </span>
+            ` : ''}
+          </button>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    // Render Active Page Content
+    function renderActivePage() {
+      const page = pages.find(p => p.id === activePageId) || pages[0];
+      if (!page) return;
+
+      document.getElementById('activePageTitle').innerText = page.title;
+      document.getElementById('activePageDesc').innerText = page.desc || '';
+      document.getElementById('activePageTypeBadge').innerText = (page.type === 'grid') ? 'Grid Aplikasi' : 'Halaman Dokumen';
+
+      const btnEditPage = document.getElementById('btnEditCurrentPage');
+      const activePageActionBtn = document.getElementById('activePageActionBtn');
+
+      if (isAdmin) {
+        btnEditPage.classList.remove('hidden');
+        if (page.type === 'grid') {
+          activePageActionBtn.innerHTML = `
+            <button onclick="openAddModuleModal()" class="px-3 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md flex items-center gap-1.5 transition">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              <span>Tambah Modul di Halaman Ini</span>
+            </button>
+          `;
+        } else {
+          activePageActionBtn.innerHTML = `
+            <button onclick="openEditDocModal()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-amber-400 text-xs font-medium rounded-md border border-gray-700 flex items-center gap-1.5 transition">
+              <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+              <span>Edit Konten Dokumen</span>
+            </button>
+          `;
+        }
+      } else {
+        btnEditPage.classList.add('hidden');
+        activePageActionBtn.innerHTML = '';
+      }
+
+      if (page.type === 'grid') {
+        document.getElementById('gridPageView').classList.remove('hidden');
+        document.getElementById('docPageView').classList.add('hidden');
+        renderModulesForCurrentPage(page);
+      } else {
+        document.getElementById('gridPageView').classList.add('hidden');
+        document.getElementById('docPageView').classList.remove('hidden');
+        renderDocForCurrentPage(page);
+      }
+
+      lucide.createIcons();
+    }
+
+    // Render Modules in Grid View
+    function renderModulesForCurrentPage(page) {
+      const container = document.getElementById('modulesContainer');
+      const searchVal = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+      const pageModules = page.modules || [];
+
+      document.getElementById('stat-page-modules').innerText = pageModules.length;
+
+      const filtered = pageModules.filter(m => {
+        const matchesCategory = (activeCategory === 'ALL' || m.category === activeCategory);
+        const textTarget = (m.title + ' ' + m.desc + ' ' + m.badge + ' ' + m.url).toLowerCase();
+        const matchesSearch = textTarget.includes(searchVal);
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-12 text-center text-gray-400 bg-[#111827] rounded-xl border border-gray-800">
+            <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 text-gray-400"></i>
+            <p class="text-sm font-medium">Belum ada modul di halaman ini.</p>
+            ${isAdmin ? `
+              <button onclick="openAddModuleModal()" class="mt-3 px-3 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md inline-flex items-center gap-1.5 transition">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah Modul Pertama
+              </button>
+            ` : ''}
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = filtered.map(m => {
+        const targetUrl = normalizeUrl(m.url);
+        let domainOnly = targetUrl.replace(/^https?:\/\//, '').split('/')[0];
+        if (domainOnly.length > 32) domainOnly = domainOnly.substring(0, 32) + '...';
+
+        return `
+          <div class="retail-card p-5 flex flex-col justify-between ${isAdmin ? 'admin-card-outline' : ''}">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-md bg-[#1E293B] border border-gray-700 flex items-center justify-center text-white">
+                    <i data-lucide="${m.icon || 'layers'}" class="w-4 h-4 text-[#EE1D23]"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-bold text-white tracking-tight">${m.title}</h3>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                      <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-gray-800 text-gray-300 border border-gray-700">
+                        ${m.badge}
+                      </span>
+                      <span class="text-[10px] text-gray-400">&bull;</span>
+                      <span class="text-[10px] text-gray-400 font-mono">${domainOnly}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-950/40 text-emerald-400 border border-emerald-800/40">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    ${m.status || 'Aktif'}
+                  </span>
+                  ${isAdmin ? `
+                    <button onclick="openEditModuleModal('${m.id}')" class="p-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-700 transition" title="Edit Modul">
+                      <i data-lucide="edit-2" class="w-3.5 h-3.5 text-amber-400"></i>
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+
+              <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                ${m.desc}
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-gray-800/80 flex items-center justify-between gap-2">
+              <span class="text-[11px] text-gray-400 font-mono truncate max-w-[200px]" title="${targetUrl}">
+                ${targetUrl}
+              </span>
+              <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md flex items-center gap-1.5 transition">
+                <span>Buka Modul</span>
+                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    // Render Document in Doc View
+    function renderDocForCurrentPage(page) {
+      const container = document.getElementById('docContentContainer');
+      const btnEditDoc = document.getElementById('btnEditDocContent');
+      if (isAdmin) {
+        btnEditDoc.classList.remove('hidden');
+      } else {
+        btnEditDoc.classList.add('hidden');
+      }
+      container.innerHTML = page.content || '<p class="text-gray-400 italic">Belum ada konten di halaman ini.</p>';
+    }
+
+    // Filter controls
+    function filterModules() {
+      const page = pages.find(p => p.id === activePageId);
+      if (page && page.type === 'grid') {
+        renderModulesForCurrentPage(page);
+      }
+    }
+
+    function setCategoryFilter(cat) {
+      activeCategory = cat;
+      ['all', 'audit', 'ops', 'bi'].forEach(k => {
+        const btn = document.getElementById(`filter-${k}`);
+        if (!btn) return;
+        if (k.toUpperCase() === cat) {
+          btn.className = 'px-2.5 py-1 rounded bg-gray-800 text-white font-medium border border-gray-700';
+        } else {
+          btn.className = 'px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium';
+        }
+      });
+      filterModules();
+    }
+
+    // Admin Controls in Header/Banner
     function renderAdminControls() {
       const container = document.getElementById('admin-actions-container');
       const banner = document.getElementById('admin-banner');
@@ -466,113 +922,6 @@
       lucide.createIcons();
     }
 
-    // Render Modules Grid
-    function renderModules() {
-      const container = document.getElementById('modulesContainer');
-      const searchVal = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
-
-      document.getElementById('stat-total-modules').innerText = modules.length;
-
-      // Filter by Category and Search
-      const filtered = modules.filter(m => {
-        const matchesCategory = (activeCategory === 'ALL' || m.category === activeCategory);
-        const textTarget = (m.title + ' ' + m.desc + ' ' + m.badge + ' ' + m.url).toLowerCase();
-        const matchesSearch = textTarget.includes(searchVal);
-        return matchesCategory && matchesSearch;
-      });
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full py-12 text-center text-gray-400 bg-[#111827] rounded-xl border border-gray-800">
-            <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 text-gray-400"></i>
-            <p class="text-sm font-medium">Tidak ada modul yang cocok dengan kriteria pencarian.</p>
-          </div>
-        `;
-        lucide.createIcons();
-        return;
-      }
-
-      container.innerHTML = filtered.map(m => {
-        const targetUrl = normalizeUrl(m.url);
-        let domainOnly = targetUrl.replace(/^https?:\/\//, '').split('/')[0];
-        if (domainOnly.length > 32) domainOnly = domainOnly.substring(0, 32) + '...';
-
-        return `
-          <div class="retail-card p-5 flex flex-col justify-between ${isAdmin ? 'admin-card-outline' : ''}">
-            <div>
-              <!-- Header Meta: Category & Status -->
-              <div class="flex items-start justify-between gap-2 mb-3">
-                <div class="flex items-center gap-2">
-                  <div class="w-8 h-8 rounded-md bg-[#1E293B] border border-gray-700 flex items-center justify-center text-white">
-                    <i data-lucide="${m.icon || 'layers'}" class="w-4 h-4 text-[#EE1D23]"></i>
-                  </div>
-                  <div>
-                    <h3 class="text-sm font-bold text-white tracking-tight">${m.title}</h3>
-                    <div class="flex items-center gap-1.5 mt-0.5">
-                      <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-gray-800 text-gray-300 border border-gray-700">
-                        ${m.badge}
-                      </span>
-                      <span class="text-[10px] text-gray-400">&bull;</span>
-                      <span class="text-[10px] text-gray-400 font-mono">${domainOnly}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="flex items-center gap-1.5">
-                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-950/40 text-emerald-400 border border-emerald-800/40">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                    ${m.status || 'Aktif'}
-                  </span>
-                  ${isAdmin ? `
-                    <button onclick="openEditModal('${m.id}')" class="p-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-700 transition" title="Edit Modul">
-                      <i data-lucide="edit-2" class="w-3.5 h-3.5 text-amber-400"></i>
-                    </button>
-                  ` : ''}
-                </div>
-              </div>
-
-              <!-- Operational Description -->
-              <p class="text-xs text-gray-400 leading-relaxed mb-4">
-                ${m.desc}
-              </p>
-            </div>
-
-            <!-- Primary Action Link -->
-            <div class="pt-3 border-t border-gray-800/80 flex items-center justify-between gap-2">
-              <span class="text-[11px] text-gray-400 font-mono truncate max-w-[200px]" title="${targetUrl}">
-                ${targetUrl}
-              </span>
-              <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md flex items-center gap-1.5 transition">
-                <span>Buka Modul</span>
-                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
-              </a>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      lucide.createIcons();
-    }
-
-    // Filter controls
-    function filterModules() {
-      renderModules();
-    }
-
-    function setCategoryFilter(cat) {
-      activeCategory = cat;
-      ['all', 'audit', 'ops', 'bi'].forEach(k => {
-        const btn = document.getElementById(`filter-${k}`);
-        if (!btn) return;
-        if (k.toUpperCase() === cat) {
-          btn.className = 'px-2.5 py-1 rounded bg-gray-800 text-white font-medium border border-gray-700';
-        } else {
-          btn.className = 'px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium';
-        }
-      });
-      renderModules();
-    }
-
     // Admin Auth
     function openLoginModal() {
       document.getElementById('loginModal').classList.remove('hidden');
@@ -595,7 +944,8 @@
         sessionStorage.setItem('matahari_admin_active', 'true');
         closeLoginModal();
         renderAdminControls();
-        renderModules();
+        renderTabs();
+        renderActivePage();
       } else {
         document.getElementById('loginError').classList.remove('hidden');
       }
@@ -605,15 +955,139 @@
       isAdmin = false;
       sessionStorage.removeItem('matahari_admin_active');
       renderAdminControls();
-      renderModules();
+      renderTabs();
+      renderActivePage();
     }
 
-    // Edit & Add Modals
-    function openAddModal() {
-      currentEditId = null;
+    // ==================== PAGE MANAGEMENT ====================
+    let editingPageId = null;
+
+    function openPageModal() {
+      editingPageId = null;
+      document.getElementById('pageModalTitle').innerHTML = `
+        <i data-lucide="file-plus" class="w-4 h-4 text-[#EE1D23]"></i>
+        <span>Tambah Halaman Baru</span>
+      `;
+      document.getElementById('form-page-id').value = '';
+      document.getElementById('form-page-title').value = '';
+      document.getElementById('form-page-type').value = 'grid';
+      document.getElementById('form-page-type').disabled = false;
+      document.getElementById('form-page-icon').value = 'layers';
+      document.getElementById('form-page-desc').value = '';
+      document.getElementById('btnDeletePage').classList.add('hidden');
+
+      document.getElementById('pageModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function openEditCurrentPageModal() {
+      const page = pages.find(p => p.id === activePageId);
+      if (!page) return;
+
+      editingPageId = page.id;
+      document.getElementById('pageModalTitle').innerHTML = `
+        <i data-lucide="edit-3" class="w-4 h-4 text-[#EE1D23]"></i>
+        <span>Ubah Halaman: ${page.title}</span>
+      `;
+      document.getElementById('form-page-id').value = page.id;
+      document.getElementById('form-page-title').value = page.title;
+      document.getElementById('form-page-type').value = page.type;
+      document.getElementById('form-page-type').disabled = true; // prevent changing core structure type
+      document.getElementById('form-page-icon').value = page.icon || 'layers';
+      document.getElementById('form-page-desc').value = page.desc || '';
+
+      // Don't allow deleting if only 1 page remains
+      if (pages.length > 1) {
+        document.getElementById('btnDeletePage').classList.remove('hidden');
+      } else {
+        document.getElementById('btnDeletePage').classList.add('hidden');
+      }
+
+      document.getElementById('pageModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closePageModal() {
+      document.getElementById('pageModal').classList.add('hidden');
+    }
+
+    function handlePageSave(e) {
+      e.preventDefault();
+      const title = document.getElementById('form-page-title').value.trim();
+      const type = document.getElementById('form-page-type').value;
+      const icon = document.getElementById('form-page-icon').value;
+      const desc = document.getElementById('form-page-desc').value.trim();
+
+      if (editingPageId) {
+        // Update existing page
+        const idx = pages.findIndex(p => p.id === editingPageId);
+        if (idx !== -1) {
+          pages[idx].title = title;
+          pages[idx].icon = icon;
+          pages[idx].desc = desc;
+        }
+      } else {
+        // Create new page
+        const newId = 'page-' + Date.now();
+        pages.push({
+          id: newId,
+          title,
+          type,
+          icon,
+          desc,
+          modules: (type === 'grid') ? [] : undefined,
+          content: (type === 'document') ? '<p class="text-gray-300">Tuliskan panduan atau catatan di sini...</p>' : undefined
+        });
+        activePageId = newId;
+      }
+
+      saveData();
+      closePageModal();
+    }
+
+    function handleDeleteCurrentPage() {
+      if (!editingPageId) return;
+      if (pages.length <= 1) {
+        alert('Tidak dapat menghapus halaman terakhir.');
+        return;
+      }
+      if (confirm('Apakah Anda yakin ingin menghapus halaman ini beserta seluruh isinya?')) {
+        pages = pages.filter(p => p.id !== editingPageId);
+        activePageId = pages[0].id;
+        saveData();
+        closePageModal();
+      }
+    }
+
+    // ==================== DOCUMENT CONTENT EDITING ====================
+    function openEditDocModal() {
+      const page = pages.find(p => p.id === activePageId);
+      if (!page || page.type !== 'document') return;
+
+      document.getElementById('form-doc-html').value = page.content || '';
+      document.getElementById('docEditModal').classList.remove('hidden');
+    }
+
+    function closeDocEditModal() {
+      document.getElementById('docEditModal').classList.add('hidden');
+    }
+
+    function handleDocSave(e) {
+      e.preventDefault();
+      const page = pages.find(p => p.id === activePageId);
+      if (!page || page.type !== 'document') return;
+
+      page.content = document.getElementById('form-doc-html').value;
+      saveData();
+      closeDocEditModal();
+    }
+
+    // ==================== MODULE MANAGEMENT ====================
+    function openAddModuleModal() {
+      currentEditModuleId = null;
       document.getElementById('moduleModalTitle').innerHTML = `
         <i data-lucide="plus-circle" class="w-4 h-4 text-[#EE1D23]"></i>
-        <span>Tambah Modul Operasional Baru</span>
+        <span>Tambah Modul Baru</span>
       `;
       document.getElementById('form-module-id').value = '';
       document.getElementById('form-module-title').value = '';
@@ -629,11 +1103,14 @@
       lucide.createIcons();
     }
 
-    function openEditModal(id) {
-      const item = modules.find(m => m.id === id);
+    function openEditModuleModal(id) {
+      const page = pages.find(p => p.id === activePageId);
+      if (!page || !page.modules) return;
+
+      const item = page.modules.find(m => m.id === id);
       if (!item) return;
 
-      currentEditId = id;
+      currentEditModuleId = id;
       document.getElementById('moduleModalTitle').innerHTML = `
         <i data-lucide="edit-3" class="w-4 h-4 text-[#EE1D23]"></i>
         <span>Ubah Detail: ${item.title}</span>
@@ -658,6 +1135,10 @@
 
     function handleModuleSave(e) {
       e.preventDefault();
+      const page = pages.find(p => p.id === activePageId);
+      if (!page) return;
+      if (!page.modules) page.modules = [];
+
       const title = document.getElementById('form-module-title').value.trim();
       const category = document.getElementById('form-module-category').value;
       const badge = document.getElementById('form-module-badge').value.trim();
@@ -668,12 +1149,12 @@
 
       const url = normalizeUrl(rawUrl);
 
-      if (currentEditId) {
-        // Update existing
-        const idx = modules.findIndex(m => m.id === currentEditId);
+      if (currentEditModuleId) {
+        // Update
+        const idx = page.modules.findIndex(m => m.id === currentEditModuleId);
         if (idx !== -1) {
-          modules[idx] = {
-            ...modules[idx],
+          page.modules[idx] = {
+            ...page.modules[idx],
             title,
             category,
             badge,
@@ -684,9 +1165,9 @@
           };
         }
       } else {
-        // Create new
+        // Add new
         const newId = 'mod-' + Date.now();
-        modules.push({
+        page.modules.push({
           id: newId,
           title,
           category,
@@ -703,9 +1184,11 @@
     }
 
     function handleDeleteCurrentModule() {
-      if (!currentEditId) return;
-      if (confirm('Apakah Anda yakin ingin menghapus modul ini dari portal?')) {
-        modules = modules.filter(m => m.id !== currentEditId);
+      const page = pages.find(p => p.id === activePageId);
+      if (!page || !page.modules || !currentEditModuleId) return;
+
+      if (confirm('Apakah Anda yakin ingin menghapus modul ini?')) {
+        page.modules = page.modules.filter(m => m.id !== currentEditModuleId);
         saveData();
         closeModuleModal();
       }
