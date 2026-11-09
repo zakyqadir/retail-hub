@@ -1,290 +1,400 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<html lang="id" class="h-full bg-[#0B0F19] text-slate-100">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Matahari Retail Operations Command Center</title>
+  <title>Matahari Retail Operations Portal | Enterprise Launchpad</title>
+  
+  <!-- Fonts: Inter for enterprise readability -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
   <!-- Tailwind CSS & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  
   <script>
     tailwind.config = {
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
           colors: {
             matahari: {
-              50: '#fff1f2',
-              500: '#EE1D23', // Matahari Red
-              600: '#d7151a',
-              700: '#b01015',
+              DEFAULT: '#EE1D23', // Matahari Red official brand token
+              dark: '#C7141A',
+              light: '#FFF1F1',
+              surface: '#121826',
+              border: '#1E293B',
             }
           }
         }
       }
     }
   </script>
+
   <style>
-    .glass-card {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Strict Anti-AI Professional Design: Solid surfaces, sharp tokenized borders, no glowing blobs */
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
-    .glass-card:hover {
-      border-color: rgba(238, 29, 35, 0.5);
-      transform: translateY(-3px);
-      box-shadow: 0 16px 36px -10px rgba(238, 29, 35, 0.2);
+    .retail-card {
+      background-color: #111827;
+      border: 1px solid #1F2937;
+      border-radius: 12px;
+      transition: border-color 0.15s ease, transform 0.15s ease;
+    }
+    .retail-card:hover {
+      border-color: #374151;
+      transform: translateY(-2px);
+    }
+    .admin-card-outline {
+      border-color: #EE1D23 !important;
     }
   </style>
 </head>
-<body class="min-h-full flex flex-col selection:bg-red-600 selection:text-white">
+<body class="min-h-full flex flex-col bg-[#0B0F19] text-slate-200">
 
-  <!-- Header -->
-  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center shadow-lg shadow-red-950">
-          <i data-lucide="store" class="w-5 h-5 text-white"></i>
+  <!-- Enterprise Top Navigation Bar -->
+  <header class="bg-[#111827] border-b border-gray-800 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center space-x-3.5">
+        <div class="w-9 h-9 rounded-md bg-[#EE1D23] flex items-center justify-center text-white font-bold text-sm tracking-wider shadow-sm">
+          M
         </div>
         <div>
-          <h1 class="font-bold text-lg leading-tight tracking-tight text-white flex items-center gap-2">
-            Retail Operations Portal
-            <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 font-semibold border border-red-500/20">Matahari Hub</span>
-          </h1>
-          <p class="text-xs text-slate-400">Direct launchpad for store operations and tracking</p>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-base tracking-tight text-white">Matahari Retail Operations</h1>
+            <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-gray-800 text-gray-300 border border-gray-700">Hub v2.0</span>
+          </div>
+          <p class="text-[12px] text-gray-400">Pusat Kendali Aplikasi & Operasional Toko</p>
         </div>
       </div>
 
-      <!-- Quick Actions -->
+      <!-- Search & Admin Controls -->
       <div class="flex items-center space-x-3">
-        <button onclick="openSettingsModal()" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg border border-slate-700 transition">
-          <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-          <span>Edit Links</span>
-        </button>
-        <div class="h-4 w-px bg-slate-800"></div>
-        <div class="flex items-center space-x-2 text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 px-2.5 py-1 rounded-full">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Online</span>
+        <!-- Live System Status -->
+        <div class="hidden sm:flex items-center space-x-2 text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 px-2.5 py-1 rounded-md">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="font-medium">Sistem Operasional Aktif</span>
+        </div>
+
+        <div class="h-4 w-px bg-gray-800 hidden sm:block"></div>
+
+        <!-- Admin Control Button (Toggles between Login and Admin Active) -->
+        <div id="admin-actions-container">
+          <!-- Rendered via JS -->
         </div>
       </div>
+
     </div>
   </header>
 
-  <!-- Main Content -->
+  <!-- Admin Mode Notification Bar (Only visible when logged in) -->
+  <div id="admin-banner" class="hidden bg-amber-950/40 border-b border-amber-800/60 px-4 py-2.5">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div class="flex items-center gap-2 text-amber-300">
+        <i data-lucide="shield-alert" class="w-4 h-4 text-amber-400"></i>
+        <span class="font-semibold">Mode Administrator Aktif:</span>
+        <span class="text-amber-200">Anda dapat menambah, mengubah, mengurutkan, atau menghapus setiap item modul di halaman ini.</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="openAddModal()" class="px-3 py-1 bg-[#EE1D23] hover:bg-[#C7141A] text-white font-medium rounded-md flex items-center gap-1.5 transition">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+          <span>Tambah Modul Baru</span>
+        </button>
+        <button onclick="resetToMatahariDefaults()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium rounded-md border border-gray-700 transition" title="Kembalikan ke tautan default">
+          Reset Default
+        </button>
+        <button onclick="logoutAdmin()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-200 font-medium rounded-md border border-gray-700 transition flex items-center gap-1">
+          <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+          <span>Keluar Admin</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Layout -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    <!-- Welcome Banner -->
-    <div class="mb-8 p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-red-950/30 border border-slate-800 relative overflow-hidden">
-      <div class="relative z-10 max-w-2xl">
-        <h2 class="text-2xl font-bold text-white mb-2">Store Operations Command Center</h2>
-        <p class="text-sm text-slate-300 mb-4 leading-relaxed">
-          Open your live Google Apps Script Action Tracker, Matahari Cloud Store Checklist, Location Tracker, and Retail Dashboard directly in one click.
-        </p>
-        <div class="flex flex-wrap items-center gap-4 text-xs text-slate-400">
-          <div class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i> Direct Navigation (No iframe block)</div>
-          <div class="flex items-center gap-1.5"><i data-lucide="shield-check" class="w-4 h-4 text-sky-400"></i> Cloud & Google Workspace Connected</div>
-          <div class="flex items-center gap-1.5"><i data-lucide="smartphone" class="w-4 h-4 text-amber-400"></i> Mobile & Handheld Ready</div>
+    <!-- Operational KPI & Status Strip -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 text-xs">
+      <div class="bg-[#111827] border border-gray-800 rounded-lg p-3">
+        <div class="text-gray-400 font-medium mb-1">Total Modul Terintegrasi</div>
+        <div id="stat-total-modules" class="text-lg font-bold text-white font-mono">4</div>
+      </div>
+      <div class="bg-[#111827] border border-gray-800 rounded-lg p-3">
+        <div class="text-gray-400 font-medium mb-1">Host Checklist</div>
+        <div class="text-xs font-semibold text-white font-mono truncate">mataharicloud.id</div>
+      </div>
+      <div class="bg-[#111827] border border-gray-800 rounded-lg p-3">
+        <div class="text-gray-400 font-medium mb-1">Action Tracker Engine</div>
+        <div class="text-xs font-semibold text-white font-mono truncate">Google Apps Script</div>
+      </div>
+      <div class="bg-[#111827] border border-gray-800 rounded-lg p-3">
+        <div class="text-gray-400 font-medium mb-1">Status Keamanan</div>
+        <div class="text-xs font-semibold text-emerald-400 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          HTTPS Enforced
         </div>
       </div>
-      <i data-lucide="layers" class="w-56 h-56 text-slate-800/20 absolute -right-6 -bottom-10 pointer-events-none"></i>
     </div>
 
-    <!-- Search Bar -->
-    <div class="mb-6 flex items-center justify-between">
-      <div class="relative w-full max-w-sm">
-        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+    <!-- Search & Filter Controls -->
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-6">
+      <div class="relative flex-1 max-w-md">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
         <input 
           type="text" 
           id="searchInput" 
-          placeholder="Search modules..." 
-          oninput="filterCards()" 
-          class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-700/80 rounded-xl text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-red-500"
+          placeholder="Cari modul, SLA, audit, atau kata kunci..." 
+          oninput="filterModules()" 
+          class="w-full pl-9 pr-4 py-2 bg-[#111827] border border-gray-800 rounded-lg text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-[#EE1D23] transition"
         />
       </div>
-      <p class="text-xs text-slate-400 hidden sm:block">Click any card button to open in a new tab</p>
+
+      <div class="flex items-center gap-2 text-xs">
+        <span class="text-gray-400">Kategori:</span>
+        <button onclick="setCategoryFilter('ALL')" id="filter-all" class="px-2.5 py-1 rounded bg-gray-800 text-white font-medium border border-gray-700">Semua</button>
+        <button onclick="setCategoryFilter('AUDIT')" id="filter-audit" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Audit & Form</button>
+        <button onclick="setCategoryFilter('OPS')" id="filter-ops" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Operasional</button>
+        <button onclick="setCategoryFilter('BI')" id="filter-bi" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Laporan & BI</button>
+      </div>
     </div>
 
-    <!-- Cards Grid -->
-    <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-
-      <!-- 1. Action Tracker -->
-      <div class="app-card glass-card rounded-2xl p-6 flex flex-col justify-between" data-title="action tracker corrective issues tickets google apps script">
-        <div>
-          <div class="flex items-start justify-between mb-4">
-            <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 flex items-center justify-center">
-              <i data-lucide="check-square" class="w-6 h-6"></i>
-            </div>
-            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20">Google Apps Script</span>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-1">Action Tracker</h3>
-          <p class="text-sm text-slate-400 mb-3">
-            Manage corrective action plans, audit findings, assign store tasks, and track issue resolution deadlines.
-          </p>
-          <div class="p-2.5 rounded-lg bg-slate-900/90 border border-slate-800 mb-5 text-[11px] text-slate-400 font-mono break-all flex items-center gap-2">
-            <i data-lucide="link" class="w-3.5 h-3.5 text-red-400 flex-shrink-0"></i>
-            <span id="display-actiontracker" class="truncate">https://script.google.com/macros/s/...</span>
-          </div>
-        </div>
-
-        <a id="btn-actiontracker" href="https://script.google.com/macros/s/AKfycbxmCaTLKz0ampzM0uoBTe1EKUFL8FGOnsIwRvFtdegjNOLV24fgPfj7fVqxZlkqsZSp/exec" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-red-950/40 group">
-          <span>Open Action Tracker</span>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"></i>
-        </a>
-      </div>
-
-      <!-- 2. Store Checklist -->
-      <div class="app-card glass-card rounded-2xl p-6 flex flex-col justify-between" data-title="store checklist audit matahari cloud inspection floor compliance">
-        <div>
-          <div class="flex items-start justify-between mb-4">
-            <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center">
-              <i data-lucide="clipboard-check" class="w-6 h-6"></i>
-            </div>
-            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">Matahari Cloud</span>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-1">Store Checklist</h3>
-          <p class="text-sm text-slate-400 mb-3">
-            Store opening and closing routines, hygiene audits, visual merchandising compliance, and floor inspections.
-          </p>
-          <div class="p-2.5 rounded-lg bg-slate-900/90 border border-slate-800 mb-5 text-[11px] text-slate-400 font-mono break-all flex items-center gap-2">
-            <i data-lucide="link" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>
-            <span id="display-checklist" class="truncate">https://checklist.mataharicloud.id</span>
-          </div>
-        </div>
-
-        <a id="btn-checklist" href="https://checklist.mataharicloud.id" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-amber-950/40 group">
-          <span>Open Store Checklist</span>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"></i>
-        </a>
-      </div>
-
-      <!-- 3. Location Tracker -->
-      <div class="app-card glass-card rounded-2xl p-6 flex flex-col justify-between" data-title="location tracker gps map check-in branch coordinates">
-        <div>
-          <div class="flex items-start justify-between mb-4">
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
-              <i data-lucide="map-pin" class="w-6 h-6"></i>
-            </div>
-            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">GPS / Map</span>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-1">Location Tracker</h3>
-          <p class="text-sm text-slate-400 mb-3">
-            Store branch location mapping, field auditor GPS check-ins, and on-site attendance verification.
-          </p>
-          <div class="p-2.5 rounded-lg bg-slate-900/90 border border-slate-800 mb-5 text-[11px] text-slate-400 font-mono break-all flex items-center gap-2">
-            <i data-lucide="link" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"></i>
-            <span id="display-location" class="truncate">GPS Check-in & Map</span>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <button onclick="captureCurrentLocation()" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 flex items-center gap-1.5 transition" title="Get GPS coords right now">
-            <i data-lucide="navigation" class="w-3.5 h-3.5 text-emerald-400"></i>
-            <span>Get GPS</span>
-          </button>
-          <a id="btn-location" href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="flex-1 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-emerald-950/40 group">
-            <span>Open Location Tracker</span>
-            <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"></i>
-          </a>
-        </div>
-      </div>
-
-      <!-- 4. Report Dashboard -->
-      <div class="app-card glass-card rounded-2xl p-6 flex flex-col justify-between" data-title="report dashboard analytics retail retaildashboard kpi trends charts">
-        <div>
-          <div class="flex items-start justify-between mb-4">
-            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
-              <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
-            </div>
-            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Executive BI</span>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-1">Report Dashboard</h3>
-          <p class="text-sm text-slate-400 mb-3">
-            Real-time retail executive dashboards, audit scores, store compliance trends, and SLA reports.
-          </p>
-          <div class="p-2.5 rounded-lg bg-slate-900/90 border border-slate-800 mb-5 text-[11px] text-slate-400 font-mono break-all flex items-center gap-2">
-            <i data-lucide="link" class="w-3.5 h-3.5 text-indigo-400 flex-shrink-0"></i>
-            <span id="display-dashboard" class="truncate">https://github.com/zakyqadir/retaildashboard</span>
-          </div>
-        </div>
-
-        <a id="btn-dashboard" href="https://github.com/zakyqadir/retaildashboard" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-indigo-950/40 group">
-          <span>Open Report Dashboard</span>
-          <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"></i>
-        </a>
-      </div>
-
+    <!-- Module Grid Container -->
+    <div id="modulesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Dynamic Module Cards Rendered via JS -->
     </div>
 
-    <!-- GPS Result Box (if clicked) -->
-    <div id="gps-box" class="mt-6 p-4 rounded-xl bg-slate-900 border border-slate-800 hidden flex items-center justify-between">
+    <!-- GPS Quick Tool Utility -->
+    <div class="mt-8 bg-[#111827] border border-gray-800 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-          <i data-lucide="map-pin" class="w-4 h-4"></i>
+        <div class="w-9 h-9 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-300">
+          <i data-lucide="map-pin" class="w-4 h-4 text-emerald-400"></i>
         </div>
         <div>
-          <h5 class="text-xs font-semibold text-white">Device GPS Coordinates</h5>
-          <p id="gps-status" class="text-xs text-slate-400">Ready</p>
+          <h4 class="text-xs font-semibold text-white">Validasi GPS Toko (On-Site Audit)</h4>
+          <p id="gps-status-text" class="text-[11px] text-gray-400 font-mono">Klik tombol untuk mencatat koordinat perangkat lapangan secara presisi.</p>
         </div>
       </div>
-      <a id="gps-map-link" href="#" target="_blank" class="text-xs text-emerald-400 hover:underline flex items-center gap-1 hidden">
-        View on Google Maps <i data-lucide="external-link" class="w-3 h-3"></i>
-      </a>
+      <div class="flex items-center gap-2">
+        <a id="gps-maps-btn" href="#" target="_blank" class="hidden px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs font-medium text-gray-200 rounded-md border border-gray-700 flex items-center gap-1.5 transition">
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          <span>Lihat di Maps</span>
+        </a>
+        <button onclick="triggerGPSCapture()" class="px-3.5 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs font-medium text-white rounded-md border border-gray-700 flex items-center gap-1.5 transition">
+          <i data-lucide="navigation" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Ambil Koordinat</span>
+        </button>
+      </div>
     </div>
 
   </main>
 
-  <!-- Settings Modal (Customize URLs) -->
-  <div id="settingsModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+  <!-- Footer -->
+  <footer class="border-t border-gray-800/80 bg-[#111827] py-6 text-center text-xs text-gray-400">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p>PT Matahari Department Store Tbk &bull; Retail Operations Division</p>
+      <div class="flex items-center gap-3 font-mono text-[11px] text-gray-400">
+        <span>Koneksi Aman</span>
+        <span>&bull;</span>
+        <button onclick="openLoginModal()" class="text-gray-300 hover:text-white underline">Akses Administrator</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. Admin Login Modal -->
+  <div id="loginModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#111827] border border-gray-700 rounded-xl max-w-sm w-full p-6 shadow-2xl">
       <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center space-x-2">
-          <i data-lucide="edit-3" class="w-5 h-5 text-red-500"></i>
-          <h3 class="text-base font-bold text-white">Update Module URLs</h3>
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded bg-[#EE1D23] flex items-center justify-center text-white">
+            <i data-lucide="lock" class="w-4 h-4"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white">Autentikasi Administrator</h3>
         </div>
-        <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white">
-          <i data-lucide="x" class="w-5 h-5"></i>
+        <button onclick="closeLoginModal()" class="text-gray-400 hover:text-white">
+          <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
-      <p class="text-xs text-slate-400 mb-4">
-        Enter the web address for each application. You can enter full URLs (e.g. <code>https://...</code>) or domain names.
+      <p class="text-xs text-gray-400 mb-4">
+        Masukkan PIN atau Kata Sandi Administrator untuk mengaktifkan mode pengeditan modul.
       </p>
-
-      <form id="urlForm" onsubmit="saveUrls(event)" class="space-y-3.5 text-xs">
+      <form onsubmit="handleLoginSubmit(event)" class="space-y-3">
         <div>
-          <label class="block font-medium text-slate-300 mb-1">Action Tracker URL (Google Apps Script / Web)</label>
-          <input type="text" id="url-actiontracker" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-red-500" />
+          <label class="block text-xs font-medium text-gray-300 mb-1">Kata Sandi Admin</label>
+          <input 
+            type="password" 
+            id="adminPasswordInput" 
+            placeholder="Default: admin123" 
+            class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#EE1D23]"
+            required 
+            autofocus
+          />
+          <p class="text-[10px] text-gray-400 mt-1">Sandi bawaan: <code class="text-gray-300 font-mono">admin123</code> (dapat diubah nanti)</p>
         </div>
-        <div>
-          <label class="block font-medium text-slate-300 mb-1">Store Checklist URL (Matahari Cloud / Web)</label>
-          <input type="text" id="url-checklist" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-red-500" />
+        <div id="loginError" class="text-xs text-red-400 font-medium hidden">
+          Kata sandi salah. Silakan coba lagi.
         </div>
-        <div>
-          <label class="block font-medium text-slate-300 mb-1">Location Tracker URL</label>
-          <input type="text" id="url-location" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-red-500" />
-        </div>
-        <div>
-          <label class="block font-medium text-slate-300 mb-1">Report Dashboard URL</label>
-          <input type="text" id="url-dashboard" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-red-500" />
-        </div>
-
-        <div class="pt-4 flex items-center justify-end space-x-2">
-          <button type="button" onclick="resetDefaultUrls()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium">Reset Defaults</button>
-          <button type="submit" class="px-4 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-medium">Save URLs</button>
+        <div class="pt-2 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeLoginModal()" class="px-3 py-1.5 text-xs text-gray-400 hover:text-white">Batal</button>
+          <button type="submit" class="px-4 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md transition">
+            Masuk Admin
+          </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="border-t border-slate-900 py-6 text-center text-xs text-slate-500">
-    <p>Retail Operations Command Center &copy; zakyqadir. Built for Matahari Retail Operations.</p>
-  </footer>
+  <!-- 2. Edit / Add Module Modal -->
+  <div id="moduleModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#111827] border border-gray-700 rounded-xl max-w-lg w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-800">
+        <h3 id="moduleModalTitle" class="text-sm font-bold text-white flex items-center gap-2">
+          <i data-lucide="edit-3" class="w-4 h-4 text-[#EE1D23]"></i>
+          <span>Ubah Detail Modul</span>
+        </h3>
+        <button onclick="closeModuleModal()" class="text-gray-400 hover:text-white">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
 
+      <form id="moduleForm" onsubmit="handleModuleSave(event)" class="space-y-3.5 text-xs">
+        <input type="hidden" id="form-module-id" />
+
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">Nama Modul</label>
+          <input type="text" id="form-module-title" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]" required />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-medium text-gray-300 mb-1">Kategori</label>
+            <select id="form-module-category" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]">
+              <option value="AUDIT">Audit & Form</option>
+              <option value="OPS">Operasional</option>
+              <option value="BI">Laporan & BI</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-medium text-gray-300 mb-1">Badge Platform</label>
+            <input type="text" id="form-module-badge" placeholder="Contoh: Matahari Cloud, Google Apps Script" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]" required />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">Target Link / URL</label>
+          <input type="text" id="form-module-url" placeholder="https://..." class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white font-mono text-[11px] focus:outline-none focus:border-[#EE1D23]" required />
+          <p class="text-[10px] text-gray-400 mt-0.5">Sistem otomatis menambahkan https:// jika tidak disertakan.</p>
+        </div>
+
+        <div>
+          <label class="block font-medium text-gray-300 mb-1">Deskripsi Operasional</label>
+          <textarea id="form-module-desc" rows="2" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]" required></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-medium text-gray-300 mb-1">Pilihan Ikon</label>
+            <select id="form-module-icon" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]">
+              <option value="check-square">CheckSquare (Action/Task)</option>
+              <option value="clipboard-check">ClipboardCheck (Checklist)</option>
+              <option value="map-pin">MapPin (Location/GPS)</option>
+              <option value="bar-chart-3">BarChart (Dashboard/BI)</option>
+              <option value="store">Store (Store Operations)</option>
+              <option value="users">Users (Staff/Roster)</option>
+              <option value="boxes">Boxes (Inventory/Gudang)</option>
+              <option value="file-spreadsheet">Spreadsheet (Data/Excel)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-medium text-gray-300 mb-1">Status Modul</label>
+            <select id="form-module-status" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]">
+              <option value="Aktif">Aktif (Online)</option>
+              <option value="Internal">Internal Toko</option>
+              <option value="Maintenance">Maintenance</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+          <button type="button" id="btnDeleteModule" onclick="handleDeleteCurrentModule()" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <span>Hapus Modul</span>
+          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="closeModuleModal()" class="px-3 py-1.5 text-xs text-gray-400 hover:text-white">Batal</button>
+            <button type="submit" class="px-4 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md transition">
+              Simpan Perubahan
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
   <script>
-    // Initialize icons
-    lucide.createIcons();
+    // Default Retail Modules with Matahari Official Data
+    const INITIAL_MODULES = [
+      {
+        id: 'action-tracker',
+        title: 'Action Tracker',
+        category: 'OPS',
+        badge: 'Google Apps Script',
+        url: 'https://script.google.com/macros/s/AKfycbxmCaTLKz0ampzM0uoBTe1EKUFL8FGOnsIwRvFtdegjNOLV24fgPfj7fVqxZlkqsZSp/exec',
+        desc: 'Pemantauan tindakan korektif audit toko, penugasan perbaikan PIC, eskalasi temuan, dan tracking SLA penutupan issue.',
+        icon: 'check-square',
+        status: 'Aktif'
+      },
+      {
+        id: 'store-checklist',
+        title: 'Store Checklist',
+        category: 'AUDIT',
+        badge: 'Matahari Cloud',
+        url: 'https://checklist.mataharicloud.id',
+        desc: 'Formulir inspeksi harian opening/closing, kesiapan lantai toko, standar visual merchandising, dan bukti foto audit.',
+        icon: 'clipboard-check',
+        status: 'Aktif'
+      },
+      {
+        id: 'location-tracker',
+        title: 'Location Tracker',
+        category: 'OPS',
+        badge: 'GPS & Geofencing',
+        url: 'https://maps.google.com',
+        desc: 'Verifikasi kehadiran auditor dan staf di lokasi cabang toko secara real-time melalui koordinat GPS satelit.',
+        icon: 'map-pin',
+        status: 'Aktif'
+      },
+      {
+        id: 'report-dashboard',
+        title: 'Report Dashboard',
+        category: 'BI',
+        badge: 'Executive BI',
+        url: 'https://github.com/zakyqadir/retaildashboard',
+        desc: 'Analitik eksekutif kepatuhan toko, tren penyelesaian audit, evaluasi performa per regional, dan rekapitulasi data.',
+        icon: 'bar-chart-3',
+        status: 'Aktif'
+      }
+    ];
 
-    // Normalized URL helper (adds https:// if missing)
+    // State Variables
+    let modules = [];
+    let isAdmin = false;
+    let activeCategory = 'ALL';
+    let currentEditId = null;
+
+    // Helper: Normalize URL to guarantee https://
     function normalizeUrl(url) {
       if (!url) return '';
       let clean = url.trim();
@@ -294,125 +404,342 @@
       return clean;
     }
 
-    // Default Real URLs provided by the user
-    const defaultUrls = {
-      actiontracker: 'https://script.google.com/macros/s/AKfycbxmCaTLKz0ampzM0uoBTe1EKUFL8FGOnsIwRvFtdegjNOLV24fgPfj7fVqxZlkqsZSp/exec',
-      checklist: 'https://checklist.mataharicloud.id',
-      location: 'https://maps.google.com',
-      dashboard: 'https://github.com/zakyqadir/retaildashboard'
-    };
-
-    let appUrls = { ...defaultUrls };
-
-    function renderUrls() {
-      // Action Tracker
-      const atUrl = normalizeUrl(appUrls.actiontracker);
-      document.getElementById('btn-actiontracker').href = atUrl;
-      document.getElementById('display-actiontracker').innerText = atUrl;
-      document.getElementById('url-actiontracker').value = atUrl;
-
-      // Store Checklist
-      const scUrl = normalizeUrl(appUrls.checklist);
-      document.getElementById('btn-checklist').href = scUrl;
-      document.getElementById('display-checklist').innerText = scUrl;
-      document.getElementById('url-checklist').value = scUrl;
-
-      // Location Tracker
-      const locUrl = normalizeUrl(appUrls.location);
-      document.getElementById('btn-location').href = locUrl;
-      document.getElementById('display-location').innerText = locUrl;
-      document.getElementById('url-location').value = locUrl;
-
-      // Dashboard
-      const dashUrl = normalizeUrl(appUrls.dashboard);
-      document.getElementById('btn-dashboard').href = dashUrl;
-      document.getElementById('display-dashboard').innerText = dashUrl;
-      document.getElementById('url-dashboard').value = dashUrl;
-    }
-
-    function loadSavedUrls() {
-      const saved = localStorage.getItem('retailOpsUrls_v2');
-      if (saved) {
+    // Storage Management
+    function loadData() {
+      const savedModules = localStorage.getItem('matahari_modules_v3');
+      if (savedModules) {
         try {
-          appUrls = { ...defaultUrls, ...JSON.parse(saved) };
+          modules = JSON.parse(savedModules);
         } catch (e) {
-          console.error(e);
+          modules = [...INITIAL_MODULES];
         }
+      } else {
+        modules = [...INITIAL_MODULES];
       }
-      renderUrls();
+
+      const adminSession = sessionStorage.getItem('matahari_admin_active');
+      isAdmin = (adminSession === 'true');
+
+      renderAdminControls();
+      renderModules();
     }
 
-    function saveUrls(e) {
-      e.preventDefault();
-      appUrls.actiontracker = normalizeUrl(document.getElementById('url-actiontracker').value) || defaultUrls.actiontracker;
-      appUrls.checklist = normalizeUrl(document.getElementById('url-checklist').value) || defaultUrls.checklist;
-      appUrls.location = normalizeUrl(document.getElementById('url-location').value) || defaultUrls.location;
-      appUrls.dashboard = normalizeUrl(document.getElementById('url-dashboard').value) || defaultUrls.dashboard;
-
-      localStorage.setItem('retailOpsUrls_v2', JSON.stringify(appUrls));
-      renderUrls();
-      closeSettingsModal();
-      alert('URLs successfully updated!');
+    function saveData() {
+      localStorage.setItem('matahari_modules_v3', JSON.stringify(modules));
+      renderModules();
     }
 
-    function resetDefaultUrls() {
-      appUrls = { ...defaultUrls };
-      localStorage.removeItem('retailOpsUrls_v2');
-      renderUrls();
-      closeSettingsModal();
-      alert('Reset to default working links');
+    function resetToMatahariDefaults() {
+      if (confirm('Kembalikan semua modul ke konfigurasi default resmi Matahari?')) {
+        modules = [...INITIAL_MODULES];
+        saveData();
+      }
     }
 
-    function openSettingsModal() {
-      document.getElementById('settingsModal').classList.remove('hidden');
+    // Render Admin Controls in Header and Banner
+    function renderAdminControls() {
+      const container = document.getElementById('admin-actions-container');
+      const banner = document.getElementById('admin-banner');
+
+      if (isAdmin) {
+        banner.classList.remove('hidden');
+        container.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="text-xs px-2.5 py-1 rounded bg-amber-500/10 text-amber-400 font-semibold border border-amber-500/30 flex items-center gap-1">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+              <span>Admin On</span>
+            </span>
+            <button onclick="logoutAdmin()" class="px-2.5 py-1 text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded border border-gray-700 transition">
+              Keluar
+            </button>
+          </div>
+        `;
+      } else {
+        banner.classList.add('hidden');
+        container.innerHTML = `
+          <button onclick="openLoginModal()" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-md border border-gray-700 transition">
+            <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+            <span>Login (Admin)</span>
+          </button>
+        `;
+      }
+      lucide.createIcons();
     }
 
-    function closeSettingsModal() {
-      document.getElementById('settingsModal').classList.add('hidden');
-    }
+    // Render Modules Grid
+    function renderModules() {
+      const container = document.getElementById('modulesContainer');
+      const searchVal = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
 
-    function filterCards() {
-      const q = document.getElementById('searchInput').value.toLowerCase().trim();
-      const cards = document.querySelectorAll('.app-card');
-      cards.forEach(card => {
-        const text = card.getAttribute('data-title').toLowerCase();
-        if (text.includes(q)) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
+      document.getElementById('stat-total-modules').innerText = modules.length;
+
+      // Filter by Category and Search
+      const filtered = modules.filter(m => {
+        const matchesCategory = (activeCategory === 'ALL' || m.category === activeCategory);
+        const textTarget = (m.title + ' ' + m.desc + ' ' + m.badge + ' ' + m.url).toLowerCase();
+        const matchesSearch = textTarget.includes(searchVal);
+        return matchesCategory && matchesSearch;
       });
-    }
 
-    function captureCurrentLocation() {
-      const box = document.getElementById('gps-box');
-      const statusEl = document.getElementById('gps-status');
-      const mapLink = document.getElementById('gps-map-link');
-      box.classList.remove('hidden');
-
-      if (!navigator.geolocation) {
-        statusEl.innerText = 'Geolocation not supported by device';
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-12 text-center text-gray-400 bg-[#111827] rounded-xl border border-gray-800">
+            <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 text-gray-400"></i>
+            <p class="text-sm font-medium">Tidak ada modul yang cocok dengan kriteria pencarian.</p>
+          </div>
+        `;
+        lucide.createIcons();
         return;
       }
 
-      statusEl.innerText = 'Detecting current GPS coordinates...';
+      container.innerHTML = filtered.map(m => {
+        const targetUrl = normalizeUrl(m.url);
+        let domainOnly = targetUrl.replace(/^https?:\/\//, '').split('/')[0];
+        if (domainOnly.length > 32) domainOnly = domainOnly.substring(0, 32) + '...';
+
+        return `
+          <div class="retail-card p-5 flex flex-col justify-between ${isAdmin ? 'admin-card-outline' : ''}">
+            <div>
+              <!-- Header Meta: Category & Status -->
+              <div class="flex items-start justify-between gap-2 mb-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-md bg-[#1E293B] border border-gray-700 flex items-center justify-center text-white">
+                    <i data-lucide="${m.icon || 'layers'}" class="w-4 h-4 text-[#EE1D23]"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-bold text-white tracking-tight">${m.title}</h3>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                      <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-gray-800 text-gray-300 border border-gray-700">
+                        ${m.badge}
+                      </span>
+                      <span class="text-[10px] text-gray-400">&bull;</span>
+                      <span class="text-[10px] text-gray-400 font-mono">${domainOnly}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-950/40 text-emerald-400 border border-emerald-800/40">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    ${m.status || 'Aktif'}
+                  </span>
+                  ${isAdmin ? `
+                    <button onclick="openEditModal('${m.id}')" class="p-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-700 transition" title="Edit Modul">
+                      <i data-lucide="edit-2" class="w-3.5 h-3.5 text-amber-400"></i>
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+
+              <!-- Operational Description -->
+              <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                ${m.desc}
+              </p>
+            </div>
+
+            <!-- Primary Action Link -->
+            <div class="pt-3 border-t border-gray-800/80 flex items-center justify-between gap-2">
+              <span class="text-[11px] text-gray-400 font-mono truncate max-w-[200px]" title="${targetUrl}">
+                ${targetUrl}
+              </span>
+              <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md flex items-center gap-1.5 transition">
+                <span>Buka Modul</span>
+                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    // Filter controls
+    function filterModules() {
+      renderModules();
+    }
+
+    function setCategoryFilter(cat) {
+      activeCategory = cat;
+      ['all', 'audit', 'ops', 'bi'].forEach(k => {
+        const btn = document.getElementById(`filter-${k}`);
+        if (!btn) return;
+        if (k.toUpperCase() === cat) {
+          btn.className = 'px-2.5 py-1 rounded bg-gray-800 text-white font-medium border border-gray-700';
+        } else {
+          btn.className = 'px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium';
+        }
+      });
+      renderModules();
+    }
+
+    // Admin Auth
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.remove('hidden');
+      document.getElementById('loginError').classList.add('hidden');
+      document.getElementById('adminPasswordInput').value = '';
+      document.getElementById('adminPasswordInput').focus();
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.add('hidden');
+    }
+
+    function handleLoginSubmit(e) {
+      e.preventDefault();
+      const pwd = document.getElementById('adminPasswordInput').value.trim();
+      const savedPwd = localStorage.getItem('matahari_admin_pwd') || 'admin123';
+
+      if (pwd === savedPwd) {
+        isAdmin = true;
+        sessionStorage.setItem('matahari_admin_active', 'true');
+        closeLoginModal();
+        renderAdminControls();
+        renderModules();
+      } else {
+        document.getElementById('loginError').classList.remove('hidden');
+      }
+    }
+
+    function logoutAdmin() {
+      isAdmin = false;
+      sessionStorage.removeItem('matahari_admin_active');
+      renderAdminControls();
+      renderModules();
+    }
+
+    // Edit & Add Modals
+    function openAddModal() {
+      currentEditId = null;
+      document.getElementById('moduleModalTitle').innerHTML = `
+        <i data-lucide="plus-circle" class="w-4 h-4 text-[#EE1D23]"></i>
+        <span>Tambah Modul Operasional Baru</span>
+      `;
+      document.getElementById('form-module-id').value = '';
+      document.getElementById('form-module-title').value = '';
+      document.getElementById('form-module-category').value = 'OPS';
+      document.getElementById('form-module-badge').value = '';
+      document.getElementById('form-module-url').value = '';
+      document.getElementById('form-module-desc').value = '';
+      document.getElementById('form-module-icon').value = 'check-square';
+      document.getElementById('form-module-status').value = 'Aktif';
+      document.getElementById('btnDeleteModule').classList.add('hidden');
+
+      document.getElementById('moduleModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function openEditModal(id) {
+      const item = modules.find(m => m.id === id);
+      if (!item) return;
+
+      currentEditId = id;
+      document.getElementById('moduleModalTitle').innerHTML = `
+        <i data-lucide="edit-3" class="w-4 h-4 text-[#EE1D23]"></i>
+        <span>Ubah Detail: ${item.title}</span>
+      `;
+      document.getElementById('form-module-id').value = item.id;
+      document.getElementById('form-module-title').value = item.title;
+      document.getElementById('form-module-category').value = item.category || 'OPS';
+      document.getElementById('form-module-badge').value = item.badge;
+      document.getElementById('form-module-url').value = item.url;
+      document.getElementById('form-module-desc').value = item.desc;
+      document.getElementById('form-module-icon').value = item.icon || 'check-square';
+      document.getElementById('form-module-status').value = item.status || 'Aktif';
+      document.getElementById('btnDeleteModule').classList.remove('hidden');
+
+      document.getElementById('moduleModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeModuleModal() {
+      document.getElementById('moduleModal').classList.add('hidden');
+    }
+
+    function handleModuleSave(e) {
+      e.preventDefault();
+      const title = document.getElementById('form-module-title').value.trim();
+      const category = document.getElementById('form-module-category').value;
+      const badge = document.getElementById('form-module-badge').value.trim();
+      const rawUrl = document.getElementById('form-module-url').value.trim();
+      const desc = document.getElementById('form-module-desc').value.trim();
+      const icon = document.getElementById('form-module-icon').value;
+      const status = document.getElementById('form-module-status').value;
+
+      const url = normalizeUrl(rawUrl);
+
+      if (currentEditId) {
+        // Update existing
+        const idx = modules.findIndex(m => m.id === currentEditId);
+        if (idx !== -1) {
+          modules[idx] = {
+            ...modules[idx],
+            title,
+            category,
+            badge,
+            url,
+            desc,
+            icon,
+            status
+          };
+        }
+      } else {
+        // Create new
+        const newId = 'mod-' + Date.now();
+        modules.push({
+          id: newId,
+          title,
+          category,
+          badge,
+          url,
+          desc,
+          icon,
+          status
+        });
+      }
+
+      saveData();
+      closeModuleModal();
+    }
+
+    function handleDeleteCurrentModule() {
+      if (!currentEditId) return;
+      if (confirm('Apakah Anda yakin ingin menghapus modul ini dari portal?')) {
+        modules = modules.filter(m => m.id !== currentEditId);
+        saveData();
+        closeModuleModal();
+      }
+    }
+
+    // GPS Helper Tool
+    function triggerGPSCapture() {
+      const statusText = document.getElementById('gps-status-text');
+      const mapsBtn = document.getElementById('gps-maps-btn');
+
+      if (!navigator.geolocation) {
+        statusText.innerText = 'Perangkat tidak mendukung geolokasi GPS.';
+        return;
+      }
+
+      statusText.innerText = 'Menghubungkan ke satelit GPS...';
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const lat = pos.coords.latitude.toFixed(6);
           const lng = pos.coords.longitude.toFixed(6);
-          statusEl.innerHTML = `<span class="text-emerald-400 font-bold">Lat: ${lat}, Lng: ${lng}</span> (Accuracy: ±${Math.round(pos.coords.accuracy)}m)`;
-          mapLink.href = `https://www.google.com/maps?q=${lat},${lng}`;
-          mapLink.classList.remove('hidden');
+          const acc = Math.round(pos.coords.accuracy);
+          statusText.innerHTML = `Koordinat: <span class="text-emerald-400 font-bold">${lat}, ${lng}</span> (Akurasi: &plusmn;${acc}m) &bull; ${new Date().toLocaleTimeString('id-ID')}`;
+          mapsBtn.href = `https://www.google.com/maps?q=${lat},${lng}`;
+          mapsBtn.classList.remove('hidden');
         },
         (err) => {
-          statusEl.innerText = 'Error getting GPS: ' + err.message;
+          statusText.innerText = 'Gagal membaca GPS: ' + err.message;
         },
         { enableHighAccuracy: true, timeout: 10000 }
       );
     }
 
-    // Init
-    loadSavedUrls();
+    // Initialize application
+    window.addEventListener('DOMContentLoaded', loadData);
   </script>
 </body>
 </html>
