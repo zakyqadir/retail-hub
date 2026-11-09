@@ -215,8 +215,8 @@
         </div>
       </div>
 
-      <!-- Search & Filter Controls -->
-      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-6">
+      <!-- Search, Filter & Sort Controls -->
+      <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 mb-6">
         <div class="relative flex-1 max-w-md">
           <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
           <input 
@@ -228,12 +228,32 @@
           />
         </div>
 
-        <div class="flex items-center gap-2 text-xs">
-          <span class="text-gray-400">Kategori:</span>
-          <button onclick="setCategoryFilter('ALL')" id="filter-all" class="px-2.5 py-1 rounded bg-gray-800 text-white font-medium border border-gray-700">Semua</button>
-          <button onclick="setCategoryFilter('AUDIT')" id="filter-audit" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Audit & Form</button>
-          <button onclick="setCategoryFilter('OPS')" id="filter-ops" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Operasional</button>
-          <button onclick="setCategoryFilter('BI')" id="filter-bi" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Laporan & BI</button>
+        <div class="flex flex-wrap items-center gap-3 text-xs">
+          <!-- Category Filter -->
+          <div class="flex items-center gap-1.5">
+            <span class="text-gray-400">Kategori:</span>
+            <button onclick="setCategoryFilter('ALL')" id="filter-all" class="px-2.5 py-1 rounded bg-gray-800 text-white font-medium border border-gray-700">Semua</button>
+            <button onclick="setCategoryFilter('AUDIT')" id="filter-audit" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Audit & Form</button>
+            <button onclick="setCategoryFilter('OPS')" id="filter-ops" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Operasional</button>
+            <button onclick="setCategoryFilter('BI')" id="filter-bi" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-800 text-gray-400 font-medium">Laporan & BI</button>
+          </div>
+
+          <div class="h-4 w-px bg-gray-800 hidden sm:block"></div>
+
+          <!-- Sort Selector -->
+          <div class="flex items-center gap-1.5">
+            <span class="text-gray-400 flex items-center gap-1">
+              <i data-lucide="arrow-up-down" class="w-3.5 h-3.5 text-gray-400"></i>
+              <span>Urutan:</span>
+            </span>
+            <select id="sortSelect" onchange="changeSortMode(this.value)" class="bg-[#111827] border border-gray-800 hover:border-gray-700 rounded-md px-2.5 py-1 text-gray-200 text-xs font-medium focus:outline-none focus:border-[#EE1D23] transition cursor-pointer">
+              <option value="manual">Manual (Kustom)</option>
+              <option value="name-asc">Nama (A &rarr; Z)</option>
+              <option value="name-desc">Nama (Z &rarr; A)</option>
+              <option value="category">Kategori</option>
+              <option value="status">Status</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -391,6 +411,19 @@
         <div>
           <label class="block font-medium text-gray-300 mb-1">Deskripsi Halaman</label>
           <textarea id="form-page-desc" rows="2" placeholder="Jelaskan tujuan atau fungsi halaman ini..." class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]"></textarea>
+        </div>
+
+        <!-- Page Tab Reorder Controls (for existing pages) -->
+        <div id="pageReorderSection" class="p-2.5 bg-[#0B0F19] rounded-lg border border-gray-800 flex items-center justify-between">
+          <span class="text-gray-300 font-medium">Urutan Posisi Tab:</span>
+          <div class="flex items-center gap-1.5">
+            <button type="button" onclick="movePage(editingPageId, -1); closePageModal()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded border border-gray-700 flex items-center gap-1">
+              <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Geser Kiri
+            </button>
+            <button type="button" onclick="movePage(editingPageId, 1); closePageModal()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded border border-gray-700 flex items-center gap-1">
+              Geser Kanan <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
         </div>
 
         <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
@@ -626,6 +659,7 @@
     let activePageId = 'main-ops';
     let isAdmin = false;
     let activeCategory = 'ALL';
+    let sortMode = 'manual'; // 'manual', 'name-asc', 'name-desc', 'category', 'status'
     let currentEditModuleId = null;
 
     // Helper: Normalize URL
@@ -776,12 +810,24 @@
 
       document.getElementById('stat-page-modules').innerText = pageModules.length;
 
-      const filtered = pageModules.filter(m => {
+      // Filter
+      let filtered = pageModules.filter(m => {
         const matchesCategory = (activeCategory === 'ALL' || m.category === activeCategory);
         const textTarget = (m.title + ' ' + m.desc + ' ' + m.badge + ' ' + m.url).toLowerCase();
         const matchesSearch = textTarget.includes(searchVal);
         return matchesCategory && matchesSearch;
       });
+
+      // Sort
+      if (sortMode === 'name-asc') {
+        filtered.sort((a, b) => a.title.localeCompare(b.title));
+      } else if (sortMode === 'name-desc') {
+        filtered.sort((a, b) => b.title.localeCompare(a.title));
+      } else if (sortMode === 'category') {
+        filtered.sort((a, b) => (a.category || '').localeCompare(b.category || ''));
+      } else if (sortMode === 'status') {
+        filtered.sort((a, b) => (a.status || 'Aktif').localeCompare(b.status || 'Aktif'));
+      }
 
       if (filtered.length === 0) {
         container.innerHTML = `
@@ -799,7 +845,7 @@
         return;
       }
 
-      container.innerHTML = filtered.map(m => {
+      container.innerHTML = filtered.map((m, idx) => {
         const targetUrl = normalizeUrl(m.url);
         let domainOnly = targetUrl.replace(/^https?:\/\//, '').split('/')[0];
         if (domainOnly.length > 32) domainOnly = domainOnly.substring(0, 32) + '...';
@@ -830,9 +876,17 @@
                     ${m.status || 'Aktif'}
                   </span>
                   ${isAdmin ? `
-                    <button onclick="openEditModuleModal('${m.id}')" class="p-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-700 transition" title="Edit Modul">
-                      <i data-lucide="edit-2" class="w-3.5 h-3.5 text-amber-400"></i>
-                    </button>
+                    <div class="flex items-center gap-1 ml-1 bg-gray-900 p-0.5 rounded-md border border-gray-800">
+                      <button onclick="moveModule('${m.id}', -1)" class="p-1 rounded hover:bg-gray-700 text-gray-400 hover:text-white transition" title="Geser ke Sebelumnya">
+                        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+                      </button>
+                      <button onclick="moveModule('${m.id}', 1)" class="p-1 rounded hover:bg-gray-700 text-gray-400 hover:text-white transition" title="Geser ke Setelahnya">
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                      </button>
+                      <button onclick="openEditModuleModal('${m.id}')" class="p-1 rounded hover:bg-gray-700 text-amber-400 hover:text-amber-300 transition" title="Edit Modul">
+                        <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                      </button>
+                    </div>
                   ` : ''}
                 </div>
               </div>
@@ -856,6 +910,49 @@
       }).join('');
 
       lucide.createIcons();
+    }
+
+    // Sort & Reordering Functions
+    function changeSortMode(mode) {
+      sortMode = mode;
+      renderActivePage();
+    }
+
+    function moveModule(moduleId, direction) {
+      const page = pages.find(p => p.id === activePageId);
+      if (!page || !page.modules) return;
+
+      const index = page.modules.findIndex(m => m.id === moduleId);
+      if (index === -1) return;
+
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= page.modules.length) return;
+
+      // Swap in the array
+      const temp = page.modules[index];
+      page.modules[index] = page.modules[targetIndex];
+      page.modules[targetIndex] = temp;
+
+      // Ensure view shows manual order
+      sortMode = 'manual';
+      const sel = document.getElementById('sortSelect');
+      if (sel) sel.value = 'manual';
+
+      saveData();
+    }
+
+    function movePage(pageId, direction) {
+      const index = pages.findIndex(p => p.id === pageId);
+      if (index === -1) return;
+
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= pages.length) return;
+
+      const temp = pages[index];
+      pages[index] = pages[targetIndex];
+      pages[targetIndex] = temp;
+
+      saveData();
     }
 
     // Render Document in Doc View
@@ -975,6 +1072,7 @@
       document.getElementById('form-page-icon').value = 'layers';
       document.getElementById('form-page-desc').value = '';
       document.getElementById('btnDeletePage').classList.add('hidden');
+      document.getElementById('pageReorderSection').classList.add('hidden');
 
       document.getElementById('pageModal').classList.remove('hidden');
       lucide.createIcons();
@@ -995,6 +1093,7 @@
       document.getElementById('form-page-type').disabled = true; // prevent changing core structure type
       document.getElementById('form-page-icon').value = page.icon || 'layers';
       document.getElementById('form-page-desc').value = page.desc || '';
+      document.getElementById('pageReorderSection').classList.remove('hidden');
 
       // Don't allow deleting if only 1 page remains
       if (pages.length > 1) {
