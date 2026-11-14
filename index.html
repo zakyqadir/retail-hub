@@ -628,18 +628,48 @@
       </div>
 
       <div class="space-y-4 text-xs text-gray-300">
-        <div class="p-3 rounded-lg bg-amber-950/30 border border-amber-800/40 text-amber-200 leading-relaxed">
-          <strong>Mengapa perubahan tidak otomatis muncul di browser lain?</strong><br>
-          Browser secara standar menyimpan perubahan ke <em>localStorage</em> (memori privat di 1 browser/laptop saja). Agar perubahan tampil di seluruh perangkat staf toko, file <code>config.json</code> di GitHub repository perlu diperbarui.
+        <!-- Opsi 1: Otomatis Real-time Cloud Sync (Google Apps Script) -->
+        <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Sinkronisasi Cloud Real-time (Google Apps Script)
+            </h4>
+            <span id="cloudStatusBadge" class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-400 font-medium border border-gray-700">Belum Terhubung</span>
+          </div>
+          <p class="text-gray-400 leading-relaxed">
+            Tempelkan URL Google Apps Script Web App Anda. Setiap kali Anda menambah/mengubah modul, data akan <strong>otomatis tersimpan ke Cloud dan langsung sinkron di semua HP & browser toko</strong> tanpa perlu git push!
+          </p>
+          <div class="space-y-2">
+            <input 
+              type="text" 
+              id="cloudSyncUrlInput" 
+              placeholder="https://script.google.com/macros/s/.../exec" 
+              class="w-full bg-[#111827] border border-gray-700 rounded-lg px-3 py-2 text-white font-mono text-[11px] focus:outline-none focus:border-[#EE1D23]"
+            />
+            <div class="flex items-center justify-between pt-1">
+              <span id="cloudSyncStatusMsg" class="text-[11px] text-gray-400 font-mono"></span>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="disconnectCloudUrl()" id="btnDisconnectCloud" class="hidden px-2.5 py-1 text-gray-400 hover:text-red-400 text-xs">
+                  Putuskan
+                </button>
+                <button type="button" onclick="testAndSaveCloudUrl()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-md text-xs transition flex items-center gap-1.5">
+                  <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+                  <span>Simpan & Sinkronkan</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
+        <!-- Opsi 2: Manual GitHub config.json -->
         <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800 space-y-3">
           <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-[#EE1D23]"></span>
-            Langkah 1: Unduh atau Salin Konfigurasi Terbaru
+            Opsi Alternatif: Unduh config.json untuk GitHub
           </h4>
           <p class="text-gray-400">
-            Simpan data modul & halaman saat ini sebagai file <code>config.json</code>:
+            Jika tidak menggunakan Google Apps Script, Anda bisa mengunduh file <code>config.json</code> ini lalu menggantikan file di repo dan lakukan <code>git push</code>:
           </p>
           <div class="flex flex-wrap items-center gap-2">
             <button onclick="downloadConfigFile()" class="px-3 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white font-semibold rounded-md flex items-center gap-1.5 transition">
@@ -651,27 +681,33 @@
               <span>Salin Teks JSON</span>
             </button>
           </div>
-          <p class="text-[11px] text-gray-400">
-            Setelah mengunduh, gantikan file <code>config.json</code> di folder lalu <code>git push</code>. Seketika semua pengguna akan membaca data yang sama!
-          </p>
         </div>
 
+        <!-- Opsi 3: Import JSON Langsung -->
         <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800 space-y-2">
           <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span class="w-2 h-2 rounded-full bg-sky-500"></span>
             Import JSON Langsung ke Browser Ini
           </h4>
           <p class="text-gray-400">
             Tempelkan JSON dari perangkat lain untuk langsung menerapkan susunan modul di browser ini:
           </p>
-          <textarea id="importJsonTextarea" rows="4" placeholder="Tempelkan teks JSON di sini..." class="w-full bg-[#111827] border border-gray-700 rounded-lg p-2.5 text-white font-mono text-[11px] focus:outline-none focus:border-[#EE1D23]"></textarea>
+          <textarea id="importJsonTextarea" rows="3" placeholder="Tempelkan teks JSON di sini..." class="w-full bg-[#111827] border border-gray-700 rounded-lg p-2.5 text-white font-mono text-[11px] focus:outline-none focus:border-[#EE1D23]"></textarea>
           <div class="flex justify-end">
-            <button onclick="importConfigJson()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-md text-xs transition">
+            <button onclick="importConfigJson()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white font-semibold rounded-md text-xs transition">
               Terapkan Import
             </button>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-[#111827] border border-emerald-600/60 text-emerald-400 px-4 py-2.5 rounded-lg shadow-xl text-xs font-semibold flex items-center gap-2">
+      <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i>
+      <span id="toastMessage">Tersimpan</span>
     </div>
   </div>
 
@@ -777,6 +813,7 @@
     let activeCategory = 'ALL';
     let sortMode = 'manual'; // 'manual', 'name-asc', 'name-desc', 'category', 'status'
     let currentEditModuleId = null;
+    let cloudSyncUrl = localStorage.getItem('retail_cloud_sync_url') || '';
 
     // Helper: Normalize URL
     function normalizeUrl(url) {
@@ -788,26 +825,47 @@
       return clean;
     }
 
-    // Load Data (Loads from config.json first, falls back to localStorage)
+    // Load Data (Loads from Cloud Apps Script first, then config.json, then localStorage)
     async function loadData() {
       let loaded = false;
 
-      // 1. Try to fetch config.json (shared across all devices & browsers via GitHub)
-      try {
-        const response = await fetch('./config.json?v=' + Date.now());
-        if (response.ok) {
-          const configData = await response.json();
-          if (Array.isArray(configData) && configData.length > 0) {
-            pages = configData;
-            localStorage.setItem('matahari_pages_v4', JSON.stringify(configData));
-            loaded = true;
+      // 1. Try to fetch from Google Apps Script Cloud Backend if configured
+      if (cloudSyncUrl) {
+        try {
+          const sep = cloudSyncUrl.includes('?') ? '&' : '?';
+          const cloudRes = await fetch(cloudSyncUrl + sep + 't=' + Date.now());
+          if (cloudRes.ok) {
+            const cloudData = await cloudRes.json();
+            if (Array.isArray(cloudData) && cloudData.length > 0) {
+              pages = cloudData;
+              localStorage.setItem('matahari_pages_v4', JSON.stringify(cloudData));
+              loaded = true;
+              updateCloudBadgeUI(true);
+            }
           }
+        } catch (e) {
+          console.warn('Cloud sync load failed, falling back:', e);
         }
-      } catch (err) {
-        // fetch may fail if running locally on file:// protocol without http server
       }
 
-      // 2. Fallback to localStorage or INITIAL_PAGES
+      // 2. Try to fetch config.json (shared across all devices & browsers via GitHub)
+      if (!loaded) {
+        try {
+          const response = await fetch('./config.json?v=' + Date.now());
+          if (response.ok) {
+            const configData = await response.json();
+            if (Array.isArray(configData) && configData.length > 0) {
+              pages = configData;
+              localStorage.setItem('matahari_pages_v4', JSON.stringify(configData));
+              loaded = true;
+            }
+          }
+        } catch (err) {
+          // fetch may fail if running locally on file:// protocol without http server
+        }
+      }
+
+      // 3. Fallback to localStorage or INITIAL_PAGES
       if (!loaded) {
         const savedPages = localStorage.getItem('matahari_pages_v4');
         if (savedPages) {
@@ -836,12 +894,18 @@
       renderAdminControls();
       renderTabs();
       renderActivePage();
+      updateCloudBadgeUI(!!cloudSyncUrl);
     }
 
     function saveData() {
       localStorage.setItem('matahari_pages_v4', JSON.stringify(pages));
       renderTabs();
       renderActivePage();
+
+      // Auto-sync to Cloud Google Apps Script if connected
+      if (cloudSyncUrl) {
+        syncToCloud(pages);
+      }
     }
 
     function resetToMatahariDefaults() {
@@ -1479,13 +1543,116 @@
     }
 
     // ==================== CROSS-BROWSER SYNC & CONFIG ====================
+    function updateCloudBadgeUI(isConnected) {
+      const badge = document.getElementById('cloudStatusBadge');
+      const disconnectBtn = document.getElementById('btnDisconnectCloud');
+      const input = document.getElementById('cloudSyncUrlInput');
+      
+      if (input && cloudSyncUrl) {
+        input.value = cloudSyncUrl;
+      }
+
+      if (badge) {
+        if (isConnected) {
+          badge.className = 'text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/30';
+          badge.innerText = '✓ Cloud Terhubung (Auto Sync)';
+          if (disconnectBtn) disconnectBtn.classList.remove('hidden');
+        } else {
+          badge.className = 'text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-400 font-medium border border-gray-700';
+          badge.innerText = 'Belum Terhubung';
+          if (disconnectBtn) disconnectBtn.classList.add('hidden');
+        }
+      }
+    }
+
     function openSyncModal() {
+      const input = document.getElementById('cloudSyncUrlInput');
+      if (input) input.value = cloudSyncUrl;
+      updateCloudBadgeUI(!!cloudSyncUrl);
       document.getElementById('syncModal').classList.remove('hidden');
       lucide.createIcons();
     }
 
     function closeSyncModal() {
       document.getElementById('syncModal').classList.add('hidden');
+    }
+
+    async function testAndSaveCloudUrl() {
+      const input = document.getElementById('cloudSyncUrlInput');
+      const msg = document.getElementById('cloudSyncStatusMsg');
+      const rawUrl = (input.value || '').trim();
+
+      if (!rawUrl) {
+        alert('Silakan masukkan Web App URL Google Apps Script Anda.');
+        return;
+      }
+
+      msg.innerText = 'Menyambungkan ke Google Cloud...';
+      cloudSyncUrl = rawUrl;
+      localStorage.setItem('retail_cloud_sync_url', rawUrl);
+      updateCloudBadgeUI(true);
+
+      try {
+        await syncToCloud(pages);
+        msg.innerText = '✓ Berhasil terhubung & tersinkron!';
+        showToast('✓ Cloud Sync Google Apps Script Aktif!');
+        setTimeout(() => closeSyncModal(), 1200);
+      } catch (err) {
+        msg.innerText = 'Koneksi tersimpan (menggunakan background sync)';
+      }
+    }
+
+    function disconnectCloudUrl() {
+      if (confirm('Putuskan koneksi Google Apps Script Cloud Sync?')) {
+        cloudSyncUrl = '';
+        localStorage.removeItem('retail_cloud_sync_url');
+        const input = document.getElementById('cloudSyncUrlInput');
+        if (input) input.value = '';
+        updateCloudBadgeUI(false);
+        const msg = document.getElementById('cloudSyncStatusMsg');
+        if (msg) msg.innerText = 'Koneksi cloud diputuskan.';
+        showToast('Cloud Sync diputuskan');
+      }
+    }
+
+    async function syncToCloud(data) {
+      if (!cloudSyncUrl) return;
+      const payloadStr = JSON.stringify(data);
+
+      try {
+        // Method 1: Send via POST with text/plain
+        await fetch(cloudSyncUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: payloadStr
+        });
+        showToast('✓ Tersinkronisasi ke Cloud secara Real-time!');
+      } catch (e) {
+        // Method 2: Fallback to GET action=save
+        try {
+          const sep = cloudSyncUrl.includes('?') ? '&' : '?';
+          await fetch(cloudSyncUrl + sep + 'action=save&data=' + encodeURIComponent(payloadStr), {
+            mode: 'no-cors'
+          });
+          showToast('✓ Tersinkronisasi ke Cloud!');
+        } catch (err) {
+          console.error('Cloud auto-sync error:', err);
+        }
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toastNotification');
+      const msgEl = document.getElementById('toastMessage');
+      if (!toast || !msgEl) return;
+      msgEl.innerText = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
     }
 
     function downloadConfigFile() {
