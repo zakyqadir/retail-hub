@@ -3,14 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Matahari Retail Operations Portal | Enterprise Launchpad</title>
+  <title>Matahari Retail Hub</title>
   
-  <!-- Fonts: Inter for enterprise readability -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   
@@ -21,15 +19,11 @@
         extend: {
           fontFamily: {
             sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
           },
           colors: {
             matahari: {
-              DEFAULT: '#EE1D23', // Matahari Red official brand token
+              DEFAULT: '#EE1D23',
               dark: '#C7141A',
-              light: '#FFF1F1',
-              surface: '#111827',
-              border: '#1F2937',
             }
           }
         }
@@ -43,7 +37,7 @@
       -webkit-font-smoothing: antialiased;
     }
     
-    /* Dark & Light Theme Base Styles */
+    /* Clean Theme Transitions & Surfaces */
     html.dark body {
       background-color: #0B0F19;
       color: #E2E8F0;
@@ -53,325 +47,124 @@
       color: #0F172A;
     }
 
-    /* Cards */
-    html.dark .retail-card {
+    /* Cards: Clean, simple, professional */
+    html.dark .hub-card {
       background-color: #111827;
       border: 1px solid #1F2937;
-      border-radius: 12px;
-      transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
-    html.dark .retail-card:hover {
+    html.dark .hub-card:hover {
       border-color: #374151;
       transform: translateY(-2px);
     }
 
-    html:not(.dark) .retail-card {
+    html:not(.dark) .hub-card {
       background-color: #FFFFFF;
       border: 1px solid #E2E8F0;
-      border-radius: 12px;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-      transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     }
-    html:not(.dark) .retail-card:hover {
+    html:not(.dark) .hub-card:hover {
       border-color: #CBD5E1;
-      box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
       transform: translateY(-2px);
     }
 
-    .admin-card-outline {
-      border-color: #EE1D23 !important;
-    }
-
-    /* Tab Styling */
-    .tab-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      font-size: 13px;
-      font-weight: 500;
-      border-bottom: 2px solid transparent;
-      color: #94A3B8;
-      white-space: nowrap;
+    .hub-card {
       transition: all 0.15s ease;
+      border-radius: 12px;
     }
-    html:not(.dark) .tab-item {
-      color: #64748B;
-    }
-    .tab-item:hover {
-      color: #F1F5F9;
-      border-color: #334155;
-    }
-    html:not(.dark) .tab-item:hover {
-      color: #0F172A;
-      border-color: #CBD5E1;
-    }
-    .tab-item.active {
-      color: #FFFFFF;
-      border-color: #EE1D23;
-      font-weight: 600;
-      background-color: rgba(238, 29, 35, 0.08);
-    }
-    html:not(.dark) .tab-item.active {
-      color: #EE1D23;
-      border-color: #EE1D23;
-      font-weight: 600;
-      background-color: #FEF2F2;
-    }
-
-    /* Theme-specific surface utilities */
-    html.dark .theme-header { background-color: #111827; border-color: #1F2937; }
-    html:not(.dark) .theme-header { background-color: #FFFFFF; border-color: #E2E8F0; }
-    
-    html.dark .theme-subnav { background-color: #0D121F; border-color: #1F2937; }
-    html:not(.dark) .theme-subnav { background-color: #F1F5F9; border-color: #E2E8F0; }
-
-    html.dark .theme-input { background-color: #111827; border-color: #1F2937; color: #F8FAFC; }
-    html:not(.dark) .theme-input { background-color: #FFFFFF; border-color: #CBD5E1; color: #0F172A; }
-
-    html.dark .theme-panel { background-color: #111827; border-color: #1F2937; color: #E2E8F0; }
-    html:not(.dark) .theme-panel { background-color: #FFFFFF; border-color: #E2E8F0; color: #0F172A; }
-
-    html.dark .theme-text-muted { color: #94A3B8; }
-    html:not(.dark) .theme-text-muted { color: #64748B; }
-
-    html.dark .theme-heading { color: #F8FAFC; }
-    html:not(.dark) .theme-heading { color: #0F172A; }
-
-    html.dark .theme-border { border-color: #1F2937; }
-    html:not(.dark) .theme-border { border-color: #E2E8F0; }
   </style>
 </head>
-<body class="min-h-full flex flex-col transition-colors duration-200">
+<body class="min-h-full flex flex-col">
 
-  <!-- Enterprise Top Navigation Bar -->
-  <header class="theme-header border-b sticky top-0 z-40 transition-colors duration-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+  <!-- Minimal Header -->
+  <header class="border-b transition-colors border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-[#111827]/80 backdrop-blur sticky top-0 z-30">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       
-      <!-- Brand & Title -->
-      <div class="flex items-center space-x-3.5">
-        <div class="w-9 h-9 rounded-md bg-[#EE1D23] flex items-center justify-center text-white font-bold text-sm tracking-wider shadow-sm">
+      <!-- Brand Title -->
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg bg-[#EE1D23] flex items-center justify-center text-white font-bold text-sm shadow-sm">
           M
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <h1 class="font-bold text-base tracking-tight theme-heading">Matahari Retail Operations</h1>
-            <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-gray-800 dark:bg-gray-800 text-gray-200 border border-gray-700">Hub v2.1</span>
-          </div>
-          <p class="text-[12px] theme-text-muted">Pusat Kendali Aplikasi & Operasional Toko</p>
+          <h1 class="font-bold text-base tracking-tight text-gray-900 dark:text-white leading-tight">Matahari Retail Hub</h1>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Portal Akses Aplikasi Toko</p>
         </div>
       </div>
 
-      <!-- Search, Theme Toggle & Admin Controls -->
-      <div class="flex items-center space-x-2.5">
-        <!-- Live System Status -->
-        <div class="hidden sm:flex items-center space-x-2 text-xs text-emerald-500 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-md">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span class="font-medium">Sistem Operasional Aktif</span>
-        </div>
-
-        <!-- Light / Dark Theme Switcher Button -->
-        <button 
-          id="themeToggleBtn"
-          onclick="toggleThemeMode()" 
-          class="p-1.5 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"
-          title="Ganti Tema (Terang / Gelap)"
-          aria-label="Toggle Theme"
-        >
-          <i id="themeToggleIcon" data-lucide="moon" class="w-4 h-4"></i>
+      <!-- Header Controls: Theme Toggle & Admin -->
+      <div class="flex items-center space-x-2">
+        <button onclick="toggleTheme()" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition" title="Ganti Tema">
+          <i id="themeIcon" data-lucide="moon" class="w-4 h-4"></i>
         </button>
+        
+        <div class="h-4 w-px bg-gray-200 dark:bg-gray-800"></div>
 
-        <div class="h-4 w-px bg-gray-300 dark:bg-gray-800 hidden sm:block"></div>
-
-        <!-- Admin Control Button (Login / Logout) -->
-        <div id="admin-actions-container">
+        <div id="adminHeaderBtn">
           <!-- Rendered via JS -->
         </div>
       </div>
 
-    </div>
-
-    <!-- Multi-Page Tabs Navigation Bar -->
-    <div class="theme-subnav border-t px-4 sm:px-6 lg:px-8 transition-colors duration-200">
-      <div class="max-w-7xl mx-auto flex items-center justify-between overflow-x-auto no-scrollbar">
-        <!-- Dynamic Page Tabs -->
-        <div id="pageTabsContainer" class="flex items-center space-x-1">
-          <!-- Rendered via JS -->
-        </div>
-
-        <!-- Add Page Button (Visible in Admin Mode) -->
-        <div id="addPageBtnContainer" class="hidden py-1.5 pl-3 border-l theme-border flex-shrink-0">
-          <button onclick="openPageModal()" class="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-medium rounded-md border border-gray-300 dark:border-gray-700 flex items-center gap-1.5 transition">
-            <i data-lucide="plus" class="w-3.5 h-3.5 text-[#EE1D23]"></i>
-            <span>Tambah Halaman</span>
-          </button>
-        </div>
-      </div>
     </div>
   </header>
 
-  <!-- Admin Mode Notification Bar (Only visible when logged in) -->
-  <div id="admin-banner" class="hidden bg-amber-950/40 border-b border-amber-800/60 px-4 py-2.5">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
-      <div class="flex items-center gap-2 text-amber-300">
-        <i data-lucide="shield-alert" class="w-4 h-4 text-amber-400"></i>
-        <span class="font-semibold">Mode Administrator Aktif:</span>
-        <span class="text-amber-200">Anda dapat menambah halaman baru, mengedit item modul, atau menyesuaikan dokumen panduan.</span>
+  <!-- Admin Toolbar (Only visible when logged in) -->
+  <div id="adminToolbar" class="hidden bg-amber-500/10 border-b border-amber-500/20 px-4 py-2">
+    <div class="max-w-5xl mx-auto flex items-center justify-between text-xs">
+      <div class="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-medium">
+        <i data-lucide="shield-check" class="w-4 h-4"></i>
+        <span>Mode Admin Aktif</span>
       </div>
       <div class="flex items-center gap-2">
-        <button onclick="openSyncModal()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-amber-300 font-medium rounded-md border border-gray-700 flex items-center gap-1.5 transition" title="Sinkronisasi Data Lintas Browser">
-          <i data-lucide="cloud" class="w-3.5 h-3.5 text-amber-400"></i>
-          <span>Sinkron / Export</span>
-        </button>
-        <button onclick="openPageModal()" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-gray-200 font-medium rounded-md border border-gray-700 flex items-center gap-1.5 transition">
-          <i data-lucide="file-plus" class="w-3.5 h-3.5 text-amber-400"></i>
-          <span>+ Halaman Baru</span>
-        </button>
-        <button onclick="openAddModuleModal()" class="px-3 py-1 bg-[#EE1D23] hover:bg-[#C7141A] text-white font-medium rounded-md flex items-center gap-1.5 transition">
+        <button onclick="openAppModal()" class="px-3 py-1 bg-[#EE1D23] hover:bg-[#C7141A] text-white font-medium rounded-md flex items-center gap-1 transition">
           <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-          <span>+ Tambah Modul</span>
+          <span>Tambah Aplikasi</span>
         </button>
-        <button onclick="resetToMatahariDefaults()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium rounded-md border border-gray-700 transition" title="Kembalikan ke susunan awal">
-          Reset Default
-        </button>
-        <button onclick="logoutAdmin()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-200 font-medium rounded-md border border-gray-700 transition flex items-center gap-1">
-          <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
-          <span>Keluar Admin</span>
+        <button onclick="logoutAdmin()" class="px-2.5 py-1 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md transition">
+          Keluar
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Main Content Layout -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Main Single Page Content -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8">
 
-    <!-- Active Page Header & Context -->
-    <div class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b theme-border transition-colors duration-200">
-      <div>
-        <div class="flex items-center gap-2.5">
-          <h2 id="activePageTitle" class="text-xl font-bold theme-heading tracking-tight">Operasional Utama</h2>
-          <span id="activePageTypeBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700">Grid Aplikasi</span>
-          <!-- Edit Page button for admin -->
-          <button id="btnEditCurrentPage" onclick="openEditCurrentPageModal()" class="hidden text-xs text-amber-500 hover:text-amber-400 p-1 rounded bg-amber-500/10 border border-amber-500/30" title="Ubah Nama/Pengaturan Halaman">
-            <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
-          </button>
-        </div>
-        <p id="activePageDesc" class="text-xs theme-text-muted mt-1 leading-relaxed">
-          Aplikasi inti operasional harian gerai, checklist pembukaan toko, dan tracking audit.
-        </p>
+    <!-- Search Bar -->
+    <div class="mb-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+      <div class="relative flex-1 max-w-md">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Cari aplikasi..." 
+          oninput="renderApps()" 
+          class="w-full pl-9 pr-4 py-2 bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 rounded-lg text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-[#EE1D23] transition"
+        />
       </div>
 
-      <!-- Action in Active Page: Add module if grid, or edit content if doc -->
-      <div id="activePageActionBtn">
-        <!-- Populated via JS -->
+      <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+        <span id="appCount">5 Aplikasi</span>
+        <span>&bull;</span>
+        <span id="cloudIndicator" class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span>Cloud Live</span>
+        </span>
       </div>
     </div>
 
-    <!-- VIEW 1: GRID VIEW (For application launcher pages) -->
-    <div id="gridPageView">
-
-      <!-- Search, Filter & Sort Controls -->
-      <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 mb-6">
-        <div class="relative flex-1 max-w-md">
-          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 theme-text-muted"></i>
-          <input 
-            type="text" 
-            id="searchInput" 
-            placeholder="Cari modul di halaman ini..." 
-            oninput="filterModules()" 
-            class="w-full pl-9 pr-4 py-2 theme-input rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:border-[#EE1D23] transition"
-          />
-        </div>
-
-        <div class="flex flex-wrap items-center gap-3 text-xs">
-          <!-- Category Filter -->
-          <div class="flex items-center gap-1.5">
-            <span class="theme-text-muted">Kategori:</span>
-            <button onclick="setCategoryFilter('ALL')" id="filter-all" class="px-2.5 py-1 rounded bg-gray-900 dark:bg-gray-800 text-white font-medium border border-gray-700">Semua</button>
-            <button onclick="setCategoryFilter('AUDIT')" id="filter-audit" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-200 dark:hover:bg-gray-800 theme-text-muted font-medium">Audit & Form</button>
-            <button onclick="setCategoryFilter('OPS')" id="filter-ops" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-200 dark:hover:bg-gray-800 theme-text-muted font-medium">Operasional</button>
-            <button onclick="setCategoryFilter('BI')" id="filter-bi" class="px-2.5 py-1 rounded bg-transparent hover:bg-gray-200 dark:hover:bg-gray-800 theme-text-muted font-medium">Laporan & BI</button>
-          </div>
-
-          <div class="h-4 w-px bg-gray-300 dark:bg-gray-800 hidden sm:block"></div>
-
-          <!-- Sort Selector -->
-          <div class="flex items-center gap-1.5">
-            <span class="theme-text-muted flex items-center gap-1">
-              <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i>
-              <span>Urutan:</span>
-            </span>
-            <select id="sortSelect" onchange="changeSortMode(this.value)" class="theme-input rounded-md px-2.5 py-1 text-xs font-medium focus:outline-none focus:border-[#EE1D23] transition cursor-pointer">
-              <option value="manual">Manual (Kustom)</option>
-              <option value="name-asc">Nama (A &rarr; Z)</option>
-              <option value="name-desc">Nama (Z &rarr; A)</option>
-              <option value="category">Kategori</option>
-              <option value="status">Status</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- Module Grid Container -->
-      <div id="modulesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Rendered via JS -->
-      </div>
-
-      <!-- GPS Quick Tool Utility -->
-      <div class="mt-8 bg-[#111827] border border-gray-800 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-300">
-            <i data-lucide="map-pin" class="w-4 h-4 text-emerald-400"></i>
-          </div>
-          <div>
-            <h4 class="text-xs font-semibold text-white">Validasi GPS Toko (On-Site Audit)</h4>
-            <p id="gps-status-text" class="text-[11px] text-gray-400 font-mono">Klik tombol untuk mencatat koordinat perangkat lapangan secara presisi.</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <a id="gps-maps-btn" href="#" target="_blank" class="hidden px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs font-medium text-gray-200 rounded-md border border-gray-700 flex items-center gap-1.5 transition">
-            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-            <span>Lihat di Maps</span>
-          </a>
-          <button onclick="triggerGPSCapture()" class="px-3.5 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs font-medium text-white rounded-md border border-gray-700 flex items-center gap-1.5 transition">
-            <i data-lucide="navigation" class="w-3.5 h-3.5 text-emerald-400"></i>
-            <span>Ambil Koordinat</span>
-          </button>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- VIEW 2: DOCUMENT / SOP / NOTES VIEW (For guideline pages) -->
-    <div id="docPageView" class="hidden">
-      <div class="bg-[#111827] border border-gray-800 rounded-xl p-6 relative">
-        <div class="flex items-center justify-between pb-4 mb-4 border-b border-gray-800">
-          <div class="flex items-center gap-2 text-xs text-gray-400">
-            <i data-lucide="file-text" class="w-4 h-4 text-[#EE1D23]"></i>
-            <span>Dokumen Informasi & Petunjuk Teknis Operasional</span>
-          </div>
-          <button id="btnEditDocContent" onclick="openEditDocModal()" class="hidden px-3 py-1 bg-gray-800 hover:bg-gray-700 text-xs text-amber-400 font-medium rounded-md border border-gray-700 flex items-center gap-1.5 transition">
-            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-            <span>Edit Konten Halaman</span>
-          </button>
-        </div>
-
-        <div id="docContentContainer" class="prose prose-invert max-w-none text-sm text-gray-300 leading-relaxed space-y-4">
-          <!-- Rendered via JS -->
-        </div>
-      </div>
+    <!-- Application Cards Grid -->
+    <div id="appsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Dynamically Rendered via JS -->
     </div>
 
   </main>
 
-  <!-- Footer -->
-  <footer class="border-t border-gray-800/80 bg-[#111827] py-6 text-center text-xs text-gray-400 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <p>PT Matahari Department Store Tbk &bull; Retail Operations Division</p>
-      <div class="flex items-center gap-3 font-mono text-[11px] text-gray-400">
-        <span>Koneksi Aman</span>
-        <span>&bull;</span>
-        <button onclick="openLoginModal()" class="text-gray-300 hover:text-white underline">Akses Administrator</button>
+  <!-- Clean Footer -->
+  <footer class="border-t border-gray-200 dark:border-gray-800 py-6 text-center text-xs text-gray-400 mt-auto">
+    <div class="max-w-5xl mx-auto px-4 flex items-center justify-between">
+      <p>&copy; Matahari Department Store</p>
+      <div class="flex items-center gap-3">
+        <button onclick="openLoginModal()" class="hover:text-gray-600 dark:hover:text-gray-200 transition">Admin Login</button>
       </div>
     </div>
   </footer>
@@ -379,454 +172,159 @@
   <!-- ==================== MODALS ==================== -->
 
   <!-- 1. Admin Login Modal -->
-  <div id="loginModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-[#111827] border border-gray-700 rounded-xl max-w-sm w-full p-6 shadow-2xl">
+  <div id="loginModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 rounded-xl max-w-xs w-full p-6 shadow-2xl">
       <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-2">
-          <div class="w-7 h-7 rounded bg-[#EE1D23] flex items-center justify-center text-white">
-            <i data-lucide="lock" class="w-4 h-4"></i>
-          </div>
-          <h3 class="text-sm font-bold text-white">Autentikasi Administrator</h3>
-        </div>
-        <button onclick="closeLoginModal()" class="text-gray-400 hover:text-white">
+        <h3 class="text-sm font-bold text-gray-900 dark:text-white">Admin Login</h3>
+        <button onclick="closeLoginModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-white">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
-      <p class="text-xs text-gray-400 mb-4">
-        Masukkan PIN atau Kata Sandi Administrator untuk mengaktifkan mode pengeditan halaman dan modul.
-      </p>
-      <form onsubmit="handleLoginSubmit(event)" class="space-y-3">
+      <form onsubmit="handleLogin(event)" class="space-y-3">
         <div>
-          <label class="block text-xs font-medium text-gray-300 mb-1">Kata Sandi Admin</label>
+          <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Kata Sandi</label>
           <input 
             type="password" 
-            id="adminPasswordInput" 
-            placeholder="Default: admin123" 
-            class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#EE1D23]"
+            id="passwordInput" 
+            placeholder="admin123" 
+            class="w-full bg-gray-50 dark:bg-[#0B0F19] border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-[#EE1D23]"
             required 
             autofocus
           />
-          <p class="text-[10px] text-gray-400 mt-1">Sandi bawaan: <code class="text-gray-300 font-mono">admin123</code></p>
         </div>
-        <div id="loginError" class="text-xs text-red-400 font-medium hidden">
-          Kata sandi salah. Silakan coba lagi.
-        </div>
-        <div class="pt-2 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeLoginModal()" class="px-3 py-1.5 text-xs text-gray-400 hover:text-white">Batal</button>
-          <button type="submit" class="px-4 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md transition">
-            Masuk Admin
-          </button>
+        <div id="loginError" class="text-xs text-red-500 hidden">Kata sandi salah.</div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeLoginModal()" class="px-3 py-1.5 text-xs text-gray-500">Batal</button>
+          <button type="submit" class="px-4 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-medium rounded-md transition">Masuk</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- 2. Page Modal (Add / Edit Page) -->
-  <div id="pageModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-[#111827] border border-gray-700 rounded-xl max-w-md w-full p-6 shadow-2xl">
-      <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-800">
-        <h3 id="pageModalTitle" class="text-sm font-bold text-white flex items-center gap-2">
-          <i data-lucide="file-plus" class="w-4 h-4 text-[#EE1D23]"></i>
-          <span>Tambah Halaman Baru</span>
-        </h3>
-        <button onclick="closePageModal()" class="text-gray-400 hover:text-white">
+  <!-- 2. Add / Edit App Modal -->
+  <div id="appModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 rounded-xl max-w-md w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+      <div class="flex items-center justify-between mb-4 pb-2 border-b border-gray-200 dark:border-gray-800">
+        <h3 id="appModalTitle" class="text-sm font-bold text-gray-900 dark:text-white">Tambah Aplikasi</h3>
+        <button onclick="closeAppModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-white">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
 
-      <form onsubmit="handlePageSave(event)" class="space-y-3.5 text-xs">
-        <input type="hidden" id="form-page-id" />
+      <form onsubmit="handleSaveApp(event)" class="space-y-3.5 text-xs">
+        <input type="hidden" id="form-app-id" />
 
         <div>
-          <label class="block font-medium text-gray-300 mb-1">Nama Halaman</label>
-          <input type="text" id="form-page-title" placeholder="Contoh: SOP & Dokumen, Kontak Toko, POS & Kasir" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]" required />
-        </div>
-
-        <div>
-          <label class="block font-medium text-gray-300 mb-1">Tipe Tampilan Halaman</label>
-          <select id="form-page-type" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]">
-            <option value="grid">Grid Modul Aplikasi (Koleksi Kartu Tautan)</option>
-            <option value="document">Dokumen / SOP / Catatan Kontak</option>
-          </select>
-          <p class="text-[10px] text-gray-400 mt-1">Pilih "Grid" untuk menampung link aplikasi, atau "Dokumen" untuk panduan teks/kontak.</p>
+          <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Aplikasi</label>
+          <input type="text" id="form-app-title" class="w-full bg-gray-50 dark:bg-[#0B0F19] border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-2 text-gray-900 dark:text-white focus:outline-none focus:border-[#EE1D23]" required />
         </div>
 
         <div>
-          <label class="block font-medium text-gray-300 mb-1">Ikon Tab</label>
-          <select id="form-page-icon" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]">
-            <option value="layers">Layers (Umum/Grid)</option>
-            <option value="file-text">FileText (SOP/Dokumen)</option>
-            <option value="phone">Phone (Kontak/Direktori)</option>
-            <option value="help-circle">HelpCircle (Bantuan/Helpdesk)</option>
-            <option value="shopping-cart">ShoppingCart (Kasir/POS)</option>
-            <option value="truck">Truck (Logistik/Gudang)</option>
-          </select>
+          <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Link URL</label>
+          <input type="text" id="form-app-url" placeholder="https://..." class="w-full bg-gray-50 dark:bg-[#0B0F19] border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-2 text-gray-900 dark:text-white font-mono text-[11px] focus:outline-none focus:border-[#EE1D23]" required />
         </div>
 
         <div>
-          <label class="block font-medium text-gray-300 mb-1">Deskripsi Halaman</label>
-          <textarea id="form-page-desc" rows="2" placeholder="Jelaskan tujuan atau fungsi halaman ini..." class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]"></textarea>
-        </div>
-
-        <!-- Page Tab Reorder Controls (for existing pages) -->
-        <div id="pageReorderSection" class="p-2.5 bg-[#0B0F19] rounded-lg border border-gray-800 flex items-center justify-between">
-          <span class="text-gray-300 font-medium">Urutan Posisi Tab:</span>
-          <div class="flex items-center gap-1.5">
-            <button type="button" onclick="movePage(editingPageId, -1); closePageModal()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded border border-gray-700 flex items-center gap-1">
-              <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Geser Kiri
-            </button>
-            <button type="button" onclick="movePage(editingPageId, 1); closePageModal()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded border border-gray-700 flex items-center gap-1">
-              Geser Kanan <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
-          <button type="button" id="btnDeletePage" onclick="handleDeleteCurrentPage()" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            <span>Hapus Halaman</span>
-          </button>
-          <div class="flex items-center gap-2">
-            <button type="button" onclick="closePageModal()" class="px-3 py-1.5 text-xs text-gray-400 hover:text-white">Batal</button>
-            <button type="submit" class="px-4 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md transition">
-              Simpan Halaman
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 3. Edit / Add Module Modal -->
-  <div id="moduleModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-[#111827] border border-gray-700 rounded-xl max-w-lg w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
-      <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-800">
-        <h3 id="moduleModalTitle" class="text-sm font-bold text-white flex items-center gap-2">
-          <i data-lucide="edit-3" class="w-4 h-4 text-[#EE1D23]"></i>
-          <span>Ubah Detail Modul</span>
-        </h3>
-        <button onclick="closeModuleModal()" class="text-gray-400 hover:text-white">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
-
-      <form id="moduleForm" onsubmit="handleModuleSave(event)" class="space-y-3.5 text-xs">
-        <input type="hidden" id="form-module-id" />
-
-        <div>
-          <label class="block font-medium text-gray-300 mb-1">Nama Modul</label>
-          <input type="text" id="form-module-title" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]" required />
+          <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Deskripsi Singkat</label>
+          <input type="text" id="form-app-desc" placeholder="Contoh: Checklist harian pembukaan gerai" class="w-full bg-gray-50 dark:bg-[#0B0F19] border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-2 text-gray-900 dark:text-white focus:outline-none focus:border-[#EE1D23]" />
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-medium text-gray-300 mb-1">Kategori</label>
-            <select id="form-module-category" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]">
-              <option value="AUDIT">Audit & Form</option>
-              <option value="OPS">Operasional</option>
-              <option value="BI">Laporan & BI</option>
-            </select>
+            <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Badge Platform</label>
+            <input type="text" id="form-app-badge" placeholder="Contoh: Matahari Cloud" class="w-full bg-gray-50 dark:bg-[#0B0F19] border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-2 text-gray-900 dark:text-white focus:outline-none focus:border-[#EE1D23]" />
           </div>
           <div>
-            <label class="block font-medium text-gray-300 mb-1">Badge Platform</label>
-            <input type="text" id="form-module-badge" placeholder="Contoh: Matahari Cloud, Google Apps Script" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]" required />
-          </div>
-        </div>
-
-        <div>
-          <label class="block font-medium text-gray-300 mb-1">Target Link / URL</label>
-          <input type="text" id="form-module-url" placeholder="https://..." class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white font-mono text-[11px] focus:outline-none focus:border-[#EE1D23]" required />
-          <p class="text-[10px] text-gray-400 mt-0.5">Sistem otomatis menambahkan https:// jika tidak disertakan.</p>
-        </div>
-
-        <div>
-          <label class="block font-medium text-gray-300 mb-1">Deskripsi Operasional</label>
-          <textarea id="form-module-desc" rows="2" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]" required></textarea>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-medium text-gray-300 mb-1">Pilihan Ikon</label>
-            <select id="form-module-icon" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]">
-              <option value="check-square">CheckSquare (Action/Task)</option>
-              <option value="clipboard-check">ClipboardCheck (Checklist)</option>
-              <option value="map-pin">MapPin (Location/GPS)</option>
-              <option value="bar-chart-3">BarChart (Dashboard/BI)</option>
-              <option value="store">Store (Store Operations)</option>
-              <option value="users">Users (Staff/Roster)</option>
-              <option value="boxes">Boxes (Inventory/Gudang)</option>
-              <option value="file-spreadsheet">Spreadsheet (Data/Excel)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block font-medium text-gray-300 mb-1">Status Modul</label>
-            <select id="form-module-status" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-[#EE1D23]">
-              <option value="Aktif">Aktif (Online)</option>
-              <option value="Internal">Internal Toko</option>
-              <option value="Maintenance">Maintenance</option>
+            <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Pilihan Ikon</label>
+            <select id="form-app-icon" class="w-full bg-gray-50 dark:bg-[#0B0F19] border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-2 text-gray-900 dark:text-white focus:outline-none focus:border-[#EE1D23]">
+              <option value="check-square">CheckSquare</option>
+              <option value="clipboard-check">ClipboardCheck</option>
+              <option value="map-pin">MapPin</option>
+              <option value="bar-chart-3">BarChart</option>
+              <option value="database">Database</option>
+              <option value="store">Store</option>
+              <option value="file-spreadsheet">Spreadsheet</option>
+              <option value="link">Link</option>
             </select>
           </div>
         </div>
 
-        <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
-          <button type="button" id="btnDeleteModule" onclick="handleDeleteCurrentModule()" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1">
+        <div class="pt-3 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between">
+          <button type="button" id="btnDeleteApp" onclick="handleDeleteApp()" class="text-xs text-red-500 hover:text-red-600 flex items-center gap-1">
             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            <span>Hapus Modul</span>
+            <span>Hapus</span>
           </button>
           <div class="flex items-center gap-2">
-            <button type="button" onclick="closeModuleModal()" class="px-3 py-1.5 text-xs text-gray-400 hover:text-white">Batal</button>
-            <button type="submit" class="px-4 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md transition">
-              Simpan Perubahan
+            <button type="button" onclick="closeAppModal()" class="px-3 py-1.5 text-xs text-gray-500">Batal</button>
+            <button type="submit" class="px-4 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-medium rounded-md transition">
+              Simpan
             </button>
           </div>
         </div>
       </form>
-    </div>
-  </div>
-
-  <!-- 4. Edit Document Content Modal -->
-  <div id="docEditModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-[#111827] border border-gray-700 rounded-xl max-w-2xl w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
-      <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-800">
-        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-          <i data-lucide="file-edit" class="w-4 h-4 text-[#EE1D23]"></i>
-          <span>Edit Konten Halaman Dokumen / Panduan</span>
-        </h3>
-        <button onclick="closeDocEditModal()" class="text-gray-400 hover:text-white">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
-
-      <form onsubmit="handleDocSave(event)" class="space-y-4 text-xs">
-        <div>
-          <label class="block font-medium text-gray-300 mb-1">Konten Halaman (Mendukung HTML & Teks Rinci)</label>
-          <textarea id="form-doc-html" rows="12" class="w-full bg-[#0B0F19] border border-gray-700 rounded-lg p-3 text-white font-mono text-xs focus:outline-none focus:border-[#EE1D23] leading-relaxed"></textarea>
-          <p class="text-[11px] text-gray-400 mt-1">Anda dapat menyalin teks SOP, daftar nomor kontak, atau menyematkan tautan dokumen Google Drive.</p>
-        </div>
-
-        <div class="pt-3 border-t border-gray-800 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeDocEditModal()" class="px-3 py-1.5 text-xs text-gray-400 hover:text-white">Batal</button>
-          <button type="submit" class="px-4 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md transition">
-            Simpan Konten Dokumen
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 5. Cross-Browser Sync & Config Modal -->
-  <div id="syncModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-[#111827] border border-gray-700 rounded-xl max-w-lg w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
-      <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-800">
-        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-          <i data-lucide="cloud" class="w-4 h-4 text-[#EE1D23]"></i>
-          <span>Sinkronisasi Data Lintas Browser & Perangkat</span>
-        </h3>
-        <button onclick="closeSyncModal()" class="text-gray-400 hover:text-white">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
-
-      <div class="space-y-4 text-xs text-gray-300">
-        <!-- Opsi 1: Otomatis Real-time Cloud Sync (Google Apps Script) -->
-        <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800 space-y-3">
-          <div class="flex items-center justify-between">
-            <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              Sinkronisasi Cloud Real-time (Google Apps Script)
-            </h4>
-            <span id="cloudStatusBadge" class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-400 font-medium border border-gray-700">Belum Terhubung</span>
-          </div>
-          <p class="text-gray-400 leading-relaxed">
-            Tempelkan URL Google Apps Script Web App Anda. Setiap kali Anda menambah/mengubah modul, data akan <strong>otomatis tersimpan ke Cloud dan langsung sinkron di semua HP & browser toko</strong> tanpa perlu git push!
-          </p>
-          <div class="space-y-2">
-            <input 
-              type="text" 
-              id="cloudSyncUrlInput" 
-              placeholder="https://script.google.com/macros/s/.../exec" 
-              class="w-full bg-[#111827] border border-gray-700 rounded-lg px-3 py-2 text-white font-mono text-[11px] focus:outline-none focus:border-[#EE1D23]"
-            />
-            <div class="flex items-center justify-between pt-1">
-              <span id="cloudSyncStatusMsg" class="text-[11px] text-gray-400 font-mono"></span>
-              <div class="flex items-center gap-2">
-                <button type="button" onclick="disconnectCloudUrl()" id="btnDisconnectCloud" class="hidden px-2.5 py-1 text-gray-400 hover:text-red-400 text-xs">
-                  Putuskan
-                </button>
-                <button type="button" onclick="testAndSaveCloudUrl()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-md text-xs transition flex items-center gap-1.5">
-                  <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-                  <span>Simpan & Sinkronkan</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Opsi 2: Manual GitHub config.json -->
-        <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800 space-y-3">
-          <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-[#EE1D23]"></span>
-            Opsi Alternatif: Unduh config.json untuk GitHub
-          </h4>
-          <p class="text-gray-400">
-            Jika tidak menggunakan Google Apps Script, Anda bisa mengunduh file <code>config.json</code> ini lalu menggantikan file di repo dan lakukan <code>git push</code>:
-          </p>
-          <div class="flex flex-wrap items-center gap-2">
-            <button onclick="downloadConfigFile()" class="px-3 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white font-semibold rounded-md flex items-center gap-1.5 transition">
-              <i data-lucide="download" class="w-3.5 h-3.5"></i>
-              <span>Unduh config.json</span>
-            </button>
-            <button onclick="copyConfigJson()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 font-medium rounded-md border border-gray-700 flex items-center gap-1.5 transition">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-              <span>Salin Teks JSON</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Opsi 3: Import JSON Langsung -->
-        <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800 space-y-2">
-          <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-sky-500"></span>
-            Import JSON Langsung ke Browser Ini
-          </h4>
-          <p class="text-gray-400">
-            Tempelkan JSON dari perangkat lain untuk langsung menerapkan susunan modul di browser ini:
-          </p>
-          <textarea id="importJsonTextarea" rows="3" placeholder="Tempelkan teks JSON di sini..." class="w-full bg-[#111827] border border-gray-700 rounded-lg p-2.5 text-white font-mono text-[11px] focus:outline-none focus:border-[#EE1D23]"></textarea>
-          <div class="flex justify-end">
-            <button onclick="importConfigJson()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white font-semibold rounded-md text-xs transition">
-              Terapkan Import
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
   <!-- Toast Notification -->
   <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-    <div class="bg-[#111827] border border-emerald-600/60 text-emerald-400 px-4 py-2.5 rounded-lg shadow-xl text-xs font-semibold flex items-center gap-2">
-      <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i>
-      <span id="toastMessage">Tersimpan</span>
+    <div class="bg-gray-900 text-white border border-gray-700 px-4 py-2 rounded-lg shadow-xl text-xs font-medium flex items-center gap-2">
+      <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+      <span id="toastMsg">Tersimpan</span>
     </div>
   </div>
 
-  <!-- Application Multi-Page Engine -->
   <script>
-    // Initial Architecture: Multi-Page Structure
-    const INITIAL_PAGES = [
+    // Realtime Cloud Google Apps Script Backend URL
+    const CLOUD_SYNC_URL = 'https://script.google.com/macros/s/AKfycbwQaIiw0NuGFiQS0BxcO6EFVVX3KzMYX6r8MXRKC0BeTKpnCsFz92-1jDD8OPoYcoCQ/exec';
+
+    // Default 5 Applications
+    const DEFAULT_APPS = [
       {
-        id: 'main-ops',
-        title: 'Operasional Utama',
-        type: 'grid',
-        icon: 'layers',
-        desc: 'Aplikasi inti operasional harian gerai, checklist pembukaan toko, dan tracking audit.',
-        modules: [
-          {
-            id: 'action-tracker',
-            title: 'Action Tracker',
-            category: 'OPS',
-            badge: 'Google Apps Script',
-            url: 'https://script.google.com/macros/s/AKfycbxmCaTLKz0ampzM0uoBTe1EKUFL8FGOnsIwRvFtdegjNOLV24fgPfj7fVqxZlkqsZSp/exec',
-            desc: 'Pemantauan tindakan korektif audit toko, penugasan perbaikan PIC, eskalasi temuan, dan tracking SLA penutupan issue.',
-            icon: 'check-square',
-            status: 'Aktif'
-          },
-          {
-            id: 'store-checklist',
-            title: 'Store Checklist',
-            category: 'AUDIT',
-            badge: 'Matahari Cloud',
-            url: 'https://checklist.mataharicloud.id',
-            desc: 'Formulir inspeksi harian opening/closing, kesiapan lantai toko, standar visual merchandising, dan bukti foto audit.',
-            icon: 'clipboard-check',
-            status: 'Aktif'
-          },
-          {
-            id: 'location-tracker',
-            title: 'Location Tracker',
-            category: 'OPS',
-            badge: 'GPS & Geofencing',
-            url: 'https://script.google.com/macros/s/AKfycbyb_Z-KyXG8fc0fSY4ZJVkLxLpbG-xWN-hWfKfYHMNIcQFOSNMZHpSlyHXttG2cOIAZ/exec',
-            desc: 'Verifikasi kehadiran auditor dan staf di lokasi cabang toko secara real-time melalui koordinat GPS satelit.',
-            icon: 'map-pin',
-            status: 'Aktif'
-          },
-          {
-            id: 'report-dashboard',
-            title: 'Report Dashboard',
-            category: 'BI',
-            badge: 'Executive BI',
-            url: 'https://github.com/zakyqadir/retaildashboard',
-            desc: 'Analitik eksekutif kepatuhan toko, tren penyelesaian audit, evaluasi performa per regional, dan rekapitulasi data.',
-            icon: 'bar-chart-3',
-            status: 'Aktif'
-          },
-          {
-            id: 'mod-1794669642583',
-            title: 'Shop and Talk Database',
-            category: 'OPS',
-            badge: 'Matahari',
-            url: 'https://script.google.com/macros/s/AKfycbw5XVR1hL56uLloEDBYvnCaSsf9BjcNfNZ85xl5V2_8aN8lIuX4c_Vr0mgLlYCVgIoi/exec',
-            desc: 'SNT Database',
-            icon: 'check-square',
-            status: 'Aktif'
-          }
-        ]
+        id: 'action-tracker',
+        title: 'Action Tracker',
+        badge: 'Google Apps Script',
+        url: 'https://script.google.com/macros/s/AKfycbxmCaTLKz0ampzM0uoBTe1EKUFL8FGOnsIwRvFtdegjNOLV24fgPfj7fVqxZlkqsZSp/exec',
+        desc: 'Pemantauan tindakan korektif audit toko, penugasan perbaikan PIC, dan tracking SLA.',
+        icon: 'check-square'
       },
       {
-        id: 'sop-panduan',
-        title: 'SOP & Panduan Gerai',
-        type: 'document',
-        icon: 'file-text',
-        desc: 'Standar Operasional Prosedur (SOP), nomor kontak darurat operasional gerai, dan petunjuk eskalasi.',
-        content: `
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800">
-              <h4 class="font-bold text-white text-sm mb-2 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-[#EE1D23]"></span>
-                Alur Rutin Pembukaan Toko (Opening Shift)
-              </h4>
-              <ul class="text-xs text-gray-300 space-y-1.5 list-disc list-inside">
-                <li>08:30 - Briefing shift pagi & verifikasi kehadiran kasir/floor.</li>
-                <li>08:45 - Pengisian Store Checklist melalui <a href="https://checklist.mataharicloud.id" target="_blank" class="text-red-400 underline">checklist.mataharicloud.id</a>.</li>
-                <li>09:00 - Uji fungsi mesin kasir (POS) dan verifikasi modal awal kasir.</li>
-                <li>09:30 - Pintu utama dibuka serentak sesuai standar Matahari.</li>
-              </ul>
-            </div>
-            <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800">
-              <h4 class="font-bold text-white text-sm mb-2 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                Kontak Dukungan Operasional & IT
-              </h4>
-              <div class="text-xs text-gray-300 space-y-2">
-                <p><strong>IT Service Desk:</strong> ext. 1042 / WhatsApp: +62 811-0000-xxxx</p>
-                <p><strong>Regional Loss Prevention (LP):</strong> ext. 2011</p>
-                <p><strong>Operation Support Head Office:</strong> ops-support@matahari.com</p>
-              </div>
-            </div>
-          </div>
-          <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800">
-            <h4 class="font-bold text-white text-sm mb-2">Penanganan Temuan Audit Lapangan (Action Tracker)</h4>
-            <p class="text-xs text-gray-400 leading-relaxed mb-2">
-              Setiap ketidaksesuaian (*Non-Compliance*) yang terdeteksi saat inspeksi toko wajib dimasukkan ke dalam Action Tracker dalam waktu maksimal 24 jam dengan melampirkan foto bukti fisik dan batas waktu perbaikan (SLA).
-            </p>
-          </div>
-        `
+        id: 'store-checklist',
+        title: 'Store Checklist',
+        badge: 'Matahari Cloud',
+        url: 'https://checklist.mataharicloud.id',
+        desc: 'Inspeksi harian opening/closing, kesiapan lantai toko, dan standar display.',
+        icon: 'clipboard-check'
+      },
+      {
+        id: 'location-tracker',
+        title: 'Location Tracker',
+        badge: 'GPS & Geofencing',
+        url: 'https://script.google.com/macros/s/AKfycbyb_Z-KyXG8fc0fSY4ZJVkLxLpbG-xWN-hWfKfYHMNIcQFOSNMZHpSlyHXttG2cOIAZ/exec',
+        desc: 'Verifikasi kehadiran staf dan auditor di lokasi cabang toko secara real-time.',
+        icon: 'map-pin'
+      },
+      {
+        id: 'report-dashboard',
+        title: 'Report Dashboard',
+        badge: 'Executive BI',
+        url: 'https://github.com/zakyqadir/retaildashboard',
+        desc: 'Analitik eksekutif kepatuhan toko dan tren penyelesaian audit per regional.',
+        icon: 'bar-chart-3'
+      },
+      {
+        id: 'shop-and-talk',
+        title: 'Shop and Talk Database',
+        badge: 'Matahari',
+        url: 'https://script.google.com/macros/s/AKfycbw5XVR1hL56uLloEDBYvnCaSsf9BjcNfNZ85xl5V2_8aN8lIuX4c_Vr0mgLlYCVgIoi/exec',
+        desc: 'Pusat data Shop and Talk (SNT Database).',
+        icon: 'database'
       }
     ];
 
-    // State
-    const DEFAULT_CLOUD_SYNC_URL = 'https://script.google.com/macros/s/AKfycbwQaIiw0NuGFiQS0BxcO6EFVVX3KzMYX6r8MXRKC0BeTKpnCsFz92-1jDD8OPoYcoCQ/exec';
-    let pages = [];
-    let activePageId = 'main-ops';
+    let apps = [];
     let isAdmin = false;
-    let activeCategory = 'ALL';
-    let sortMode = 'manual'; // 'manual', 'name-asc', 'name-desc', 'category', 'status'
-    let currentEditModuleId = null;
-    let cloudSyncUrl = localStorage.getItem('retail_cloud_sync_url') || DEFAULT_CLOUD_SYNC_URL;
+    let editingAppId = null;
 
-    // Helper: Normalize URL
     function normalizeUrl(url) {
       if (!url) return '';
       let clean = url.trim();
@@ -836,278 +334,132 @@
       return clean;
     }
 
-    // Load Data (Loads from Cloud Apps Script first, then config.json, then localStorage)
+    // Load Data
     async function loadData() {
       let loaded = false;
 
-      // 1. Try to fetch from Google Apps Script Cloud Backend if configured
-      if (cloudSyncUrl) {
-        try {
-          const sep = cloudSyncUrl.includes('?') ? '&' : '?';
-          const cloudRes = await fetch(cloudSyncUrl + sep + 't=' + Date.now());
-          if (cloudRes.ok) {
-            const cloudData = await cloudRes.json();
-            if (Array.isArray(cloudData) && cloudData.length > 0) {
-              pages = cloudData;
-              localStorage.setItem('matahari_pages_v4', JSON.stringify(cloudData));
-              loaded = true;
-              updateCloudBadgeUI(true);
-            }
+      // 1. Fetch live from Google Apps Script
+      try {
+        const res = await fetch(CLOUD_SYNC_URL + '?t=' + Date.now());
+        if (res.ok) {
+          const raw = await res.json();
+          // Extract modules array if stored in nested structure
+          const list = (Array.isArray(raw) && raw[0] && raw[0].modules) ? raw[0].modules : raw;
+          if (Array.isArray(list) && list.length > 0) {
+            apps = list;
+            localStorage.setItem('retail_apps_simple', JSON.stringify(list));
+            loaded = true;
           }
-        } catch (e) {
-          console.warn('Cloud sync load failed, falling back:', e);
         }
+      } catch (e) {
+        console.warn('Cloud sync error, falling back:', e);
       }
 
-      // 2. Try to fetch config.json (shared across all devices & browsers via GitHub)
+      // 2. Fallback to localStorage or DEFAULT_APPS
       if (!loaded) {
-        try {
-          const response = await fetch('./config.json?v=' + Date.now());
-          if (response.ok) {
-            const configData = await response.json();
-            if (Array.isArray(configData) && configData.length > 0) {
-              pages = configData;
-              localStorage.setItem('matahari_pages_v4', JSON.stringify(configData));
-              loaded = true;
-            }
-          }
-        } catch (err) {
-          // fetch may fail if running locally on file:// protocol without http server
-        }
-      }
-
-      // 3. Fallback to localStorage or INITIAL_PAGES
-      if (!loaded) {
-        const savedPages = localStorage.getItem('matahari_pages_v4');
-        if (savedPages) {
+        const saved = localStorage.getItem('retail_apps_simple');
+        if (saved) {
           try {
-            pages = JSON.parse(savedPages);
+            apps = JSON.parse(saved);
             loaded = true;
           } catch (e) {
-            pages = [...INITIAL_PAGES];
+            apps = [...DEFAULT_APPS];
           }
         } else {
-          pages = [...INITIAL_PAGES];
+          apps = [...DEFAULT_APPS];
         }
       }
 
-      // Check URL hash for direct page navigation
-      const hash = window.location.hash.replace('#page=', '');
-      if (hash && pages.some(p => p.id === hash)) {
-        activePageId = hash;
-      } else if (pages.length > 0) {
-        activePageId = pages[0].id;
-      }
-
-      const adminSession = sessionStorage.getItem('matahari_admin_active');
-      isAdmin = (adminSession === 'true');
-
-      renderAdminControls();
-      renderTabs();
-      renderActivePage();
-      updateCloudBadgeUI(!!cloudSyncUrl);
+      isAdmin = (sessionStorage.getItem('retail_admin') === 'true');
+      renderAdminBar();
+      renderApps();
     }
 
+    // Save Data (Local + Cloud Google Apps Script)
     function saveData() {
-      localStorage.setItem('matahari_pages_v4', JSON.stringify(pages));
-      renderTabs();
-      renderActivePage();
+      localStorage.setItem('retail_apps_simple', JSON.stringify(apps));
+      renderApps();
 
-      // Auto-sync to Cloud Google Apps Script if connected
-      if (cloudSyncUrl) {
-        syncToCloud(pages);
-      }
+      // Send to Google Apps Script cloud backend in background
+      const payload = [{
+        id: "main-ops",
+        title: "Operasional Utama",
+        type: "grid",
+        icon: "layers",
+        desc: "Aplikasi inti operasional harian gerai.",
+        modules: apps
+      }];
+
+      fetch(CLOUD_SYNC_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      }).then(() => {
+        showToast('Tersimpan & sinkron ke seluruh perangkat');
+      }).catch(err => {
+        console.error('Save to cloud failed:', err);
+      });
     }
 
-    function resetToMatahariDefaults() {
-      if (confirm('Kembalikan semua halaman dan modul ke konfigurasi default resmi Matahari?')) {
-        pages = [...INITIAL_PAGES];
-        activePageId = 'main-ops';
-        saveData();
-      }
-    }
+    // Render Apps
+    function renderApps() {
+      const container = document.getElementById('appsGrid');
+      const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
 
-    // Switch Page
-    function switchPage(pageId) {
-      activePageId = pageId;
-      window.location.hash = `#page=${pageId}`;
-      renderTabs();
-      renderActivePage();
-    }
-
-    // Render Tabs
-    function renderTabs() {
-      const container = document.getElementById('pageTabsContainer');
-      const addPageContainer = document.getElementById('addPageBtnContainer');
-
-      if (isAdmin) {
-        addPageContainer.classList.remove('hidden');
-      } else {
-        addPageContainer.classList.add('hidden');
-      }
-
-      container.innerHTML = pages.map(p => {
-        const isActive = (p.id === activePageId);
-        return `
-          <button 
-            onclick="switchPage('${p.id}')" 
-            class="tab-item ${isActive ? 'active' : ''}"
-          >
-            <i data-lucide="${p.icon || 'layers'}" class="w-4 h-4 ${isActive ? 'text-[#EE1D23]' : 'text-gray-400'}"></i>
-            <span>${p.title}</span>
-            ${isActive && isAdmin ? `
-              <span onclick="event.stopPropagation(); openEditCurrentPageModal()" class="ml-1 text-amber-400 hover:text-amber-300" title="Edit Halaman">
-                <i data-lucide="settings" class="w-3 h-3"></i>
-              </span>
-            ` : ''}
-          </button>
-        `;
-      }).join('');
-
-      lucide.createIcons();
-    }
-
-    // Render Active Page Content
-    function renderActivePage() {
-      const page = pages.find(p => p.id === activePageId) || pages[0];
-      if (!page) return;
-
-      document.getElementById('activePageTitle').innerText = page.title;
-      document.getElementById('activePageDesc').innerText = page.desc || '';
-      document.getElementById('activePageTypeBadge').innerText = (page.type === 'grid') ? 'Grid Aplikasi' : 'Halaman Dokumen';
-
-      const btnEditPage = document.getElementById('btnEditCurrentPage');
-      const activePageActionBtn = document.getElementById('activePageActionBtn');
-
-      if (isAdmin) {
-        btnEditPage.classList.remove('hidden');
-        if (page.type === 'grid') {
-          activePageActionBtn.innerHTML = `
-            <button onclick="openAddModuleModal()" class="px-3 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md flex items-center gap-1.5 transition">
-              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-              <span>Tambah Modul di Halaman Ini</span>
-            </button>
-          `;
-        } else {
-          activePageActionBtn.innerHTML = `
-            <button onclick="openEditDocModal()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-amber-400 text-xs font-medium rounded-md border border-gray-700 flex items-center gap-1.5 transition">
-              <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-              <span>Edit Konten Dokumen</span>
-            </button>
-          `;
-        }
-      } else {
-        btnEditPage.classList.add('hidden');
-        activePageActionBtn.innerHTML = '';
-      }
-
-      if (page.type === 'grid') {
-        document.getElementById('gridPageView').classList.remove('hidden');
-        document.getElementById('docPageView').classList.add('hidden');
-        renderModulesForCurrentPage(page);
-      } else {
-        document.getElementById('gridPageView').classList.add('hidden');
-        document.getElementById('docPageView').classList.remove('hidden');
-        renderDocForCurrentPage(page);
-      }
-
-      lucide.createIcons();
-    }
-
-    // Render Modules in Grid View
-    function renderModulesForCurrentPage(page) {
-      const container = document.getElementById('modulesContainer');
-      const searchVal = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
-      const pageModules = page.modules || [];
-
-      const statElem = document.getElementById('stat-page-modules');
-      if (statElem) statElem.innerText = pageModules.length;
-
-      // Filter
-      let filtered = pageModules.filter(m => {
-        const matchesCategory = (activeCategory === 'ALL' || m.category === activeCategory);
-        const textTarget = (m.title + ' ' + m.desc + ' ' + m.badge).toLowerCase();
-        const matchesSearch = textTarget.includes(searchVal);
-        return matchesCategory && matchesSearch;
+      const filtered = apps.filter(a => {
+        const text = (a.title + ' ' + (a.desc || '') + ' ' + (a.badge || '') + ' ' + a.url).toLowerCase();
+        return text.includes(query);
       });
 
-      // Sort
-      if (sortMode === 'name-asc') {
-        filtered.sort((a, b) => a.title.localeCompare(b.title));
-      } else if (sortMode === 'name-desc') {
-        filtered.sort((a, b) => b.title.localeCompare(a.title));
-      } else if (sortMode === 'category') {
-        filtered.sort((a, b) => (a.category || '').localeCompare(b.category || ''));
-      } else if (sortMode === 'status') {
-        filtered.sort((a, b) => (a.status || 'Aktif').localeCompare(b.status || 'Aktif'));
-      }
+      document.getElementById('appCount').innerText = `${filtered.length} Aplikasi`;
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="col-span-full py-12 text-center theme-text-muted theme-panel rounded-xl border">
-            <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 opacity-60"></i>
-            <p class="text-sm font-medium">Belum ada modul di halaman ini.</p>
-            ${isAdmin ? `
-              <button onclick="openAddModuleModal()" class="mt-3 px-3 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md inline-flex items-center gap-1.5 transition">
-                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah Modul Pertama
-              </button>
-            ` : ''}
+          <div class="col-span-full py-12 text-center text-gray-400">
+            <p class="text-sm">Tidak ada aplikasi yang ditemukan.</p>
           </div>
         `;
-        lucide.createIcons();
         return;
       }
 
-      container.innerHTML = filtered.map((m, idx) => {
-        const targetUrl = normalizeUrl(m.url);
-
+      container.innerHTML = filtered.map((a, idx) => {
+        const targetUrl = normalizeUrl(a.url);
         return `
-          <div class="retail-card p-5 flex flex-col justify-between ${isAdmin ? 'admin-card-outline' : ''}">
+          <div class="hub-card p-5 flex flex-col justify-between">
             <div>
-              <div class="flex items-start justify-between gap-2 mb-3">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-9 h-9 rounded-lg bg-red-50 dark:bg-[#1E293B] border border-red-100 dark:border-gray-700 flex items-center justify-center text-[#EE1D23] shadow-sm">
-                    <i data-lucide="${m.icon || 'layers'}" class="w-4 h-4"></i>
+              <div class="flex items-start justify-between gap-3 mb-2">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-lg bg-red-500/10 text-[#EE1D23] flex items-center justify-center font-bold">
+                    <i data-lucide="${a.icon || 'link'}" class="w-4 h-4"></i>
                   </div>
                   <div>
-                    <h3 class="text-sm font-bold theme-heading tracking-tight">${m.title}</h3>
-                    <div class="flex items-center gap-1.5 mt-0.5">
-                      <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700">
-                        ${m.badge}
-                      </span>
-                    </div>
+                    <h3 class="text-sm font-bold text-gray-900 dark:text-white tracking-tight">${a.title}</h3>
+                    <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400">${a.badge || 'Aplikasi Toko'}</span>
                   </div>
                 </div>
 
-                <div class="flex items-center gap-1.5">
-                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                    ${m.status || 'Aktif'}
-                  </span>
-                  ${isAdmin ? `
-                    <div class="flex items-center gap-1 ml-1 bg-gray-100 dark:bg-gray-900 p-0.5 rounded-md border border-gray-200 dark:border-gray-800">
-                      <button onclick="moveModule('${m.id}', -1)" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 theme-text-muted hover:text-black dark:hover:text-white transition" title="Geser ke Sebelumnya">
-                        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-                      </button>
-                      <button onclick="moveModule('${m.id}', 1)" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 theme-text-muted hover:text-black dark:hover:text-white transition" title="Geser ke Setelahnya">
-                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-                      </button>
-                      <button onclick="openEditModuleModal('${m.id}')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-amber-500 hover:text-amber-400 transition" title="Edit Modul">
-                        <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
-                      </button>
-                    </div>
-                  ` : ''}
-                </div>
+                ${isAdmin ? `
+                  <div class="flex items-center gap-1">
+                    <button onclick="moveApp('${a.id}', -1)" class="p-1 rounded text-gray-400 hover:text-gray-600 dark:hover:text-white" title="Pindah ke atas/kiri">
+                      <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <button onclick="moveApp('${a.id}', 1)" class="p-1 rounded text-gray-400 hover:text-gray-600 dark:hover:text-white" title="Pindah ke bawah/kanan">
+                      <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <button onclick="openEditApp('${a.id}')" class="p-1 rounded text-amber-500 hover:text-amber-600" title="Edit Aplikasi">
+                      <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                  </div>
+                ` : ''}
               </div>
 
-              <p class="text-xs theme-text-muted leading-relaxed mb-4">
-                ${m.desc}
-              </p>
+              ${a.desc ? `<p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed mb-4">${a.desc}</p>` : '<div class="mb-4"></div>'}
             </div>
 
-            <div class="pt-3 border-t theme-border flex items-center justify-end">
-              <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="px-4 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md flex items-center gap-1.5 shadow-sm transition">
-                <span>Buka Modul</span>
+            <div class="pt-3 border-t border-gray-100 dark:border-gray-800 flex justify-end">
+              <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="px-4 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white text-xs font-semibold rounded-md flex items-center gap-1.5 transition shadow-sm">
+                <span>Buka Aplikasi</span>
                 <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
               </a>
             </div>
@@ -1118,164 +470,63 @@
       lucide.createIcons();
     }
 
-    // Sort & Reordering Functions
-    function changeSortMode(mode) {
-      sortMode = mode;
-      renderActivePage();
-    }
+    // Reorder
+    function moveApp(id, dir) {
+      const idx = apps.findIndex(a => a.id === id);
+      if (idx === -1) return;
+      const targetIdx = idx + dir;
+      if (targetIdx < 0 || targetIdx >= apps.length) return;
 
-    function moveModule(moduleId, direction) {
-      const page = pages.find(p => p.id === activePageId);
-      if (!page || !page.modules) return;
-
-      const index = page.modules.findIndex(m => m.id === moduleId);
-      if (index === -1) return;
-
-      const targetIndex = index + direction;
-      if (targetIndex < 0 || targetIndex >= page.modules.length) return;
-
-      // Swap in the array
-      const temp = page.modules[index];
-      page.modules[index] = page.modules[targetIndex];
-      page.modules[targetIndex] = temp;
-
-      // Ensure view shows manual order
-      sortMode = 'manual';
-      const sel = document.getElementById('sortSelect');
-      if (sel) sel.value = 'manual';
+      const temp = apps[idx];
+      apps[idx] = apps[targetIdx];
+      apps[targetIdx] = temp;
 
       saveData();
     }
 
-    function movePage(pageId, direction) {
-      const index = pages.findIndex(p => p.id === pageId);
-      if (index === -1) return;
-
-      const targetIndex = index + direction;
-      if (targetIndex < 0 || targetIndex >= pages.length) return;
-
-      const temp = pages[index];
-      pages[index] = pages[targetIndex];
-      pages[targetIndex] = temp;
-
-      saveData();
-    }
-
-    // Render Document in Doc View
-    function renderDocForCurrentPage(page) {
-      const container = document.getElementById('docContentContainer');
-      const btnEditDoc = document.getElementById('btnEditDocContent');
-      if (isAdmin) {
-        btnEditDoc.classList.remove('hidden');
-      } else {
-        btnEditDoc.classList.add('hidden');
-      }
-      container.innerHTML = page.content || '<p class="text-gray-400 italic">Belum ada konten di halaman ini.</p>';
-    }
-
-    // Filter controls
-    function filterModules() {
-      const page = pages.find(p => p.id === activePageId);
-      if (page && page.type === 'grid') {
-        renderModulesForCurrentPage(page);
-      }
-    }
-
-    function setCategoryFilter(cat) {
-      activeCategory = cat;
-      ['all', 'audit', 'ops', 'bi'].forEach(k => {
-        const btn = document.getElementById(`filter-${k}`);
-        if (!btn) return;
-        if (k.toUpperCase() === cat) {
-          btn.className = 'px-2.5 py-1 rounded bg-gray-900 dark:bg-gray-800 text-white font-medium border border-gray-700';
-        } else {
-          btn.className = 'px-2.5 py-1 rounded bg-transparent hover:bg-gray-200 dark:hover:bg-gray-800 theme-text-muted font-medium';
-        }
-      });
-      filterModules();
-    }
-
-    // Theme Management (Light / Dark)
-    function initThemeMode() {
-      const savedTheme = localStorage.getItem('retail_hub_theme');
-      if (savedTheme === 'light') {
-        document.documentElement.classList.remove('dark');
-      } else {
-        // Default to dark theme
-        document.documentElement.classList.add('dark');
-      }
-      updateThemeIcon();
-    }
-
-    function toggleThemeMode() {
-      const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('retail_hub_theme', isDark ? 'dark' : 'light');
-      updateThemeIcon();
-    }
-
-    function updateThemeIcon() {
-      const isDark = document.documentElement.classList.contains('dark');
-      const icon = document.getElementById('themeToggleIcon');
-      if (icon) {
-        icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
-        lucide.createIcons();
-      }
-    }
-
-    // Admin Controls in Header/Banner
-    function renderAdminControls() {
-      const container = document.getElementById('admin-actions-container');
-      const banner = document.getElementById('admin-banner');
+    // Admin UI
+    function renderAdminBar() {
+      const toolbar = document.getElementById('adminToolbar');
+      const btn = document.getElementById('adminHeaderBtn');
 
       if (isAdmin) {
-        banner.classList.remove('hidden');
-        container.innerHTML = `
-          <div class="flex items-center gap-2">
-            <span class="text-xs px-2.5 py-1 rounded bg-amber-500/10 text-amber-500 font-semibold border border-amber-500/30 flex items-center gap-1">
-              <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-              <span>Admin On</span>
-            </span>
-            <button onclick="logoutAdmin()" class="px-2.5 py-1 text-xs bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded border border-gray-300 dark:border-gray-700 transition">
-              Keluar
-            </button>
-          </div>
+        toolbar.classList.remove('hidden');
+        btn.innerHTML = `
+          <button onclick="logoutAdmin()" class="px-2.5 py-1 text-xs text-gray-500 hover:text-gray-900 dark:hover:text-white transition">
+            Keluar Admin
+          </button>
         `;
       } else {
-        banner.classList.add('hidden');
-        container.innerHTML = `
-          <button onclick="openLoginModal()" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-md border border-gray-300 dark:border-gray-700 transition">
-            <i data-lucide="lock" class="w-3.5 h-3.5"></i>
-            <span>Login (Admin)</span>
+        toolbar.classList.add('hidden');
+        btn.innerHTML = `
+          <button onclick="openLoginModal()" class="px-2.5 py-1 text-xs text-gray-500 hover:text-gray-900 dark:hover:text-white transition">
+            Admin
           </button>
         `;
       }
       lucide.createIcons();
     }
 
-    // Admin Auth
     function openLoginModal() {
       document.getElementById('loginModal').classList.remove('hidden');
+      document.getElementById('passwordInput').value = '';
       document.getElementById('loginError').classList.add('hidden');
-      document.getElementById('adminPasswordInput').value = '';
-      document.getElementById('adminPasswordInput').focus();
+      document.getElementById('passwordInput').focus();
     }
 
     function closeLoginModal() {
       document.getElementById('loginModal').classList.add('hidden');
     }
 
-    function handleLoginSubmit(e) {
+    function handleLogin(e) {
       e.preventDefault();
-      const pwd = document.getElementById('adminPasswordInput').value.trim();
-      const savedPwd = localStorage.getItem('matahari_admin_pwd') || 'admin123';
-
-      if (pwd === savedPwd) {
+      const pwd = document.getElementById('passwordInput').value.trim();
+      if (pwd === 'admin123') {
         isAdmin = true;
-        sessionStorage.setItem('matahari_admin_active', 'true');
+        sessionStorage.setItem('retail_admin', 'true');
         closeLoginModal();
-        renderAdminControls();
-        renderTabs();
-        renderActivePage();
+        renderAdminBar();
+        renderApps();
       } else {
         document.getElementById('loginError').classList.remove('hidden');
       }
@@ -1283,436 +534,128 @@
 
     function logoutAdmin() {
       isAdmin = false;
-      sessionStorage.removeItem('matahari_admin_active');
-      renderAdminControls();
-      renderTabs();
-      renderActivePage();
+      sessionStorage.removeItem('retail_admin');
+      renderAdminBar();
+      renderApps();
     }
 
-    // ==================== PAGE MANAGEMENT ====================
-    let editingPageId = null;
+    // Add / Edit Modal
+    function openAppModal() {
+      editingAppId = null;
+      document.getElementById('appModalTitle').innerText = 'Tambah Aplikasi';
+      document.getElementById('form-app-id').value = '';
+      document.getElementById('form-app-title').value = '';
+      document.getElementById('form-app-url').value = '';
+      document.getElementById('form-app-desc').value = '';
+      document.getElementById('form-app-badge').value = 'Matahari';
+      document.getElementById('form-app-icon').value = 'check-square';
+      document.getElementById('btnDeleteApp').classList.add('hidden');
 
-    function openPageModal() {
-      editingPageId = null;
-      document.getElementById('pageModalTitle').innerHTML = `
-        <i data-lucide="file-plus" class="w-4 h-4 text-[#EE1D23]"></i>
-        <span>Tambah Halaman Baru</span>
-      `;
-      document.getElementById('form-page-id').value = '';
-      document.getElementById('form-page-title').value = '';
-      document.getElementById('form-page-type').value = 'grid';
-      document.getElementById('form-page-type').disabled = false;
-      document.getElementById('form-page-icon').value = 'layers';
-      document.getElementById('form-page-desc').value = '';
-      document.getElementById('btnDeletePage').classList.add('hidden');
-      document.getElementById('pageReorderSection').classList.add('hidden');
-
-      document.getElementById('pageModal').classList.remove('hidden');
+      document.getElementById('appModal').classList.remove('hidden');
       lucide.createIcons();
     }
 
-    function openEditCurrentPageModal() {
-      const page = pages.find(p => p.id === activePageId);
-      if (!page) return;
-
-      editingPageId = page.id;
-      document.getElementById('pageModalTitle').innerHTML = `
-        <i data-lucide="edit-3" class="w-4 h-4 text-[#EE1D23]"></i>
-        <span>Ubah Halaman: ${page.title}</span>
-      `;
-      document.getElementById('form-page-id').value = page.id;
-      document.getElementById('form-page-title').value = page.title;
-      document.getElementById('form-page-type').value = page.type;
-      document.getElementById('form-page-type').disabled = true; // prevent changing core structure type
-      document.getElementById('form-page-icon').value = page.icon || 'layers';
-      document.getElementById('form-page-desc').value = page.desc || '';
-      document.getElementById('pageReorderSection').classList.remove('hidden');
-
-      // Don't allow deleting if only 1 page remains
-      if (pages.length > 1) {
-        document.getElementById('btnDeletePage').classList.remove('hidden');
-      } else {
-        document.getElementById('btnDeletePage').classList.add('hidden');
-      }
-
-      document.getElementById('pageModal').classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function closePageModal() {
-      document.getElementById('pageModal').classList.add('hidden');
-    }
-
-    function handlePageSave(e) {
-      e.preventDefault();
-      const title = document.getElementById('form-page-title').value.trim();
-      const type = document.getElementById('form-page-type').value;
-      const icon = document.getElementById('form-page-icon').value;
-      const desc = document.getElementById('form-page-desc').value.trim();
-
-      if (editingPageId) {
-        // Update existing page
-        const idx = pages.findIndex(p => p.id === editingPageId);
-        if (idx !== -1) {
-          pages[idx].title = title;
-          pages[idx].icon = icon;
-          pages[idx].desc = desc;
-        }
-      } else {
-        // Create new page
-        const newId = 'page-' + Date.now();
-        pages.push({
-          id: newId,
-          title,
-          type,
-          icon,
-          desc,
-          modules: (type === 'grid') ? [] : undefined,
-          content: (type === 'document') ? '<p class="text-gray-300">Tuliskan panduan atau catatan di sini...</p>' : undefined
-        });
-        activePageId = newId;
-      }
-
-      saveData();
-      closePageModal();
-    }
-
-    function handleDeleteCurrentPage() {
-      if (!editingPageId) return;
-      if (pages.length <= 1) {
-        alert('Tidak dapat menghapus halaman terakhir.');
-        return;
-      }
-      if (confirm('Apakah Anda yakin ingin menghapus halaman ini beserta seluruh isinya?')) {
-        pages = pages.filter(p => p.id !== editingPageId);
-        activePageId = pages[0].id;
-        saveData();
-        closePageModal();
-      }
-    }
-
-    // ==================== DOCUMENT CONTENT EDITING ====================
-    function openEditDocModal() {
-      const page = pages.find(p => p.id === activePageId);
-      if (!page || page.type !== 'document') return;
-
-      document.getElementById('form-doc-html').value = page.content || '';
-      document.getElementById('docEditModal').classList.remove('hidden');
-    }
-
-    function closeDocEditModal() {
-      document.getElementById('docEditModal').classList.add('hidden');
-    }
-
-    function handleDocSave(e) {
-      e.preventDefault();
-      const page = pages.find(p => p.id === activePageId);
-      if (!page || page.type !== 'document') return;
-
-      page.content = document.getElementById('form-doc-html').value;
-      saveData();
-      closeDocEditModal();
-    }
-
-    // ==================== MODULE MANAGEMENT ====================
-    function openAddModuleModal() {
-      currentEditModuleId = null;
-      document.getElementById('moduleModalTitle').innerHTML = `
-        <i data-lucide="plus-circle" class="w-4 h-4 text-[#EE1D23]"></i>
-        <span>Tambah Modul Baru</span>
-      `;
-      document.getElementById('form-module-id').value = '';
-      document.getElementById('form-module-title').value = '';
-      document.getElementById('form-module-category').value = 'OPS';
-      document.getElementById('form-module-badge').value = '';
-      document.getElementById('form-module-url').value = '';
-      document.getElementById('form-module-desc').value = '';
-      document.getElementById('form-module-icon').value = 'check-square';
-      document.getElementById('form-module-status').value = 'Aktif';
-      document.getElementById('btnDeleteModule').classList.add('hidden');
-
-      document.getElementById('moduleModal').classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function openEditModuleModal(id) {
-      const page = pages.find(p => p.id === activePageId);
-      if (!page || !page.modules) return;
-
-      const item = page.modules.find(m => m.id === id);
+    function openEditApp(id) {
+      const item = apps.find(a => a.id === id);
       if (!item) return;
 
-      currentEditModuleId = id;
-      document.getElementById('moduleModalTitle').innerHTML = `
-        <i data-lucide="edit-3" class="w-4 h-4 text-[#EE1D23]"></i>
-        <span>Ubah Detail: ${item.title}</span>
-      `;
-      document.getElementById('form-module-id').value = item.id;
-      document.getElementById('form-module-title').value = item.title;
-      document.getElementById('form-module-category').value = item.category || 'OPS';
-      document.getElementById('form-module-badge').value = item.badge;
-      document.getElementById('form-module-url').value = item.url;
-      document.getElementById('form-module-desc').value = item.desc;
-      document.getElementById('form-module-icon').value = item.icon || 'check-square';
-      document.getElementById('form-module-status').value = item.status || 'Aktif';
-      document.getElementById('btnDeleteModule').classList.remove('hidden');
+      editingAppId = id;
+      document.getElementById('appModalTitle').innerText = 'Ubah Aplikasi';
+      document.getElementById('form-app-id').value = item.id;
+      document.getElementById('form-app-title').value = item.title;
+      document.getElementById('form-app-url').value = item.url;
+      document.getElementById('form-app-desc').value = item.desc || '';
+      document.getElementById('form-app-badge').value = item.badge || '';
+      document.getElementById('form-app-icon').value = item.icon || 'link';
+      document.getElementById('btnDeleteApp').classList.remove('hidden');
 
-      document.getElementById('moduleModal').classList.remove('hidden');
+      document.getElementById('appModal').classList.remove('hidden');
       lucide.createIcons();
     }
 
-    function closeModuleModal() {
-      document.getElementById('moduleModal').classList.add('hidden');
+    function closeAppModal() {
+      document.getElementById('appModal').classList.add('hidden');
     }
 
-    function handleModuleSave(e) {
+    function handleSaveApp(e) {
       e.preventDefault();
-      const page = pages.find(p => p.id === activePageId);
-      if (!page) return;
-      if (!page.modules) page.modules = [];
+      const title = document.getElementById('form-app-title').value.trim();
+      const url = normalizeUrl(document.getElementById('form-app-url').value);
+      const desc = document.getElementById('form-app-desc').value.trim();
+      const badge = document.getElementById('form-app-badge').value.trim();
+      const icon = document.getElementById('form-app-icon').value;
 
-      const title = document.getElementById('form-module-title').value.trim();
-      const category = document.getElementById('form-module-category').value;
-      const badge = document.getElementById('form-module-badge').value.trim();
-      const rawUrl = document.getElementById('form-module-url').value.trim();
-      const desc = document.getElementById('form-module-desc').value.trim();
-      const icon = document.getElementById('form-module-icon').value;
-      const status = document.getElementById('form-module-status').value;
-
-      const url = normalizeUrl(rawUrl);
-
-      if (currentEditModuleId) {
-        // Update
-        const idx = page.modules.findIndex(m => m.id === currentEditModuleId);
+      if (editingAppId) {
+        const idx = apps.findIndex(a => a.id === editingAppId);
         if (idx !== -1) {
-          page.modules[idx] = {
-            ...page.modules[idx],
-            title,
-            category,
-            badge,
-            url,
-            desc,
-            icon,
-            status
-          };
+          apps[idx] = { ...apps[idx], title, url, desc, badge, icon };
         }
       } else {
-        // Add new
-        const newId = 'mod-' + Date.now();
-        page.modules.push({
-          id: newId,
+        apps.push({
+          id: 'app-' + Date.now(),
           title,
-          category,
-          badge,
           url,
           desc,
-          icon,
-          status
+          badge,
+          icon
         });
       }
 
       saveData();
-      closeModuleModal();
+      closeAppModal();
     }
 
-    function handleDeleteCurrentModule() {
-      const page = pages.find(p => p.id === activePageId);
-      if (!page || !page.modules || !currentEditModuleId) return;
-
-      if (confirm('Apakah Anda yakin ingin menghapus modul ini?')) {
-        page.modules = page.modules.filter(m => m.id !== currentEditModuleId);
+    function handleDeleteApp() {
+      if (!editingAppId) return;
+      if (confirm('Hapus aplikasi ini dari portal?')) {
+        apps = apps.filter(a => a.id !== editingAppId);
         saveData();
-        closeModuleModal();
+        closeAppModal();
       }
     }
 
-    // GPS Helper Tool
-    function triggerGPSCapture() {
-      const statusText = document.getElementById('gps-status-text');
-      const mapsBtn = document.getElementById('gps-maps-btn');
-
-      if (!navigator.geolocation) {
-        statusText.innerText = 'Perangkat tidak mendukung geolokasi GPS.';
-        return;
+    // Theme (Light / Dark)
+    function initTheme() {
+      const saved = localStorage.getItem('hub_theme');
+      if (saved === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
       }
-
-      statusText.innerText = 'Menghubungkan ke satelit GPS...';
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const lat = pos.coords.latitude.toFixed(6);
-          const lng = pos.coords.longitude.toFixed(6);
-          const acc = Math.round(pos.coords.accuracy);
-          statusText.innerHTML = `Koordinat: <span class="text-emerald-400 font-bold">${lat}, ${lng}</span> (Akurasi: &plusmn;${acc}m) &bull; ${new Date().toLocaleTimeString('id-ID')}`;
-          mapsBtn.href = `https://www.google.com/maps?q=${lat},${lng}`;
-          mapsBtn.classList.remove('hidden');
-        },
-        (err) => {
-          statusText.innerText = 'Gagal membaca GPS: ' + err.message;
-        },
-        { enableHighAccuracy: true, timeout: 10000 }
-      );
+      updateThemeIcon();
     }
 
-    // ==================== CROSS-BROWSER SYNC & CONFIG ====================
-    function updateCloudBadgeUI(isConnected) {
-      const badge = document.getElementById('cloudStatusBadge');
-      const disconnectBtn = document.getElementById('btnDisconnectCloud');
-      const input = document.getElementById('cloudSyncUrlInput');
-      
-      if (input && cloudSyncUrl) {
-        input.value = cloudSyncUrl;
-      }
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('hub_theme', isDark ? 'dark' : 'light');
+      updateThemeIcon();
+    }
 
-      if (badge) {
-        if (isConnected) {
-          badge.className = 'text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/30';
-          badge.innerText = '✓ Cloud Terhubung (Auto Sync)';
-          if (disconnectBtn) disconnectBtn.classList.remove('hidden');
-        } else {
-          badge.className = 'text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-400 font-medium border border-gray-700';
-          badge.innerText = 'Belum Terhubung';
-          if (disconnectBtn) disconnectBtn.classList.add('hidden');
-        }
+    function updateThemeIcon() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const icon = document.getElementById('themeIcon');
+      if (icon) {
+        icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+        lucide.createIcons();
       }
     }
 
-    function openSyncModal() {
-      const input = document.getElementById('cloudSyncUrlInput');
-      if (input) input.value = cloudSyncUrl;
-      updateCloudBadgeUI(!!cloudSyncUrl);
-      document.getElementById('syncModal').classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function closeSyncModal() {
-      document.getElementById('syncModal').classList.add('hidden');
-    }
-
-    async function testAndSaveCloudUrl() {
-      const input = document.getElementById('cloudSyncUrlInput');
-      const msg = document.getElementById('cloudSyncStatusMsg');
-      const rawUrl = (input.value || '').trim();
-
-      if (!rawUrl) {
-        alert('Silakan masukkan Web App URL Google Apps Script Anda.');
-        return;
-      }
-
-      msg.innerText = 'Menyambungkan ke Google Cloud...';
-      cloudSyncUrl = rawUrl;
-      localStorage.setItem('retail_cloud_sync_url', rawUrl);
-      updateCloudBadgeUI(true);
-
-      try {
-        await syncToCloud(pages);
-        msg.innerText = '✓ Berhasil terhubung & tersinkron!';
-        showToast('✓ Cloud Sync Google Apps Script Aktif!');
-        setTimeout(() => closeSyncModal(), 1200);
-      } catch (err) {
-        msg.innerText = 'Koneksi tersimpan (menggunakan background sync)';
-      }
-    }
-
-    function disconnectCloudUrl() {
-      if (confirm('Putuskan koneksi Google Apps Script Cloud Sync?')) {
-        cloudSyncUrl = '';
-        localStorage.removeItem('retail_cloud_sync_url');
-        const input = document.getElementById('cloudSyncUrlInput');
-        if (input) input.value = '';
-        updateCloudBadgeUI(false);
-        const msg = document.getElementById('cloudSyncStatusMsg');
-        if (msg) msg.innerText = 'Koneksi cloud diputuskan.';
-        showToast('Cloud Sync diputuskan');
-      }
-    }
-
-    async function syncToCloud(data) {
-      if (!cloudSyncUrl) return;
-      const payloadStr = JSON.stringify(data);
-
-      try {
-        // Method 1: Send via POST with text/plain
-        await fetch(cloudSyncUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: payloadStr
-        });
-        showToast('✓ Tersinkronisasi ke Cloud secara Real-time!');
-      } catch (e) {
-        // Method 2: Fallback to GET action=save
-        try {
-          const sep = cloudSyncUrl.includes('?') ? '&' : '?';
-          await fetch(cloudSyncUrl + sep + 'action=save&data=' + encodeURIComponent(payloadStr), {
-            mode: 'no-cors'
-          });
-          showToast('✓ Tersinkronisasi ke Cloud!');
-        } catch (err) {
-          console.error('Cloud auto-sync error:', err);
-        }
-      }
-    }
-
-    function showToast(message) {
+    function showToast(msg) {
       const toast = document.getElementById('toastNotification');
-      const msgEl = document.getElementById('toastMessage');
-      if (!toast || !msgEl) return;
-      msgEl.innerText = message;
+      const text = document.getElementById('toastMsg');
+      if (!toast || !text) return;
+      text.innerText = msg;
       toast.classList.remove('translate-y-20', 'opacity-0');
       toast.classList.add('translate-y-0', 'opacity-100');
       setTimeout(() => {
         toast.classList.remove('translate-y-0', 'opacity-100');
         toast.classList.add('translate-y-20', 'opacity-0');
-      }, 3000);
+      }, 2500);
     }
 
-    function downloadConfigFile() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(pages, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "config.json");
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    }
-
-    function copyConfigJson() {
-      const jsonStr = JSON.stringify(pages, null, 2);
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(jsonStr).then(() => {
-          alert('Konfigurasi JSON berhasil disalin ke clipboard!');
-        }).catch(err => {
-          prompt('Salin teks JSON berikut:', jsonStr);
-        });
-      } else {
-        prompt('Salin teks JSON berikut:', jsonStr);
-      }
-    }
-
-    function importConfigJson() {
-      const text = document.getElementById('importJsonTextarea').value.trim();
-      if (!text) {
-        alert('Silakan tempelkan teks JSON terlebih dahulu.');
-        return;
-      }
-      try {
-        const parsed = JSON.parse(text);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          pages = parsed;
-          saveData();
-          closeSyncModal();
-          alert('Konfigurasi berhasil diterapkan di browser ini!');
-        } else {
-          alert('Format JSON tidak valid (harus berupa array data halaman).');
-        }
-      } catch (e) {
-        alert('Gagal membaca JSON: ' + e.message);
-      }
-    }
-
-    // Initialize application
+    // Init
     window.addEventListener('DOMContentLoaded', () => {
-      initThemeMode();
+      initTheme();
       loadData();
     });
   </script>
