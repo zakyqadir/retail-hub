@@ -747,7 +747,7 @@
             title: 'Location Tracker',
             category: 'OPS',
             badge: 'GPS & Geofencing',
-            url: 'https://maps.google.com',
+            url: 'https://script.google.com/macros/s/AKfycbyb_Z-KyXG8fc0fSY4ZJVkLxLpbG-xWN-hWfKfYHMNIcQFOSNMZHpSlyHXttG2cOIAZ/exec',
             desc: 'Verifikasi kehadiran auditor dan staf di lokasi cabang toko secara real-time melalui koordinat GPS satelit.',
             icon: 'map-pin',
             status: 'Aktif'
@@ -760,6 +760,16 @@
             url: 'https://github.com/zakyqadir/retaildashboard',
             desc: 'Analitik eksekutif kepatuhan toko, tren penyelesaian audit, evaluasi performa per regional, dan rekapitulasi data.',
             icon: 'bar-chart-3',
+            status: 'Aktif'
+          },
+          {
+            id: 'mod-1794669642583',
+            title: 'Shop and Talk Database',
+            category: 'OPS',
+            badge: 'Matahari',
+            url: 'https://script.google.com/macros/s/AKfycbw5XVR1hL56uLloEDBYvnCaSsf9BjcNfNZ85xl5V2_8aN8lIuX4c_Vr0mgLlYCVgIoi/exec',
+            desc: 'SNT Database',
+            icon: 'check-square',
             status: 'Aktif'
           }
         ]
@@ -807,13 +817,14 @@
     ];
 
     // State
+    const DEFAULT_CLOUD_SYNC_URL = 'https://script.google.com/macros/s/AKfycbwQaIiw0NuGFiQS0BxcO6EFVVX3KzMYX6r8MXRKC0BeTKpnCsFz92-1jDD8OPoYcoCQ/exec';
     let pages = [];
     let activePageId = 'main-ops';
     let isAdmin = false;
     let activeCategory = 'ALL';
     let sortMode = 'manual'; // 'manual', 'name-asc', 'name-desc', 'category', 'status'
     let currentEditModuleId = null;
-    let cloudSyncUrl = localStorage.getItem('retail_cloud_sync_url') || '';
+    let cloudSyncUrl = localStorage.getItem('retail_cloud_sync_url') || DEFAULT_CLOUD_SYNC_URL;
 
     // Helper: Normalize URL
     function normalizeUrl(url) {
