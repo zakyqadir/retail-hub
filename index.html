@@ -219,6 +219,10 @@
         <span class="text-amber-200">Anda dapat menambah halaman baru, mengedit item modul, atau menyesuaikan dokumen panduan.</span>
       </div>
       <div class="flex items-center gap-2">
+        <button onclick="openSyncModal()" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-amber-300 font-medium rounded-md border border-gray-700 flex items-center gap-1.5 transition" title="Sinkronisasi Data Lintas Browser">
+          <i data-lucide="cloud" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>Sinkron / Export</span>
+        </button>
         <button onclick="openPageModal()" class="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-gray-200 font-medium rounded-md border border-gray-700 flex items-center gap-1.5 transition">
           <i data-lucide="file-plus" class="w-3.5 h-3.5 text-amber-400"></i>
           <span>+ Halaman Baru</span>
@@ -610,6 +614,67 @@
     </div>
   </div>
 
+  <!-- 5. Cross-Browser Sync & Config Modal -->
+  <div id="syncModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#111827] border border-gray-700 rounded-xl max-w-lg w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-800">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <i data-lucide="cloud" class="w-4 h-4 text-[#EE1D23]"></i>
+          <span>Sinkronisasi Data Lintas Browser & Perangkat</span>
+        </h3>
+        <button onclick="closeSyncModal()" class="text-gray-400 hover:text-white">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs text-gray-300">
+        <div class="p-3 rounded-lg bg-amber-950/30 border border-amber-800/40 text-amber-200 leading-relaxed">
+          <strong>Mengapa perubahan tidak otomatis muncul di browser lain?</strong><br>
+          Browser secara standar menyimpan perubahan ke <em>localStorage</em> (memori privat di 1 browser/laptop saja). Agar perubahan tampil di seluruh perangkat staf toko, file <code>config.json</code> di GitHub repository perlu diperbarui.
+        </div>
+
+        <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800 space-y-3">
+          <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-[#EE1D23]"></span>
+            Langkah 1: Unduh atau Salin Konfigurasi Terbaru
+          </h4>
+          <p class="text-gray-400">
+            Simpan data modul & halaman saat ini sebagai file <code>config.json</code>:
+          </p>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="downloadConfigFile()" class="px-3 py-1.5 bg-[#EE1D23] hover:bg-[#C7141A] text-white font-semibold rounded-md flex items-center gap-1.5 transition">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Unduh config.json</span>
+            </button>
+            <button onclick="copyConfigJson()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 font-medium rounded-md border border-gray-700 flex items-center gap-1.5 transition">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span>Salin Teks JSON</span>
+            </button>
+          </div>
+          <p class="text-[11px] text-gray-400">
+            Setelah mengunduh, gantikan file <code>config.json</code> di folder lalu <code>git push</code>. Seketika semua pengguna akan membaca data yang sama!
+          </p>
+        </div>
+
+        <div class="p-4 rounded-lg bg-[#0B0F19] border border-gray-800 space-y-2">
+          <h4 class="font-bold text-white text-xs flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            Import JSON Langsung ke Browser Ini
+          </h4>
+          <p class="text-gray-400">
+            Tempelkan JSON dari perangkat lain untuk langsung menerapkan susunan modul di browser ini:
+          </p>
+          <textarea id="importJsonTextarea" rows="4" placeholder="Tempelkan teks JSON di sini..." class="w-full bg-[#111827] border border-gray-700 rounded-lg p-2.5 text-white font-mono text-[11px] focus:outline-none focus:border-[#EE1D23]"></textarea>
+          <div class="flex justify-end">
+            <button onclick="importConfigJson()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-md text-xs transition">
+              Terapkan Import
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Application Multi-Page Engine -->
   <script>
     // Initial Architecture: Multi-Page Structure
@@ -723,17 +788,38 @@
       return clean;
     }
 
-    // Load Data
-    function loadData() {
-      const savedPages = localStorage.getItem('matahari_pages_v4');
-      if (savedPages) {
-        try {
-          pages = JSON.parse(savedPages);
-        } catch (e) {
+    // Load Data (Loads from config.json first, falls back to localStorage)
+    async function loadData() {
+      let loaded = false;
+
+      // 1. Try to fetch config.json (shared across all devices & browsers via GitHub)
+      try {
+        const response = await fetch('./config.json?v=' + Date.now());
+        if (response.ok) {
+          const configData = await response.json();
+          if (Array.isArray(configData) && configData.length > 0) {
+            pages = configData;
+            localStorage.setItem('matahari_pages_v4', JSON.stringify(configData));
+            loaded = true;
+          }
+        }
+      } catch (err) {
+        // fetch may fail if running locally on file:// protocol without http server
+      }
+
+      // 2. Fallback to localStorage or INITIAL_PAGES
+      if (!loaded) {
+        const savedPages = localStorage.getItem('matahari_pages_v4');
+        if (savedPages) {
+          try {
+            pages = JSON.parse(savedPages);
+            loaded = true;
+          } catch (e) {
+            pages = [...INITIAL_PAGES];
+          }
+        } else {
           pages = [...INITIAL_PAGES];
         }
-      } else {
-        pages = [...INITIAL_PAGES];
       }
 
       // Check URL hash for direct page navigation
@@ -1390,6 +1476,60 @@
         },
         { enableHighAccuracy: true, timeout: 10000 }
       );
+    }
+
+    // ==================== CROSS-BROWSER SYNC & CONFIG ====================
+    function openSyncModal() {
+      document.getElementById('syncModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeSyncModal() {
+      document.getElementById('syncModal').classList.add('hidden');
+    }
+
+    function downloadConfigFile() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(pages, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "config.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function copyConfigJson() {
+      const jsonStr = JSON.stringify(pages, null, 2);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(jsonStr).then(() => {
+          alert('Konfigurasi JSON berhasil disalin ke clipboard!');
+        }).catch(err => {
+          prompt('Salin teks JSON berikut:', jsonStr);
+        });
+      } else {
+        prompt('Salin teks JSON berikut:', jsonStr);
+      }
+    }
+
+    function importConfigJson() {
+      const text = document.getElementById('importJsonTextarea').value.trim();
+      if (!text) {
+        alert('Silakan tempelkan teks JSON terlebih dahulu.');
+        return;
+      }
+      try {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          pages = parsed;
+          saveData();
+          closeSyncModal();
+          alert('Konfigurasi berhasil diterapkan di browser ini!');
+        } else {
+          alert('Format JSON tidak valid (harus berupa array data halaman).');
+        }
+      } catch (e) {
+        alert('Gagal membaca JSON: ' + e.message);
+      }
     }
 
     // Initialize application

@@ -1,0 +1,59 @@
+[
+  {
+    "id": "main-ops",
+    "title": "Operasional Utama",
+    "type": "grid",
+    "icon": "layers",
+    "desc": "Aplikasi inti operasional harian gerai, checklist pembukaan toko, dan tracking audit.",
+    "modules": [
+      {
+        "id": "action-tracker",
+        "title": "Action Tracker",
+        "category": "OPS",
+        "badge": "Google Apps Script",
+        "url": "https://script.google.com/macros/s/AKfycbxmCaTLKz0ampzM0uoBTe1EKUFL8FGOnsIwRvFtdegjNOLV24fgPfj7fVqxZlkqsZSp/exec",
+        "desc": "Pemantauan tindakan korektif audit toko, penugasan perbaikan PIC, eskalasi temuan, dan tracking SLA penutupan issue.",
+        "icon": "check-square",
+        "status": "Aktif"
+      },
+      {
+        "id": "store-checklist",
+        "title": "Store Checklist",
+        "category": "AUDIT",
+        "badge": "Matahari Cloud",
+        "url": "https://checklist.mataharicloud.id",
+        "desc": "Formulir inspeksi harian opening/closing, kesiapan lantai toko, standar visual merchandising, dan bukti foto audit.",
+        "icon": "clipboard-check",
+        "status": "Aktif"
+      },
+      {
+        "id": "location-tracker",
+        "title": "Location Tracker",
+        "category": "OPS",
+        "badge": "GPS & Geofencing",
+        "url": "https://maps.google.com",
+        "desc": "Verifikasi kehadiran auditor dan staf di lokasi cabang toko secara real-time melalui koordinat GPS satelit.",
+        "icon": "map-pin",
+        "status": "Aktif"
+      },
+      {
+        "id": "report-dashboard",
+        "title": "Report Dashboard",
+        "category": "BI",
+        "badge": "Executive BI",
+        "url": "https://github.com/zakyqadir/retaildashboard",
+        "desc": "Analitik eksekutif kepatuhan toko, tren penyelesaian audit, evaluasi performa per regional, dan rekapitulasi data.",
+        "icon": "bar-chart-3",
+        "status": "Aktif"
+      }
+    ]
+  },
+  {
+    "id": "sop-panduan",
+    "title": "SOP & Panduan Gerai",
+    "type": "document",
+    "icon": "file-text",
+    "desc": "Standar Operasional Prosedur (SOP), nomor kontak darurat operasional gerai, dan petunjuk eskalasi.",
+    "content": "<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mb-6\"><div class=\"p-4 rounded-lg bg-[#0B0F19] border border-gray-800\"><h4 class=\"font-bold text-white text-sm mb-2 flex items-center gap-1.5\"><span class=\"w-2 h-2 rounded-full bg-[#EE1D23]\"></span>Alur Rutin Pembukaan Toko (Opening Shift)</h4><ul class=\"text-xs text-gray-300 space-y-1.5 list-disc list-inside\"><li>08:30 - Briefing shift pagi & verifikasi kehadiran kasir/floor.</li><li>08:45 - Pengisian Store Checklist melalui <a href=\"https://checklist.mataharicloud.id\" target=\"_blank\" class=\"text-red-400 underline\">checklist.mataharicloud.id</a>.</li><li>09:00 - Uji fungsi mesin kasir (POS) dan verifikasi modal awal kasir.</li><li>09:30 - Pintu utama dibuka serentak sesuai standar Matahari.</li></ul></div><div class=\"p-4 rounded-lg bg-[#0B0F19] border border-gray-800\"><h4 class=\"font-bold text-white text-sm mb-2 flex items-center gap-1.5\"><span class=\"w-2 h-2 rounded-full bg-emerald-500\"></span>Kontak Dukungan Operasional & IT</h4><div class=\"text-xs text-gray-300 space-y-2\"><p><strong>IT Service Desk:</strong> ext. 1042 / WhatsApp: +62 811-0000-xxxx</p><p><strong>Regional Loss Prevention (LP):</strong> ext. 2011</p><p><strong>Operation Support Head Office:</strong> ops-support@matahari.com</p></div></div></div><div class=\"p-4 rounded-lg bg-[#0B0F19] border border-gray-800\"><h4 class=\"font-bold text-white text-sm mb-2\">Penanganan Temuan Audit Lapangan (Action Tracker)</h4><p class=\"text-xs text-gray-400 leading-relaxed mb-2\">Setiap ketidaksesuaian (*Non-Compliance*) yang terdeteksi saat inspeksi toko wajib dimasukkan ke dalam Action Tracker dalam waktu maksimal 24 jam dengan melampirkan foto bukti fisik dan batas waktu perbaikan (SLA).</p></div>"
+  }
+]
